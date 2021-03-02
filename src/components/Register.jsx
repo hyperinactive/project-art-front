@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import { Button, Form } from 'semantic-ui-react';
+import { Button, Form, Message } from 'semantic-ui-react';
 
 import './Register.css';
 
@@ -29,7 +30,8 @@ const REGISTER_USER = gql`
   }
 `;
 
-const Register = () => {
+const Register = (props) => {
+  // gets the job done but too repetative
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -41,8 +43,11 @@ const Register = () => {
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     // update will trigger if everything's went smoothly
     // returns proxy result
-    update: (proxy, result) => {
+    update: (_, result) => {
+      console.log('successful result');
       console.log(result);
+      // take us to the home page if register succeeded
+      props.history.push('/');
     },
     // it expects some variables to be sent for mutations
     variables: {
@@ -57,6 +62,8 @@ const Register = () => {
       // but we've written our serverside to have a single object with errors
       // it is in the extension
       // console.log(err.graphQLErrors[0].extensions.exception);
+
+      // BIG PROBLEM: if the 1st registration is unsuccessful the errors will persist onto the next attempt
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
   });
@@ -81,9 +88,11 @@ const Register = () => {
           label="username"
           placeholder="username"
           type="text"
+          error={errors.username || errors.usernameInUse}
           value={username}
           onChange={(e) => {
             setUsername(e.target.value);
+            setErrors({});
           }}
         />
         <Form.Input
@@ -91,9 +100,11 @@ const Register = () => {
           label="email"
           placeholder="some.mail@com"
           type="email"
+          error={errors.email || errors.emailInUse}
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);
+            setErrors({});
           }}
         />
         <Form.Input
@@ -102,8 +113,10 @@ const Register = () => {
           placeholder="password"
           value={password}
           type="password"
+          error={!!errors.password}
           onChange={(e) => {
             setPassword(e.target.value);
+            setErrors({});
           }}
         />
         <Form.Input
@@ -111,9 +124,11 @@ const Register = () => {
           label="confirm password"
           placeholder="password"
           type="password"
+          error={!!errors.confirmPassword}
           value={confirmPassword}
           onChange={(e) => {
             setConfirmPassword(e.target.value);
+            setErrors({});
           }}
         />
         <Button type="submit" color="orange" animated="fade" tabIndex="0">
@@ -121,6 +136,17 @@ const Register = () => {
           <div className="hidden content">Submit now!</div>
         </Button>
       </Form>
+
+      {/* if there were errors loop over them and make list items with their message */}
+      {Object.keys(errors).length > 0 && (
+        <Message
+          error
+          header="Errors with the submission"
+          list={Object.values(errors).map((value) => (
+            <li key={value}>{value}</li>
+          ))}
+        />
+      )}
     </div>
   );
 };
