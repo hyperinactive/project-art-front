@@ -1,11 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import { ApolloProvider } from '@apollo/client';
 import reportWebVitals from './reportWebVitals';
+
+import App from './App';
+import client from './apolloClient';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
