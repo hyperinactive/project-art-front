@@ -4,7 +4,7 @@ import { useQuery, gql } from '@apollo/client';
 import { Grid } from 'semantic-ui-react';
 
 import Post from './Post';
-
+import './Home.css';
 // create the query
 const GET_POSTS_QUERY = gql`
   {
@@ -20,6 +20,7 @@ const GET_POSTS_QUERY = gql`
       }
       comments {
         username
+        body
       }
     }
   }
@@ -37,24 +38,26 @@ const Home = () => {
   // if so we're gonna display the loading component
   // if not we're displaying the posts
   return (
-    <Grid columns={3} divided>
-      <Grid.Row>
-        <h1>Recent posts</h1>
-      </Grid.Row>
-      <Grid.Row>
-        {loading ? (
-          <h1>Loading posts...</h1>
-        ) : (
-          data &&
-          data.getPosts.map((post) => (
-            <Grid.Column style={{ marginBottom: 20 }}>
-              <Post key={post.id} post={post} />
-            </Grid.Column>
-          ))
-          // <h1>Loaded</h1>
-        )}
-      </Grid.Row>
-    </Grid>
+    <div className="home">
+      <Grid columns={3} divided>
+        <Grid.Row className="home__grid-row">
+          <h1 className="home__grid-title">Recent posts</h1>
+        </Grid.Row>
+        <Grid.Row>
+          {loading ? (
+            <h1>Loading posts...</h1>
+          ) : (
+            data &&
+            data.getPosts.map((post) => (
+              <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
+                <Post post={post} />
+              </Grid.Column>
+            ))
+            // <h1>Loaded</h1>
+          )}
+        </Grid.Row>
+      </Grid>
+    </div>
   );
 };
 

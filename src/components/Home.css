@@ -1,0 +1,11 @@
+.home__grid-row {
+  display: block;
+  width: 100%;
+  text-align: center !important;
+}
+
+.home__grid-title {
+  display: block !important;
+  font-size: xx-large;
+  margin: 1rem auto !important;
+}
