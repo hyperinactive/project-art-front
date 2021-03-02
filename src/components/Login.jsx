@@ -1,7 +1,10 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { Button, Form, Message } from 'semantic-ui-react';
+
+import { UserContext } from '../context/UserProvider';
 
 import './Login.css';
 
@@ -25,6 +28,10 @@ const Login = (props) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  // now we have access to our context data
+  // we get the data from the result and pass it to our login function
+  const context = useContext(UserContext);
+
   // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({});
 
@@ -32,8 +39,8 @@ const Login = (props) => {
     // update will trigger if everything's went smoothly
     // returns proxy result
     update: (_, result) => {
-      console.log('successful result');
-      console.log(result);
+      context.login(result.data.login);
+
       // take us to the home page if register succeeded
       props.history.push('/');
     },
@@ -49,7 +56,7 @@ const Login = (props) => {
       // it is in the extension
       // console.log(err.graphQLErrors[0].extensions.exception);
 
-      console.log(err.graphQLErrors[0].extensions.exception.errors);
+      // console.log(err.graphQLErrors[0].extensions.exception.errors);
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
   });

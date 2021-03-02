@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { Button, Form, Message } from 'semantic-ui-react';
+
+import { UserContext } from '../context/UserProvider';
 
 import './Register.css';
 
@@ -37,6 +39,8 @@ const Register = (props) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const context = useContext(UserContext);
+
   // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({});
 
@@ -44,8 +48,7 @@ const Register = (props) => {
     // update will trigger if everything's went smoothly
     // returns proxy result
     update: (_, result) => {
-      console.log('successful result');
-      console.log(result);
+      context.login(result.data.register);
       // take us to the home page if register succeeded
       props.history.push('/');
     },
