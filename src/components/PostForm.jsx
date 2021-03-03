@@ -1,30 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'semantic-ui-react';
+import { cloneDeep } from 'lodash';
 
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
-const CREATE_POST = gql`
-  mutation createPost($body: String!) {
-    createPost(body: $body) {
-      id
-      username
-      createdAt
-      likes {
-        id
-        username
-        createdAt
-      }
-      likeCount
-      comments {
-        id
-        username
-        body
-        createdAt
-      }
-      commentCount
-    }
-  }
-`;
+import { CREATE_POST, GET_POSTS_QUERY } from '../graphql';
 
 const PostForm = () => {
   const [body, setBody] = useState('');
@@ -35,8 +15,33 @@ const PostForm = () => {
     variables: {
       body,
     },
-    update: (_, result) => {
-      console.log(result);
+    // we're gonna ask proxy to look for our items in the apollo client
+    update: (proxy, result) => {
+      // the result of the CREATE_POST will go into result
+      // gql returns an obj with data: { createPosts: { <our data> } }
+      // so our response is in result.data.getPosts
+
+      // take a look in the cache via proxy.readQuery
+      // provide it with a query
+      const cacheData = proxy.readQuery({
+        query: GET_POSTS_QUERY,
+      });
+
+      // getPosts is read-only...
+      // so we need a copy of the obj <- mutating the cache IS NOT CONSIDERED A GOOD PRACTICE
+      const cacheDataClone = cloneDeep(cacheData);
+      cacheDataClone.getPosts = [
+        ...cacheDataClone.getPosts,
+        result.data.createPost,
+      ];
+
+      // we're updating cacheData with new posts
+
+      // write new data into the cache
+      proxy.writeQuery({
+        query: GET_POSTS_QUERY,
+        data: cacheDataClone,
+      });
       setBody('');
     },
   });

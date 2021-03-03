@@ -1,32 +1,14 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Grid } from 'semantic-ui-react';
 
 import { UserContext } from '../context/UserProvider';
 import Post from './Post';
 import PostForm from './PostForm';
 import './Home.css';
-// create the query
-const GET_POSTS_QUERY = gql`
-  {
-    getPosts {
-      id
-      body
-      createdAt
-      username
-      likeCount
-      commentCount
-      likes {
-        username
-      }
-      comments {
-        username
-        body
-      }
-    }
-  }
-`;
+
+import { GET_POSTS_QUERY } from '../graphql';
 
 const Home = () => {
   const { user } = useContext(UserContext);
@@ -34,6 +16,8 @@ const Home = () => {
   // useQuery hook sends the query
   // loading and data we get from the hook
   const { loading, data, error } = useQuery(GET_POSTS_QUERY);
+
+  console.log(data);
 
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;

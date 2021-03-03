@@ -1,36 +1,13 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useContext } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Button, Form, Message } from 'semantic-ui-react';
 
 import { UserContext } from '../context/UserProvider';
 
 import './Register.css';
 
-const REGISTER_USER = gql`
-  mutation register(
-    # $ -> variables
-    $username: String!
-    $email: String!
-    $password: String!
-    $confirmPassword: String!
-  ) {
-    register(
-      registerInput: {
-        username: $username
-        email: $email
-        password: $password
-        confirmPassword: $confirmPassword
-      }
-    ) {
-      id
-      email
-      username
-      createdAt
-      token
-    }
-  }
-`;
+import { REGISTER_USER } from '../graphql/index';
 
 const Register = (props) => {
   // gets the job done but too repetative

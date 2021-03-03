@@ -22,12 +22,10 @@ const Post = ({
   const likeHandle = (e) => {
     // e.stopPropagation(); // didn't work cause we're using links, prevernDefault does work though
     e.preventDefault();
-    console.log('click');
   };
   const commentHandle = (e) => {
     // e.stopPropagation();
     e.preventDefault();
-    console.log('click');
   };
 
   return (

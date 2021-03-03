@@ -1,28 +1,14 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable react/prop-types */
 import React, { useContext, useState } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Button, Form, Message } from 'semantic-ui-react';
 
 import { UserContext } from '../context/UserProvider';
 
 import './Login.css';
 
-const LOGIN_USER = gql`
-  mutation login(
-    # $ -> variables
-    $username: String!
-    $password: String!
-  ) {
-    login(username: $username, password: $password) {
-      id
-      email
-      username
-      createdAt
-      token
-    }
-  }
-`;
+import { LOGIN_USER } from '../graphql';
 
 const Login = (props) => {
   const [username, setUsername] = useState('');
