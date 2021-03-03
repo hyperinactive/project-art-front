@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 
+import { UserContext } from '../context/UserProvider';
+
 const NavBar = () => {
+  // const context = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
+
   // to figure out which item should be highlighted we need to know on which page we are
   const pathName = window.location.pathname.split('/');
   const path = !pathName[1] ? 'home' : pathName[1];
@@ -16,16 +21,25 @@ const NavBar = () => {
   // NOTE: as -> lets us use the component as some other component
   // useful for making links out of components
   // to -> basically href
-  return (
-    <div>
-      <Menu pointing secondary size="massive" color="orange">
-        <Menu.Item
-          name="home"
-          active={activeItem === 'home'}
-          onClick={handleItemClick}
-          as={Link}
-          to="/"
-        />
+
+  // if we got a logged-in user display the personalized component with the logout item
+  const navBar = user ? (
+    <Menu pointing secondary size="massive" color="orange">
+      <Menu.Item name={user.username} active as={Link} to="/" />
+      <Menu.Menu position="right">
+        <Menu.Item name="logout" onClick={logout} />
+      </Menu.Menu>
+    </Menu>
+  ) : (
+    <Menu pointing secondary size="massive" color="orange">
+      <Menu.Item
+        name="home"
+        active={activeItem === 'home'}
+        onClick={handleItemClick}
+        as={Link}
+        to="/"
+      />
+      <Menu.Menu position="right">
         <Menu.Item
           name="register"
           active={activeItem === 'register'}
@@ -40,16 +54,11 @@ const NavBar = () => {
           as={Link}
           to="/login"
         />
-        <Menu.Menu position="right">
-          <Menu.Item
-            name="logout"
-            active={activeItem === 'logout'}
-            onClick={handleItemClick}
-          />
-        </Menu.Menu>
-      </Menu>
-    </div>
+      </Menu.Menu>
+    </Menu>
   );
+
+  return <div className="navbar">{navBar}</div>;
 };
 
 export default NavBar;

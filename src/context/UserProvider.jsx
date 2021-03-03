@@ -1,8 +1,21 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { createContext, useContext, useReducer } from 'react';
+import jwtDecode from 'jwt-decode';
 
 import { initialState, userReducer, actionTypes } from './userReducer';
+
+const checkTokenExpiration = () => {
+  if (localStorage.getItem('userToken')) {
+    const decodedToken = jwtDecode(localStorage.getItem('userToken'));
+
+    if (decodedToken.exp * 1000 < Date.now()) {
+      localStorage.removeItem('userToken');
+    } else {
+      initialState.user = decodedToken;
+    }
+  }
+};
 
 // Creates a Context object. When React renders a component that subscribes to this Context object
 // it will read the current context value from the closest matching Provider above it in the tree.
@@ -11,7 +24,6 @@ import { initialState, userReducer, actionTypes } from './userReducer';
 // Note: passing undefined as a Provider value does not cause consuming components to use defaultValue.
 
 // note: initial state just has a field of user, nothing else...
-
 // this context creates a nul user and functions that don't do shit
 export const UserContext = createContext({
   ...initialState,
@@ -21,17 +33,24 @@ export const UserContext = createContext({
 
 // creating a provider
 export const UserProvider = (props) => {
+  checkTokenExpiration();
+
   // useReducer is the same as useState LUL
-  const [state, dispatch] = useReducer(userReducer, { user: null });
+  const [state, dispatch] = useReducer(userReducer, initialState);
 
   const login = (data) => {
+    // to have data persist after a page reload we'll use the localStorage to store the tokens of the logged users
+    // we're making a field called ueserToken and setting the user.token to it
+    localStorage.setItem('userToken', data.token);
     dispatch({
       type: actionTypes.LOGIN,
-      payload: data,
+      payload: jwtDecode(data.token),
     });
   };
 
   const logout = () => {
+    // upon logout remove the token
+    localStorage.removeItem('userToken');
     dispatch({ type: actionTypes.LOGOUT });
   };
 
