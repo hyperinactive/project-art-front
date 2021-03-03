@@ -1,4 +1,5 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { setContext } from 'apollo-link-context';
 
 // https://www.apollographql.com/docs/react/get-started/
 
@@ -13,8 +14,21 @@ const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql', // dev uri lmao
 });
 
+// need auth headers in our requests
+// get the token from the local storage and pass it in authLink
+const authLink = setContext(() => {
+  const token = localStorage.getItem('userToken');
+  return {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
+// link has to go before httoLink
+// easy solution .concat
 const client = new ApolloClient({
-  link: httpLink,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 

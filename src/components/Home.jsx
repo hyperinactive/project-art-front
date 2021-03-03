@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { Grid } from 'semantic-ui-react';
 
+import { UserContext } from '../context/UserProvider';
 import Post from './Post';
+import PostForm from './PostForm';
 import './Home.css';
 // create the query
 const GET_POSTS_QUERY = gql`
@@ -27,6 +29,8 @@ const GET_POSTS_QUERY = gql`
 `;
 
 const Home = () => {
+  const { user } = useContext(UserContext);
+
   // useQuery hook sends the query
   // loading and data we get from the hook
   const { loading, data, error } = useQuery(GET_POSTS_QUERY);
@@ -43,6 +47,13 @@ const Home = () => {
         <Grid.Row className="home__grid-row">
           <h1 className="home__grid-title">Recent posts</h1>
         </Grid.Row>
+        {user && (
+          <Grid.Row>
+            <Grid.Column>
+              <PostForm />
+            </Grid.Column>
+          </Grid.Row>
+        )}
         <Grid.Row>
           {loading ? (
             <h1>Loading posts...</h1>
