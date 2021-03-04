@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { Button, Form } from 'semantic-ui-react';
+import { Button, Form, Message } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
-
 import { useMutation } from '@apollo/client';
 
 import { CREATE_POST, GET_POSTS_QUERY } from '../graphql';
 
 const PostForm = () => {
   const [body, setBody] = useState('');
+  const [errors, setErrors] = useState({});
 
   // we've been using the server errors and translated them into client ones, but here we'll just use the client
   // eslint-disable-next-line no-unused-vars
-  const [createPost, { error }] = useMutation(CREATE_POST, {
+  const [createPost] = useMutation(CREATE_POST, {
     variables: {
       body,
     },
@@ -31,8 +31,8 @@ const PostForm = () => {
       // so we need a copy of the obj <- mutating the cache IS NOT CONSIDERED A GOOD PRACTICE
       const cacheDataClone = cloneDeep(cacheData);
       cacheDataClone.getPosts = [
-        ...cacheDataClone.getPosts,
         result.data.createPost,
+        ...cacheDataClone.getPosts,
       ];
 
       // we're updating cacheData with new posts
@@ -43,6 +43,9 @@ const PostForm = () => {
         data: cacheDataClone,
       });
       setBody('');
+    },
+    onError: (err) => {
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
   });
 
@@ -59,8 +62,11 @@ const PostForm = () => {
             placeholder="tell me smth new"
             name="body"
             value={body}
+            type="text"
+            error={errors.body}
             onChange={(e) => {
               setBody(e.target.value);
+              setErrors({});
             }}
           />
           <Button type="submit" color="orange">
@@ -68,6 +74,15 @@ const PostForm = () => {
           </Button>
         </Form.Field>
       </Form>
+      {Object.keys(errors).length > 0 && (
+        <Message
+          error
+          header="Errors with the submission"
+          list={Object.values(errors).map((value) => (
+            <li key={value}>{value}</li>
+          ))}
+        />
+      )}
     </div>
   );
 };

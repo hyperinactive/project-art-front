@@ -1,10 +1,12 @@
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Image, Label, Card, Icon, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+
+import { UserContext } from '../context/UserProvider';
 
 // destructuring directly from the props
 const Post = ({
@@ -23,10 +25,8 @@ const Post = ({
     // e.stopPropagation(); // didn't work cause we're using links, prevernDefault does work though
     e.preventDefault();
   };
-  const commentHandle = (e) => {
-    // e.stopPropagation();
-    e.preventDefault();
-  };
+
+  const { user } = useContext(UserContext);
 
   return (
     // const { id, username, body, createdAt, likeCount, commentCount, likes } = props.posts;
@@ -45,21 +45,32 @@ const Post = ({
         <Button as="div" labelPosition="right" onClick={likeHandle}>
           <Button color="orange" basic>
             <Icon name="heart" />
-            Heart
           </Button>
           <Label basic color="orange" pointing="left">
             {likeCount}
           </Label>
         </Button>
-        <Button as="div" labelPosition="right" onClick={commentHandle}>
+        <Button as="div" labelPosition="right">
           <Button color="red" basic>
             <Icon name="comments" />
-            Heart
           </Button>
           <Label basic color="red" pointing="left">
             {commentCount}
           </Label>
         </Button>
+        {user && user.username === username && (
+          <Button
+            as="div"
+            color="orange"
+            floated="right"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log('Delete me!');
+            }}
+          >
+            <Icon name="trash" style={{ margin: 0 }} />
+          </Button>
+        )}
       </Card.Content>
     </Card>
   );
@@ -67,18 +78,25 @@ const Post = ({
 
 // prop types
 Post.defaultProps = {
-  comments: [],
+  post: {},
+  id: '',
+  username: '',
+  createdAt: '',
+  body: '',
+  likeCount: 0,
+  commentCount: 0,
   likes: [],
+  comments: [],
 };
 
 Post.propTypes = {
-  post: PropTypes.object.isRequired,
-  id: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
-  createdAt: PropTypes.string.isRequired,
-  body: PropTypes.string.isRequired,
-  likeCount: PropTypes.number.isRequired,
-  commentCount: PropTypes.number.isRequired,
+  post: PropTypes.object,
+  id: PropTypes.string,
+  username: PropTypes.string,
+  createdAt: PropTypes.string,
+  body: PropTypes.string,
+  likeCount: PropTypes.number,
+  commentCount: PropTypes.number,
   likes: PropTypes.array,
   comments: PropTypes.array,
 };

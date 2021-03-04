@@ -42,8 +42,6 @@ const Register = (props) => {
       // but we've written our serverside to have a single object with errors
       // it is in the extension
       // console.log(err.graphQLErrors[0].extensions.exception);
-
-      // BIG PROBLEM: if the 1st registration is unsuccessful the errors will persist onto the next attempt
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
   });

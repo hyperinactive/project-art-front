@@ -23,12 +23,12 @@ const UserRoute = ({ component: Component, ...rest }) => {
 };
 
 UserRoute.defaultProps = {
-  component: {},
-  props: {},
+  component: () => {},
+  props: [],
 };
 
 UserRoute.propTypes = {
-  component: PropTypes.object,
+  component: PropTypes.func,
   props: PropTypes.array,
 };
 
