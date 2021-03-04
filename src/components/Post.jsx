@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 
 import { UserContext } from '../context/UserProvider';
 import LikeButton from './LikeButton';
+import DeleteButton from './DeleteButton';
 
 // destructuring directly from the props
 const Post = ({
@@ -31,7 +32,7 @@ const Post = ({
 
   return (
     // const { id, username, body, createdAt, likeCount, commentCount, likes } = props.posts;
-    <Card as={Link} to={`posts/${id}`}>
+    <Card>
       <Card.Content>
         <Image
           floated="right"
@@ -46,6 +47,7 @@ const Post = ({
         {/* pass the like component id of the post, likes, likeCount */}
         {/* could've used context inside the like component itself, but just passing down the user works too */}
         <LikeButton post={{ id, likes, likeCount }} user={user} />
+
         <Button as="div" labelPosition="right">
           <Button color="red" basic>
             <Icon name="comments" />
@@ -54,18 +56,7 @@ const Post = ({
             {commentCount}
           </Label>
         </Button>
-        {user && user.username === username && (
-          <Button
-            color="orange"
-            floated="right"
-            onClick={(e) => {
-              e.preventDefault();
-              console.log('Delete me!');
-            }}
-          >
-            <Icon name="trash" style={{ margin: 0 }} />
-          </Button>
-        )}
+        {user && user.username === username && <DeleteButton postID={id} />}
       </Card.Content>
     </Card>
   );

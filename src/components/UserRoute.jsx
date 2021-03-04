@@ -28,7 +28,11 @@ UserRoute.defaultProps = {
 };
 
 UserRoute.propTypes = {
-  component: PropTypes.element,
+  component: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.node,
+    PropTypes.element,
+  ]),
   props: PropTypes.arrayOf(PropTypes.any),
 };
 

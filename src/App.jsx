@@ -11,6 +11,7 @@ import Home from './components/Home';
 import Register from './components/Register';
 import Login from './components/Login';
 import UserRoute from './components/UserRoute';
+import SinglePost from './components/SinglePost';
 
 const App = () => (
   <UserProvider>
@@ -23,6 +24,7 @@ const App = () => (
           <Route exact path="/" component={Home} />
           <UserRoute exact path="/register" component={Register} />
           <UserRoute exact path="/login" component={Login} />
+          <Route exact path="/posts/postID" component={SinglePost} />
         </Switch>
       </Container>
     </BrowserRouter>

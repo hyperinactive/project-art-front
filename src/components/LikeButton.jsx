@@ -4,6 +4,8 @@ import { useMutation } from '@apollo/client';
 import { Button, Icon, Label } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
+import './LikeButton.css';
+
 import { LIKE_POST } from '../graphql';
 
 // props post and user
@@ -71,7 +73,8 @@ LikeButton.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.string.isRequired,
     likes: PropTypes.arrayOf(
-      PropTypes.objectOf({
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,
         createdAt: PropTypes.string.isRequired,
       })

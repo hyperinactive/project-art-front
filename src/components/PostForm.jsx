@@ -3,7 +3,7 @@ import { Button, Form, Message } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
 import { useMutation } from '@apollo/client';
 
-import { CREATE_POST, GET_POSTS_QUERY } from '../graphql';
+import { CREATE_POST, GET_POSTS } from '../graphql';
 
 const PostForm = () => {
   const [body, setBody] = useState('');
@@ -24,7 +24,7 @@ const PostForm = () => {
       // take a look in the cache via proxy.readQuery
       // provide it with a query
       const cacheData = proxy.readQuery({
-        query: GET_POSTS_QUERY,
+        query: GET_POSTS,
       });
 
       // getPosts is read-only...
@@ -39,7 +39,7 @@ const PostForm = () => {
 
       // write new data into the cache
       proxy.writeQuery({
-        query: GET_POSTS_QUERY,
+        query: GET_POSTS,
         data: cacheDataClone,
       });
       setBody('');

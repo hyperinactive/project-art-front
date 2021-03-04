@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useContext } from 'react';
 import { useQuery } from '@apollo/client';
 import { Grid, Transition } from 'semantic-ui-react';
@@ -8,14 +7,14 @@ import Post from './Post';
 import PostForm from './PostForm';
 import './Home.css';
 
-import { GET_POSTS_QUERY } from '../graphql';
+import { GET_POSTS } from '../graphql';
 
 const Home = () => {
   const { user } = useContext(UserContext);
 
   // useQuery hook sends the query
   // loading and data we get from the hook
-  const { loading, data, error } = useQuery(GET_POSTS_QUERY);
+  const { loading, data } = useQuery(GET_POSTS);
 
   // here, we're using the loading bool to tell us if the data is being fetched
   // if so we're gonna display the loading component

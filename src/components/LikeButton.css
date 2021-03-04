@@ -1,0 +1,4 @@
+/* because semantic ui has a rule to change colors of things when focused, got to override it manually */
+.ui.orange.button:focus, .ui.orange.buttons .button:focus {
+  background-color:#f2711c;
+}
