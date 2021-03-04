@@ -7,6 +7,7 @@ import { Image, Label, Card, Icon, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 import { UserContext } from '../context/UserProvider';
+import LikeButton from './LikeButton';
 
 // destructuring directly from the props
 const Post = ({
@@ -42,14 +43,9 @@ const Post = ({
         <Card.Description>{body}</Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <Button as="div" labelPosition="right" onClick={likeHandle}>
-          <Button color="orange" basic>
-            <Icon name="heart" />
-          </Button>
-          <Label basic color="orange" pointing="left">
-            {likeCount}
-          </Label>
-        </Button>
+        {/* pass the like component id of the post, likes, likeCount */}
+        {/* could've used context inside the like component itself, but just passing down the user works too */}
+        <LikeButton post={{ id, likes, likeCount }} user={user} />
         <Button as="div" labelPosition="right">
           <Button color="red" basic>
             <Icon name="comments" />
@@ -60,7 +56,6 @@ const Post = ({
         </Button>
         {user && user.username === username && (
           <Button
-            as="div"
             color="orange"
             floated="right"
             onClick={(e) => {

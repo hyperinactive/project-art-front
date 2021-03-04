@@ -89,4 +89,15 @@ const LOGIN_USER = gql`
   }
 `;
 
-export { GET_POSTS_QUERY, CREATE_POST, REGISTER_USER, LOGIN_USER };
+const LIKE_POST = gql`
+  mutation likePostToggle($postID: ID!) {
+    id
+    likes {
+      id
+      username
+    }
+    likeCount
+  }
+`;
+
+export { GET_POSTS_QUERY, CREATE_POST, REGISTER_USER, LOGIN_USER, LIKE_POST };

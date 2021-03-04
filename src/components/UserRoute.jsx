@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/forbid-prop-types */
 import React, { useContext } from 'react';
 import { Redirect, Route } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 
 import { UserContext } from '../context/UserProvider';
@@ -23,13 +23,13 @@ const UserRoute = ({ component: Component, ...rest }) => {
 };
 
 UserRoute.defaultProps = {
-  component: () => {},
+  component: <></>,
   props: [],
 };
 
 UserRoute.propTypes = {
-  component: PropTypes.func,
-  props: PropTypes.array,
+  component: PropTypes.element,
+  props: PropTypes.arrayOf(PropTypes.any),
 };
 
 export default UserRoute;
