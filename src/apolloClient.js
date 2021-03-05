@@ -25,11 +25,39 @@ const authLink = setContext(() => {
   };
 });
 
+// TODO: need to read up on caching
+// setting policies on root Query doesn't feel right
+// NOTE: docs use typeDefs
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        getPosts: {
+          // just replace them
+          merge(existing, incoming) {
+            return incoming;
+          },
+        },
+      },
+    },
+    Post: {
+      fields: {
+        likes: {
+          merge(existing, incoming) {
+            return incoming;
+          },
+        },
+      },
+    },
+  },
+});
+
 // link has to go before httoLink
 // easy solution .concat
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
+  // cache: new InMemoryCache(),
+  cache,
 });
 
 export default client;

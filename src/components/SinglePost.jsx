@@ -12,6 +12,7 @@ import {
 } from 'semantic-ui-react';
 import { useQuery } from '@apollo/client';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import { GET_POST } from '../graphql';
 
 import { UserContext } from '../context/UserProvider';
@@ -24,9 +25,12 @@ const SinglePost = (props) => {
   const { user } = useContext(UserContext);
   let getPost;
 
-  const { loading, data, error } = useQuery(GET_POST, {
+  const { loading, data } = useQuery(GET_POST, {
     variables: {
       postID,
+    },
+    onError: (error) => {
+      console.log(error);
     },
   });
 
@@ -54,7 +58,6 @@ const SinglePost = (props) => {
             <Image
               src="https://react.semantic-ui.com/images/avatar/large/molly.png"
               size="medium"
-              float="right"
             />
           </Grid.Column>
           <Grid.Column>

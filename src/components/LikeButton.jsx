@@ -32,7 +32,14 @@ const LikeButton = ({ post: { id, likeCount, likes }, user }) => {
   // eslint-disable-next-line no-nested-ternary
   const likeButton = user ? (
     liked ? (
-      <Button as="div" labelPosition="right" onClick={likePost}>
+      <Button
+        as="div"
+        labelPosition="right"
+        onClick={(e) => {
+          e.preventDefault();
+          likePost();
+        }}
+      >
         <Button color="orange">
           <Icon name="heart" />
         </Button>
@@ -41,7 +48,14 @@ const LikeButton = ({ post: { id, likeCount, likes }, user }) => {
         </Label>
       </Button>
     ) : (
-      <Button as="div" labelPosition="right" onClick={likePost}>
+      <Button
+        as="div"
+        labelPosition="right"
+        onClick={(e) => {
+          e.preventDefault();
+          likePost();
+        }}
+      >
         <Button color="orange" basic>
           <Icon name="heart" />
         </Button>

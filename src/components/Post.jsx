@@ -32,7 +32,7 @@ const Post = ({
 
   return (
     // const { id, username, body, createdAt, likeCount, commentCount, likes } = props.posts;
-    <Card>
+    <Card as={Link} to={`/posts/${id}`}>
       <Card.Content>
         <Image
           floated="right"
