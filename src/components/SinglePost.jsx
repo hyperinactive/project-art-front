@@ -1,6 +1,8 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-unused-vars */
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import {
   Grid,
   Loader,
@@ -18,6 +20,7 @@ import { GET_POST } from '../graphql';
 import { UserContext } from '../context/UserProvider';
 import LikeButton from './LikeButton';
 import DeleteButton from './DeleteButton';
+import PlainComment from './PlainComment';
 
 const SinglePost = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
@@ -54,13 +57,14 @@ const SinglePost = (props) => {
     postMarkup = (
       <Grid>
         <Grid.Row>
-          <Grid.Column>
+          <Grid.Column width={2}>
             <Image
               src="https://react.semantic-ui.com/images/avatar/large/molly.png"
               size="medium"
+              float="right"
             />
           </Grid.Column>
-          <Grid.Column>
+          <Grid.Column width={8}>
             <Card fluid>
               <Card.Content>
                 <Card.Header>{username}</Card.Header>
@@ -84,6 +88,9 @@ const SinglePost = (props) => {
                 )}
               </Card.Content>
             </Card>
+            {comments.map((comment) => (
+              <PlainComment key={comment.id} props={comment} user={user} />
+            ))}
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -92,5 +99,8 @@ const SinglePost = (props) => {
 
   return <div className="singlePost">{postMarkup}</div>;
 };
+
+// TODO: PropTypes
+// TODO: tbh this whole component needs help...
 
 export default SinglePost;
