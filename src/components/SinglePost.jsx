@@ -22,17 +22,19 @@ const SinglePost = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
   const { postID } = props.match.params;
   const { user } = useContext(UserContext);
+  let getPost;
 
-  const {
-    data: { getPost },
-    loading,
-  } = useQuery(GET_POST, {
-    variables: postID,
+  const { loading, data, error } = useQuery(GET_POST, {
+    variables: {
+      postID,
+    },
   });
+
+  const redirect = () => props.history.push('/');
 
   let postMarkup;
   if (loading) {
-    postMarkup = <Loader indeterminate="JOKES ON YOU" />;
+    postMarkup = <Loader />;
   } else {
     const {
       id,
@@ -43,7 +45,7 @@ const SinglePost = (props) => {
       likes,
       likeCount,
       commentCount,
-    } = getPost;
+    } = data.getPost;
 
     postMarkup = (
       <Grid>
@@ -51,7 +53,7 @@ const SinglePost = (props) => {
           <Grid.Column>
             <Image
               src="https://react.semantic-ui.com/images/avatar/large/molly.png"
-              size="small"
+              size="medium"
               float="right"
             />
           </Grid.Column>
@@ -75,7 +77,7 @@ const SinglePost = (props) => {
                   <Label basic color="orange" pointing="left" />
                 </Button>
                 {user && user.username === username && (
-                  <DeleteButton postID={id} />
+                  <DeleteButton postID={id} callback={redirect} />
                 )}
               </Card.Content>
             </Card>
@@ -85,7 +87,7 @@ const SinglePost = (props) => {
     );
   }
 
-  return <div className="singlePost" />;
+  return <div className="singlePost">{postMarkup}</div>;
 };
 
 export default SinglePost;

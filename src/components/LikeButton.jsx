@@ -32,30 +32,36 @@ const LikeButton = ({ post: { id, likeCount, likes }, user }) => {
   // eslint-disable-next-line no-nested-ternary
   const likeButton = user ? (
     liked ? (
-      <Button color="orange">
-        <Icon name="heart" />
-      </Button>
-    ) : (
-      <Button color="orange" basic>
-        <Icon name="heart" />
-      </Button>
-    )
-  ) : (
-    <Button as={Link} to="/login" color="orange" basic>
-      <Icon name="heart" />
-    </Button>
-  );
-
-  return (
-    <div className="likeButton">
       <Button as="div" labelPosition="right" onClick={likePost}>
-        {likeButton}
+        <Button color="orange">
+          <Icon name="heart" />
+        </Button>
         <Label basic color="orange" pointing="left">
           {likeCount}
         </Label>
       </Button>
-    </div>
+    ) : (
+      <Button as="div" labelPosition="right" onClick={likePost}>
+        <Button color="orange" basic>
+          <Icon name="heart" />
+        </Button>
+        <Label basic color="orange" pointing="left">
+          {likeCount}
+        </Label>
+      </Button>
+    )
+  ) : (
+    <Button as="div" labelPosition="right">
+      <Button as={Link} to="/login" color="orange" basic>
+        <Icon name="heart" />
+      </Button>
+      <Label basic color="orange" pointing="left">
+        {likeCount}
+      </Label>
+    </Button>
   );
+
+  return <div className="likeButton">{likeButton}</div>;
 };
 
 LikeButton.defaultProps = {

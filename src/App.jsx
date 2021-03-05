@@ -24,7 +24,7 @@ const App = () => (
           <Route exact path="/" component={Home} />
           <UserRoute exact path="/register" component={Register} />
           <UserRoute exact path="/login" component={Login} />
-          <Route exact path="/posts/postID" component={SinglePost} />
+          <Route exact path="/posts/:postID" component={SinglePost} />
         </Switch>
       </Container>
     </BrowserRouter>

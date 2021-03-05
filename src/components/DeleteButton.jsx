@@ -1,22 +1,41 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { Button, Icon, Confirm } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-import { DELETE_POST } from '../graphql';
+import { DELETE_POST, GET_POSTS } from '../graphql';
 
-const DeleteButton = ({ postID }) => {
+const DeleteButton = ({ postID, callback }) => {
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  console.log(postID);
-
-  const [deltePost] = useMutation(DELETE_POST, {
+  const [deletePost] = useMutation(DELETE_POST, {
     variables: {
       postID,
     },
-    update(result) {
-      console.log(result);
+    update(cache, result) {
       setConfirmOpen(false);
+
+      const cacheData = cache.readQuery({
+        query: GET_POSTS,
+      });
+
+      const filteredCache = {};
+      filteredCache.getPosts = cacheData.getPosts.filter(
+        (item) => item.id !== postID
+      );
+
+      cache.writeQuery({
+        query: GET_POSTS,
+        data: filteredCache,
+      });
+
+      // SinglePost renders DeleteButton and if user deletes from a post page
+      // need to redirect them somewhere, home for now...
+      // if DeleteButton isn't rendered by SinglePost no callback will be given
+      if (callback) {
+        callback();
+      }
     },
     onError({ error }) {
       console.log(error);
@@ -40,14 +59,19 @@ const DeleteButton = ({ postID }) => {
       <Confirm
         open={confirmOpen}
         onCancel={() => setConfirmOpen(false)}
-        onConfirm={deltePost}
+        onConfirm={deletePost}
       />
     </div>
   );
 };
 
+DeleteButton.defaultProps = {
+  callback: () => {},
+};
+
 DeleteButton.propTypes = {
   postID: PropTypes.string.isRequired,
+  callback: PropTypes.func,
 };
 
 export default DeleteButton;

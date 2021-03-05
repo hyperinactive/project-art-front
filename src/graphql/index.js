@@ -122,8 +122,8 @@ const GET_POST = gql`
       comments {
         id
         username
-        createdAt
         body
+        createdAt
       }
       commentCount
     }
@@ -133,7 +133,25 @@ const GET_POST = gql`
 // no need for returning values
 const DELETE_POST = gql`
   mutation deletePost($postID: ID!) {
-    deletePost(postID: $postID)
+    deletePost(postID: $postID) {
+      id
+      body
+      createdAt
+      username
+      likes {
+        id
+        username
+        createdAt
+      }
+      likeCount
+      comments {
+        id
+        username
+        createdAt
+        body
+      }
+      commentCount
+    }
   }
 `;
 
