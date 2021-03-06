@@ -1,3 +1,5 @@
+export { REGISTER_USER, LOGIN_USER } from './userGQL';
+
 export {
   GET_POST,
   GET_POSTS,
@@ -6,4 +8,4 @@ export {
   LIKE_POST,
 } from './postGQL';
 
-export { REGISTER_USER, LOGIN_USER } from './userGQL';
+export { DELETE_COMMENT } from './commentGQL';

@@ -31,34 +31,37 @@ const Post = ({
   const { user } = useContext(UserContext);
 
   return (
-    // const { id, username, body, createdAt, likeCount, commentCount, likes } = props.posts;
-    <Card as={Link} to={`/posts/${id}`}>
-      <Card.Content>
-        <Image
-          floated="right"
-          size="mini"
-          src="https://react.semantic-ui.com/images/avatar/large/molly.png" // TODO: placeholder
-        />
-        <Card.Header>{username}</Card.Header>
-        <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
-        <Card.Description>{body}</Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        {/* pass the like component id of the post, likes, likeCount */}
-        {/* could've used context inside the like component itself, but just passing down the user works too */}
-        <LikeButton post={{ id, likes, likeCount }} user={user} />
+    <div>
+      <Card>
+        <Card.Content className="post" as={Link} to={`/posts/${id}`}>
+          <Image
+            floated="right"
+            size="mini"
+            src="https://react.semantic-ui.com/images/avatar/large/molly.png" // TODO: placeholder
+          />
+          <Card.Header>{username}</Card.Header>
+          <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
+          <Card.Description>{body}</Card.Description>
+        </Card.Content>
+        <Card.Content extra>
+          {/* pass the like component id of the post, likes, likeCount */}
+          {/* could've used context inside the like component itself, but just passing down the user works too */}
+          <LikeButton post={{ id, likes, likeCount }} user={user} />
 
-        <Button as="div" labelPosition="right">
-          <Button color="red" basic>
-            <Icon name="comments" />
+          <Button as="div" labelPosition="right">
+            <Button color="red" basic>
+              <Icon name="comments" />
+            </Button>
+            <Label basic color="red" pointing="left">
+              {commentCount}
+            </Label>
           </Button>
-          <Label basic color="red" pointing="left">
-            {commentCount}
-          </Label>
-        </Button>
-        {user && user.username === username && <DeleteButton postID={id} />}
-      </Card.Content>
-    </Card>
+          {user && user.username === username && (
+            <DeleteButton postID={id} type="post" />
+          )}
+        </Card.Content>
+      </Card>
+    </div>
   );
 };
 

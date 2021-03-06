@@ -25,7 +25,7 @@ const GET_POST = gql`
 `;
 
 const GET_POSTS = gql`
-  {
+  query {
     getPosts {
       id
       body

@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-vars */
-import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, useEffect } from 'react';
 import {
   Grid,
   Loader,
@@ -14,7 +13,6 @@ import {
 } from 'semantic-ui-react';
 import { useQuery } from '@apollo/client';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
 import { GET_POST } from '../graphql';
 
 import { UserContext } from '../context/UserProvider';
@@ -26,11 +24,13 @@ const SinglePost = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
   const { postID } = props.match.params;
   const { user } = useContext(UserContext);
-  let getPost;
 
   const { loading, data } = useQuery(GET_POST, {
     variables: {
       postID,
+    },
+    onCompleted(cache) {
+      console.log(cache);
     },
     onError: (error) => {
       console.log(error);
@@ -84,12 +84,18 @@ const SinglePost = (props) => {
                   <Label basic color="orange" pointing="left" />
                 </Button>
                 {user && user.username === username && (
-                  <DeleteButton postID={id} callback={redirect} />
+                  <DeleteButton postID={id} type="post" callback={redirect} />
                 )}
               </Card.Content>
             </Card>
             {comments.map((comment) => (
-              <PlainComment key={comment.id} props={comment} user={user} />
+              <PlainComment
+                key={comment.id}
+                postID={postID}
+                commentID={comment.id}
+                props={comment}
+                user={user}
+              />
             ))}
           </Grid.Column>
         </Grid.Row>

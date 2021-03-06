@@ -16,14 +16,14 @@ const PostForm = () => {
       body,
     },
     // we're gonna ask proxy to look for our items in the apollo client
-    update: (proxy, result) => {
+    update: (cache, result) => {
       // the result of the CREATE_POST will go into result
       // gql returns an obj with data: { createPosts: { <our data> } }
       // so our response is in result.data.getPosts
 
       // take a look in the cache via proxy.readQuery
       // provide it with a query
-      const cacheData = proxy.readQuery({
+      const cacheData = cache.readQuery({
         query: GET_POSTS,
       });
 
@@ -38,7 +38,7 @@ const PostForm = () => {
       // we're updating cacheData with new posts
 
       // write new data into the cache
-      proxy.writeQuery({
+      cache.writeQuery({
         query: GET_POSTS,
         data: cacheDataClone,
       });
