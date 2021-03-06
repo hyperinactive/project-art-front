@@ -7,11 +7,11 @@ import 'semantic-ui-css/semantic.min.css';
 import { UserProvider } from './context/UserProvider';
 
 import NavBar from './components/NavBar';
-import Home from './components/Home';
-import Register from './components/Register';
-import Login from './components/Login';
-import UserRoute from './components/UserRoute';
-import SinglePost from './components/SinglePost';
+import Home from './components/routes/Home/Home';
+import Register from './components/routes/Register/Register';
+import Login from './components/routes/Login/Login';
+import UserRoute from './components/routes/UserRoute';
+import SinglePost from './components/routes/SinglePost';
 
 const App = () => (
   <UserProvider>

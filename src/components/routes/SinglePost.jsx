@@ -13,13 +13,13 @@ import {
 } from 'semantic-ui-react';
 import { useQuery, useMutation } from '@apollo/client';
 import moment from 'moment';
-import { DELETE_COMMENT, GET_POST } from '../graphql';
+import { DELETE_COMMENT, GET_POST } from '../../graphql';
 
-import { UserContext } from '../context/UserProvider';
-import LikeButton from './LikeButton';
-import DeleteButton from './DeleteButton';
-import PlainComment from './PlainComment';
-import CommentForm from './CommentForm';
+import { UserContext } from '../../context/UserProvider';
+import LikeButton from '../LikeButton/LikeButton';
+import DeleteButton from '../DeleteButton';
+import PlainComment from '../PlainComment';
+import CommentForm from '../CommentForm';
 
 const SinglePost = (props) => {
   // eslint-disable-next-line react/destructuring-assignment

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import './LikeButton.css';
 
-import { LIKE_POST } from '../graphql';
+import { LIKE_POST } from '../../graphql';
 
 // props post and user
 // destructure and get id likeCount likes from post

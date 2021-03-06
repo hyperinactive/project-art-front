@@ -3,11 +3,11 @@ import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/client';
 import { Button, Form, Message } from 'semantic-ui-react';
 
-import { UserContext } from '../context/UserProvider';
+import { UserContext } from '../../../context/UserProvider';
 
 import './Register.css';
 
-import { REGISTER_USER } from '../graphql/index';
+import { REGISTER_USER } from '../../../graphql/index';
 
 const Register = (props) => {
   // gets the job done but too repetative

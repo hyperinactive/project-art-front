@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import { useQuery } from '@apollo/client';
 import { Grid, Transition } from 'semantic-ui-react';
 
-import { UserContext } from '../context/UserProvider';
-import Post from './Post';
-import PostForm from './PostForm';
+import { UserContext } from '../../../context/UserProvider';
+import Post from '../../Post';
+import PostForm from '../../PostForm';
 import './Home.css';
 
-import { GET_POSTS } from '../graphql';
+import { GET_POSTS } from '../../../graphql';
 
 const Home = () => {
   const { user } = useContext(UserContext);

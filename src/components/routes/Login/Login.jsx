@@ -4,11 +4,11 @@ import React, { useContext, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { Button, Form, Message } from 'semantic-ui-react';
 
-import { UserContext } from '../context/UserProvider';
+import { UserContext } from '../../../context/UserProvider';
 
 import './Login.css';
 
-import { LOGIN_USER } from '../graphql';
+import { LOGIN_USER } from '../../../graphql';
 
 const Login = (props) => {
   const [username, setUsername] = useState('');
