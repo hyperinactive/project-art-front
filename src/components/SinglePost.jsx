@@ -19,6 +19,7 @@ import { UserContext } from '../context/UserProvider';
 import LikeButton from './LikeButton';
 import DeleteButton from './DeleteButton';
 import PlainComment from './PlainComment';
+import CommentForm from './CommentForm';
 
 const SinglePost = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
@@ -79,13 +80,17 @@ const SinglePost = (props) => {
                   <Button color="orange" basic>
                     <Icon name="comments" />
                   </Button>
-                  <Label basic color="orange" pointing="left" />
+                  <Label basic color="orange" pointing="left">
+                    {commentCount}
+                  </Label>
                 </Button>
                 {user && user.username === username && (
                   <DeleteButton postID={id} type="post" callback={redirect} />
                 )}
               </Card.Content>
             </Card>
+            {/* if the user is logged in show the comment form */}
+            {user && <CommentForm fluid postID={postID} />}
             {comments.map((comment) => (
               <PlainComment
                 key={comment.id}
