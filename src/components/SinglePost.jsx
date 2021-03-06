@@ -11,9 +11,9 @@ import {
   Icon,
   Label,
 } from 'semantic-ui-react';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import moment from 'moment';
-import { GET_POST } from '../graphql';
+import { DELETE_COMMENT, GET_POST } from '../graphql';
 
 import { UserContext } from '../context/UserProvider';
 import LikeButton from './LikeButton';
@@ -28,9 +28,6 @@ const SinglePost = (props) => {
   const { loading, data } = useQuery(GET_POST, {
     variables: {
       postID,
-    },
-    onCompleted(cache) {
-      console.log(cache);
     },
     onError: (error) => {
       console.log(error);
@@ -64,6 +61,7 @@ const SinglePost = (props) => {
               float="right"
             />
           </Grid.Column>
+
           <Grid.Column width={8}>
             <Card fluid>
               <Card.Content>

@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Button, Icon, Confirm } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
@@ -22,14 +21,13 @@ const DeleteButton = (props) => {
     },
 
     // NOTE: perhaps because deleteComment returns a comment the cache doesn't update post?
-    update(cache, result) {
+    update(cache) {
       setConfirmOpen(false);
 
       if (type === 'post') {
         const cacheData = cache.readQuery({
           query: GET_POSTS,
         });
-        console.log(cache);
 
         const filteredCache = {};
         filteredCache.getPosts = cacheData.getPosts.filter(
@@ -42,40 +40,28 @@ const DeleteButton = (props) => {
           },
         });
       } else {
-        console.log(cache);
+        const cacheData = cache.readQuery({
+          query: GET_POST,
+          variables: {
+            postID,
+          },
+        });
 
-        // WTFFFFFFFFF
-        // the cache keys aren't the same for all components?
-        // the parent component works with it just fine, but deleteButton doesn't?
-        // TODO
-        // ----------------------------------------------------------------------------
-        // const cacheData = cache.readQuery({
-        //   query: GET_POST,
-        // });
-        // if (cache.getPosts) {
-        //   console.log('has getPosts');
-        // }
-        // if (cache.getPost) {
-        //   console.log('has getPost');
-        // }
-        // console.log(cache);
-        // console.log(cacheData);
-        // ----------------------------------------------------------------------------
-        // const filteredCache = {};
-        // filteredCache.getPosts = cacheData.getPosts.map((item) => {
-        //   if (item.id === postID) {
-        //     // find the comment and remove it from the cache
-        //     item.comments = item.comments.filter(
-        //       (comment) => comment.id !== commentID
-        //     );
-        //   }
-        //   return item;
-        // });
-        // console.log(filteredCache);
-        // cache.writeQuery({
-        //   query: GET_POSTS,
-        //   data: filteredCache,
-        // });
+        const filteredCache = {};
+
+        filteredCache.getPost = cacheData.getPost.comments.filter(
+          (comment) => comment.id !== commentID
+        );
+
+        cache.writeQuery({
+          query: GET_POST,
+          variables: {
+            postID,
+          },
+          data: {
+            getPost: filteredCache,
+          },
+        });
       }
 
       // SinglePost renders DeleteButton and if user deletes from a post page
@@ -88,13 +74,12 @@ const DeleteButton = (props) => {
     // NOTE: refetchQueries gets the job done
     // downside: extra calls to the server
     // need to figure out why the cache doesn't detect changes in posts after comment deletion
-    refetchQueries: [{ query: GET_POSTS }],
+
+    // recomment this!
+    // refetchQueries: [{ query: GET_POSTS }],
+
     // onError() {
-    //   console.log('error');
     //   console.log(error);
-    //   console.log(type);
-    //   console.log(postID);
-    //   console.log(commentID);
     // },
   });
 

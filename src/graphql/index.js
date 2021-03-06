@@ -8,4 +8,4 @@ export {
   LIKE_POST,
 } from './postGQL';
 
-export { DELETE_COMMENT } from './commentGQL';
+export { DELETE_COMMENT, CREATE_COMMENT } from './commentGQL';

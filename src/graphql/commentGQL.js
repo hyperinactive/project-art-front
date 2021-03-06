@@ -11,5 +11,16 @@ const DELETE_COMMENT = gql`
   }
 `;
 
+const CREATE_COMMENT = gql`
+  mutation createComment($postID: ID!, $body: String!) {
+    createComment(postID: $postID, body: $body) {
+      id
+      createdAt
+      username
+      body
+    }
+  }
+`;
+
 // eslint-disable-next-line import/prefer-default-export
-export { DELETE_COMMENT };
+export { DELETE_COMMENT, CREATE_COMMENT };
