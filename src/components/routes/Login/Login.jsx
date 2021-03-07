@@ -1,16 +1,15 @@
-/* eslint-disable import/no-cycle */
-/* eslint-disable react/prop-types */
-import React, { useContext, useState } from 'react';
+/* eslint-disable react/forbid-prop-types */
+/* eslint-disable react/destructuring-assignment */
+import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/client';
-import { Button, Form, Message } from 'semantic-ui-react';
+import { Button, Form, Grid, Header, Icon } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 import { UserContext } from '../../../context/UserProvider';
-
-import './Login.css';
-
 import { LOGIN_USER } from '../../../graphql';
 
-const Login = (props) => {
+const LoginForm = (props) => {
+  const [isPassVisible, setIsPassVisible] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -54,56 +53,101 @@ const Login = (props) => {
   };
 
   return (
-    <div className="login">
-      <Form
-        onSubmit={handleSubmit}
-        noValidate
-        // the loading spinner class
-        className={loading ? 'loading' : ''}
-      >
-        <h1>Login</h1>
-        <Form.Input
-          name="username"
-          label="username"
-          placeholder="username"
-          type="text"
-          error={errors.username || errors.usernameInUse}
-          value={username}
-          onChange={(e) => {
-            setUsername(e.target.value);
-            setErrors({});
-          }}
-        />
-        <Form.Input
-          name="password"
-          label="password"
-          placeholder="password"
-          value={password}
-          type="password"
-          error={!!errors.password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setErrors({});
-          }}
-        />
-        <Button type="submit" color="orange" animated="fade" tabIndex="0">
-          <div className="visible content">Looks good?</div>
-          <div className="hidden content">Submit now!</div>
-        </Button>
-      </Form>
+    <Grid textAlign="center" style={{ height: '70vh' }} verticalAlign="middle">
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <Header as="h1" textAlign="center">
+          Log-in to your account
+        </Header>
+        <Form
+          size="large"
+          onSubmit={handleSubmit}
+          noValidate
+          // the loading spinner class
+          className={loading ? 'loading' : ''}
+        >
+          {/* <Segment stacked> */}
+          <Form.Input
+            fluid
+            iconPosition="left"
+            placeholder="username"
+            type="text"
+            error={errors.username || errors.usernameInUse}
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+              setErrors({});
+            }}
+          />
+          <Form.Input
+            fluid
+            iconPosition="left"
+            placeholder="password"
+            type={isPassVisible ? 'text' : 'password'}
+            error={errors.password}
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrors({});
+            }}
+          >
+            <input />
+            <Button
+              type="button"
+              onClick={() => setIsPassVisible(!isPassVisible)}
+            >
+              {/* {isPassVisible ? 'visible' : 'hidden'} */}
+              <Icon
+                name={isPassVisible ? 'eye' : 'eye slash'}
+                style={{ margin: 0 }}
+              />
+            </Button>
+          </Form.Input>
 
-      {/* if there were errors loop over them and make list items with their message */}
-      {Object.keys(errors).length > 0 && (
-        <Message
-          error
-          header="Errors with the submission"
-          list={Object.values(errors).map((value) => (
-            <li key={value}>{value}</li>
-          ))}
-        />
-      )}
-    </div>
+          <Button
+            fluid
+            size="large"
+            type="submit"
+            color="orange"
+            animated="fade"
+            tabIndex="0"
+          >
+            <div className="visible content">Looks good?</div>
+            <div className="hidden content">Submit now!</div>
+          </Button>
+          {/* </Segment> */}
+        </Form>
+        {/* {Object.keys(errors).length > 0 && (
+          <Message
+            error
+            header="Errors with the submission"
+            list={Object.values(errors).map((value) => (
+              <li key={value}>{value}</li>
+            ))}
+          />
+        )} */}
+        <Button
+          as="div"
+          fluid
+          size="large"
+          type="submit"
+          color="orange"
+          animated="fade"
+          tabIndex="0"
+          style={{ marginTop: 10 }}
+          onClick={() => props.history.push('/register')}
+        >
+          <div className="visible content">New here?</div>
+          <div className="hidden content">Register now!</div>
+        </Button>
+      </Grid.Column>
+    </Grid>
   );
 };
 
-export default Login;
+// TODO: fix this please for the love of God
+// history prop?
+LoginForm.propTypes = {
+  history: PropTypes.any.isRequired,
+};
+
+export default LoginForm;
