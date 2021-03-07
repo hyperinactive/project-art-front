@@ -9,6 +9,7 @@ const checkTokenExpiration = () => {
   if (localStorage.getItem('userToken')) {
     const decodedToken = jwtDecode(localStorage.getItem('userToken'));
 
+    // remove the user token if it expired
     if (decodedToken.exp * 1000 < Date.now()) {
       localStorage.removeItem('userToken');
     } else {

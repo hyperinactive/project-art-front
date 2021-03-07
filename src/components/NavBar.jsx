@@ -8,6 +8,7 @@ const NavBar = () => {
   // const context = useContext(UserContext);
   const { user, logout } = useContext(UserContext);
 
+  // TODO: active windows kind of breaks when links send users to it
   // to figure out which item should be highlighted we need to know on which page we are
   const pathName = window.location.pathname.split('/');
   const path = !pathName[1] ? 'home' : pathName[1];
@@ -38,6 +39,13 @@ const NavBar = () => {
         onClick={handleItemClick}
         as={Link}
         to="/"
+      />
+      <Menu.Item
+        name="project"
+        active={activeItem === 'project'}
+        onClick={handleItemClick}
+        as={Link}
+        to="/projects"
       />
       <Menu.Menu position="right">
         <Menu.Item

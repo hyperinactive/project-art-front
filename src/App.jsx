@@ -12,6 +12,8 @@ import Register from './components/routes/Register/Register';
 import Login from './components/routes/Login/Login';
 import UserRoute from './components/routes/UserRoute';
 import SinglePost from './components/routes/SinglePost';
+import NotFoundPage from './components/routes/NotFoundPage';
+import ProjectGroup from './components/routes/ProjectGroup';
 
 const App = () => (
   <UserProvider>
@@ -25,6 +27,9 @@ const App = () => (
           <UserRoute exact path="/register" component={Register} />
           <UserRoute exact path="/login" component={Login} />
           <Route exact path="/posts/:postID" component={SinglePost} />
+          <Route exact path="/projects" component={ProjectGroup} />
+          {/* (*) covers all calls to nonexistent pages */}
+          <Route path="*" component={NotFoundPage} />
         </Switch>
       </Container>
     </BrowserRouter>
