@@ -114,4 +114,38 @@ const LIKE_POST = gql`
   }
 `;
 
-export { GET_POST, GET_POSTS, CREATE_POST, DELETE_POST, LIKE_POST };
+const GET_POSTS_CHUNK = gql`
+  query getPostsChunk($skip: Int, $limit: Int!) {
+    getPostsChunk(skip: $skip, limit: $limit) {
+      posts {
+        id
+        body
+        createdAt
+        username
+        likes {
+          id
+          username
+          createdAt
+        }
+        likeCount
+        comments {
+          id
+          username
+          body
+          createdAt
+        }
+        commentCount
+      }
+      hasMoreItems
+    }
+  }
+`;
+
+export {
+  GET_POST,
+  GET_POSTS,
+  CREATE_POST,
+  DELETE_POST,
+  LIKE_POST,
+  GET_POSTS_CHUNK,
+};

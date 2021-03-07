@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 
@@ -10,10 +10,19 @@ const NavBar = () => {
 
   // TODO: active windows kind of breaks when links send users to it
   // to figure out which item should be highlighted we need to know on which page we are
-  const pathName = window.location.pathname.split('/');
-  const path = !pathName[1] ? 'home' : pathName[1];
+  const [activeItem, setActiveItem] = useState('home');
 
-  const [activeItem, setActiveItem] = useState(path);
+  // when the page renders find out the path and highlight the right menu item
+  useEffect(() => {
+    const pathName = window.location.pathname.split('/');
+    let path;
+    if (user) {
+      path = !pathName[1] ? user.username : pathName[1];
+    } else {
+      path = !pathName[1] ? 'home' : pathName[1];
+    }
+    setActiveItem(path);
+  }, []);
 
   // if item's active property is true, it will be active (highlighted)
   // { name } deconstruct the current component calling the handleItemClick and take the name of it
@@ -34,8 +43,8 @@ const NavBar = () => {
         to="/"
       />
       <Menu.Item
-        name="project"
-        active={activeItem === 'project'}
+        name="projects"
+        active={activeItem === 'projects'}
         onClick={handleItemClick}
         as={Link}
         to="/projects"
@@ -54,8 +63,8 @@ const NavBar = () => {
         to="/"
       />
       <Menu.Item
-        name="project"
-        active={activeItem === 'project'}
+        name="projects"
+        active={activeItem === 'projects'}
         onClick={handleItemClick}
         as={Link}
         to="/projects"

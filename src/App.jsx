@@ -14,6 +14,7 @@ import UserRoute from './components/routes/UserRoute';
 import SinglePost from './components/routes/SinglePost';
 import NotFoundPage from './components/routes/NotFoundPage';
 import ProjectGroup from './components/routes/ProjectGroup';
+import PostIF from './components/routes/PostIF';
 
 const App = () => (
   <UserProvider>
@@ -28,6 +29,7 @@ const App = () => (
           <UserRoute exact path="/login" component={Login} />
           <Route exact path="/posts/:postID" component={SinglePost} />
           <Route exact path="/projects" component={ProjectGroup} />
+          <Route exact path="/posts" component={PostIF} />
           {/* (*) covers all calls to nonexistent pages */}
           <Route path="*" component={NotFoundPage} />
         </Switch>
