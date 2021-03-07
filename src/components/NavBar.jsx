@@ -26,7 +26,20 @@ const NavBar = () => {
   // if we got a logged-in user display the personalized component with the logout item
   const navBar = user ? (
     <Menu pointing secondary size="massive" color="orange">
-      <Menu.Item name={user.username} active as={Link} to="/" />
+      <Menu.Item
+        name={user.username}
+        active={activeItem === user.username}
+        onClick={handleItemClick}
+        as={Link}
+        to="/"
+      />
+      <Menu.Item
+        name="project"
+        active={activeItem === 'project'}
+        onClick={handleItemClick}
+        as={Link}
+        to="/projects"
+      />
       <Menu.Menu position="right">
         <Menu.Item name="logout" onClick={logout} />
       </Menu.Menu>

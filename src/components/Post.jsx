@@ -49,13 +49,22 @@ const Post = ({
           <LikeButton post={{ id, likes, likeCount }} user={user} />
 
           <Button as="div" labelPosition="right">
-            <Button color="red" basic>
-              <Icon name="comments" />
-            </Button>
+            {/* redirect unsigned users to login */}
+            {user ? (
+              <Button color="red" basic>
+                <Icon name="comments" />
+              </Button>
+            ) : (
+              <Button color="red" as={Link} to="/login" basic>
+                <Icon name="comments" />
+              </Button>
+            )}
+
             <Label basic color="red" pointing="left">
               {commentCount}
             </Label>
           </Button>
+
           {user && user.username === username && (
             <DeleteButton postID={id} type="post" />
           )}

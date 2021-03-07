@@ -8,8 +8,8 @@ import { UserProvider } from './context/UserProvider';
 
 import NavBar from './components/NavBar';
 import Home from './components/routes/Home/Home';
-import Register from './components/routes/Register/Register';
-import Login from './components/routes/Login/Login';
+import Register from './components/routes/Register';
+import Login from './components/routes/Login';
 import UserRoute from './components/routes/UserRoute';
 import SinglePost from './components/routes/SinglePost';
 import NotFoundPage from './components/routes/NotFoundPage';
