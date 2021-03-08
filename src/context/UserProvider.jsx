@@ -1,17 +1,20 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useReducer } from 'react';
 import jwtDecode from 'jwt-decode';
 
 import { initialState, userReducer, actionTypes } from './userReducer';
 
-const checkTokenExpiration = () => {
+const checkTokenExpiration = (callback) => {
   if (localStorage.getItem('userToken')) {
     const decodedToken = jwtDecode(localStorage.getItem('userToken'));
 
     // remove the user token if it expired
+    // log him out actually
+    // TODO: refresh the token when it expires
     if (decodedToken.exp * 1000 < Date.now()) {
       localStorage.removeItem('userToken');
+      callback();
     } else {
       initialState.user = decodedToken;
     }
@@ -34,10 +37,10 @@ export const UserContext = createContext({
 
 // creating a provider
 export const UserProvider = (props) => {
-  checkTokenExpiration();
-
   // useReducer is the same as useState LUL
   const [state, dispatch] = useReducer(userReducer, initialState);
+
+  checkTokenExpiration(dispatch);
 
   const login = (data) => {
     // to have data persist after a page reload we'll use the localStorage to store the tokens of the logged users

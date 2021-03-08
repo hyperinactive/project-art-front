@@ -7,8 +7,11 @@ import PropTypes from 'prop-types';
 
 import { UserContext } from '../../context/UserProvider';
 import { LOGIN_USER } from '../../graphql';
+import { NavigationContext } from '../../context/NavigationProvider';
 
 const LoginForm = (props) => {
+  const { setActiveItem } = useContext(NavigationContext);
+
   const [isPassVisible, setIsPassVisible] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -137,7 +140,10 @@ const LoginForm = (props) => {
             animated="fade"
             tabIndex="0"
             style={{ marginTop: 10 }}
-            onClick={() => props.history.push('/register')}
+            onClick={() => {
+              props.history.push('/register');
+              setActiveItem('register');
+            }}
           >
             <div className="visible content">New here?</div>
             <div className="hidden content">Sign me up!</div>
