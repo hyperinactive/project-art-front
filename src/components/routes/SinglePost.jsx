@@ -11,9 +11,9 @@ import {
   Icon,
   Label,
 } from 'semantic-ui-react';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import moment from 'moment';
-import { DELETE_COMMENT, GET_POST } from '../../graphql';
+import { GET_POST } from '../../graphql';
 
 import { UserContext } from '../../context/UserProvider';
 import LikeButton from '../LikeButton/LikeButton';
@@ -30,6 +30,8 @@ const SinglePost = (props) => {
     variables: {
       postID,
     },
+    pollInterval: 500,
+
     onError: (error) => {
       console.log(error);
     },
@@ -72,11 +74,7 @@ const SinglePost = (props) => {
               <hr />
               <Card.Content extra>
                 <LikeButton user={user} post={{ id, likeCount, likes }} />
-                <Button
-                  as="div"
-                  labelPosition="right"
-                  onClick={console.log('comment')}
-                >
+                <Button as="div" labelPosition="right">
                   <Button color="orange" basic>
                     <Icon name="comments" />
                   </Button>

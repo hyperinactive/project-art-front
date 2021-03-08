@@ -14,7 +14,9 @@ const Home = () => {
 
   // useQuery hook sends the query
   // loading and data we get from the hook
-  const { loading, data } = useQuery(GET_POSTS);
+  const { loading, data } = useQuery(GET_POSTS, {
+    pollInterval: 10000,
+  });
 
   // here, we're using the loading bool to tell us if the data is being fetched
   // if so we're gonna display the loading component
