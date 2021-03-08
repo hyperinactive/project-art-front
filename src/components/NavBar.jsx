@@ -10,10 +10,6 @@ const NavBar = () => {
   const { user, logout } = useContext(UserContext);
   const { activeItem, setActiveItem } = useContext(NavigationContext);
 
-  // TODO: active windows kind of breaks when links send users to it
-  // to figure out which item should be highlighted we need to know on which page we are
-  // const [activeItem, setActiveItem] = useState('home');
-
   // when the page renders find out the path and highlight the right menu item
   useEffect(() => {
     const pathName = window.location.pathname.split('/');
@@ -32,7 +28,7 @@ const NavBar = () => {
 
   // if we got a logged-in user display the personalized component with the logout item
   const navBar = user ? (
-    <Menu pointing secondary size="massive" color="orange">
+    <Menu tabular size="massive" color="orange">
       <Menu.Item
         name="home"
         active={activeItem === 'home'}
@@ -54,7 +50,7 @@ const NavBar = () => {
       </Menu.Menu>
     </Menu>
   ) : (
-    <Menu pointing secondary size="massive" color="orange">
+    <Menu tabular size="massive" color="orange">
       <Menu.Item
         name="home"
         active={activeItem === 'home'}
@@ -88,7 +84,11 @@ const NavBar = () => {
     </Menu>
   );
 
-  return <div className="navbar">{navBar}</div>;
+  return (
+    <div className="navbar" style={{ paddingTop: 10 }}>
+      {navBar}
+    </div>
+  );
 };
 
 export default NavBar;

@@ -31,6 +31,7 @@ const LoginForm = (props) => {
 
       // take us to the home page if register succeeded
       props.history.push('/');
+      setActiveItem('home');
     },
     // it expects some variables to be sent for mutations
     variables: {

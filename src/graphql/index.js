@@ -1,5 +1,6 @@
 export { REGISTER_USER, LOGIN_USER } from './userGQL';
-
+export { DELETE_COMMENT, CREATE_COMMENT } from './commentGQL';
+export { GET_PROJECT, GET_PROJECTS } from './projectGroup';
 export {
   GET_POST,
   GET_POSTS,
@@ -7,5 +8,3 @@ export {
   DELETE_POST,
   LIKE_POST,
 } from './postGQL';
-
-export { DELETE_COMMENT, CREATE_COMMENT } from './commentGQL';

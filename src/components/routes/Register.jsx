@@ -6,8 +6,11 @@ import { Button, Form, Grid, Icon, Header } from 'semantic-ui-react';
 import { UserContext } from '../../context/UserProvider';
 
 import { REGISTER_USER } from '../../graphql/index';
+import { NavigationContext } from '../../context/NavigationProvider';
 
 const Register = (props) => {
+  const { setActiveItem } = useContext(NavigationContext);
+
   // gets the job done but too repetative
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -28,6 +31,7 @@ const Register = (props) => {
       context.login(result.data.register);
       // take us to the home page if register succeeded
       props.history.push('/');
+      setActiveItem('home');
     },
     // it expects some variables to be sent for mutations
     variables: {
