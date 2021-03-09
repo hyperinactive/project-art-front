@@ -1,0 +1,19 @@
+.projectGroupCard {
+  text-align: center !important;
+  width: 100% !important;
+  margin: 10px auto;
+}
+
+.projectGroupCard__card {
+  width: 80% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+*/
+.projectGroupCard__avatar {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 7em !important;
+  height: 7em !important;
+}

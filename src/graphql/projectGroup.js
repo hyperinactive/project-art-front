@@ -2,23 +2,24 @@ import { gql } from '@apollo/client';
 
 const GET_PROJECTS = gql`
   query getProjectGroups {
-    id
-    name
-    description
-    memberCount
-    owner {
+    getProjectGroups {
       id
-      username
-    }
-    members {
-      id
-      username
+      name
+      description
+      memberCount
+      owner {
+        id
+        username
+      }
+      members {
+        username
+      }
     }
   }
 `;
 
 const GET_PROJECT = gql`
-  query getProjectsGroup($projectID: ID!) {
+  query getProjectGroup($projectID: ID!) {
     getProjectGroups(projectID: $projectID) {
       id
       name
