@@ -16,6 +16,8 @@ import SinglePost from './components/routes/SinglePost';
 import NotFoundPage from './components/routes/NotFoundPage';
 import ProjectGroup from './components/routes/ProjectGroup';
 import Feed from './components/routes/Feed';
+import Settings from './components/routes/Settings';
+import Profile from './components/routes/Profile';
 
 const App = () => (
   <UserProvider>
@@ -32,8 +34,11 @@ const App = () => (
             <UserRoute exact path="/login" component={Login} />
             <Route exact path="/posts/:postID" component={SinglePost} />
             <Route exact path="/projects" component={ProjectGroup} />
+            {/* TODO: user settings and user profile */}
+            <Route exact path="/settings/:userID" component={Settings} />
+            <Route exact path="/user/:userID" component={Profile} />
+            {/* TODO: sub zero, north pole, no chance of any sun, winds holwing, freezing todo */}
             <Route exact path="/chat" component={Feed} />
-            {/* (*) covers all calls to nonexistent pages */}
             <Route path="*" component={NotFoundPage} />
           </Switch>
         </NavigationProvider>

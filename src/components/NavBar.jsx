@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu } from 'semantic-ui-react';
+import { Icon, Menu } from 'semantic-ui-react';
 import { NavigationContext } from '../context/NavigationProvider';
 
 import { UserContext } from '../context/UserProvider';
@@ -48,6 +48,9 @@ const NavBar = () => {
       <Menu.Menu position="right">
         <Menu.Item name="logout" onClick={logout} />
       </Menu.Menu>
+      <Menu.Item name="settings">
+        <Icon name="setting" />
+      </Menu.Item>
     </Menu>
   ) : (
     <Menu tabular size="massive" color="orange">

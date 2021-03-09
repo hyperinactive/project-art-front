@@ -20,11 +20,15 @@ const ProjectGroup = () => {
   return (
     <div style={{ textAlign: 'center' }} className="projectGroup">
       <h1>Project group --{placeholder}</h1>
-      {loading && <Loader active>Computing, things, beep bop</Loader>}
+      {loading && (
+        <Loader size="huge" active>
+          Computing, things, beep bop
+        </Loader>
+      )}
       <hr />
       {/* TODO: please custom design this... placeholder components */}
       {/* TODO: use flexbox or something, semantic sucks */}
-      <Grid columns={3} doubling textAlign="center">
+      <Grid columns={3} doubling stackable textAlign="center">
         <Grid.Row>
           <Input
             placeholder="search and destory"

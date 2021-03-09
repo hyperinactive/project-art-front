@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useQuery } from '@apollo/client';
-import { Grid, Transition } from 'semantic-ui-react';
+import { Grid, Transition, Loader } from 'semantic-ui-react';
 
 import { UserContext } from '../../../context/UserProvider';
 import Post from '../../Post';
@@ -36,7 +36,9 @@ const Home = () => {
         )}
         <Grid.Row>
           {loading ? (
-            <h1>Loading posts...</h1>
+            <Loader size="huge" active>
+              Computing, things, beep bop
+            </Loader>
           ) : (
             <Transition.Group>
               {data &&
