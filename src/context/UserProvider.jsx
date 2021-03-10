@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer } from 'react';
 import jwtDecode from 'jwt-decode';
 
 import { initialState, userReducer, actionTypes } from './userReducer';

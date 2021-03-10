@@ -55,7 +55,7 @@ const PostForm = () => {
   };
 
   return (
-    <div className="postForm">
+    <div className="postForm" style={{ textAlign: 'center' }}>
       <Form onSubmit={handleSubmit}>
         <Form.Field>
           <Form.Input

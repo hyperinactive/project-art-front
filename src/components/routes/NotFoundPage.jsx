@@ -7,7 +7,7 @@ const NotFoundPage = () => {
 
   return (
     <div>
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center', marginTop: 100 }}>
         <h1>Uh oh, page not found</h1>
         <Link to="/" onClick={() => setActiveItem('home')}>
           Take me home (Country roads)

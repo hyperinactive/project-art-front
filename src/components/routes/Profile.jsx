@@ -3,7 +3,8 @@
 import { useQuery } from '@apollo/client';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Header, Image, Loader } from 'semantic-ui-react';
+import { Grid, Header, Image, Loader } from 'semantic-ui-react';
+
 import { GET_USER } from '../../graphql';
 
 const Profile = (props) => {
@@ -29,29 +30,37 @@ const Profile = (props) => {
         </Loader>
       ) : (
         <>
-          <Header as="h2" icon textAlign="center">
-            <Image
-              style={{ width: 80 }}
-              src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
-              circular
-            />
-            <Header.Content style={{ margin: 10, marginTop: 20 }}>
-              {data.getUser.username}
-            </Header.Content>
-            <Header.Subheader>{data.getUser.status}</Header.Subheader>
-          </Header>
-          <Header as="h2" icon textAlign="center">
-            <Header.Content style={{ margin: 10, marginTop: 20 }}>
-              skills
-            </Header.Content>
-            <Header.Subheader>status</Header.Subheader>
-          </Header>
-          <Header as="h2" icon textAlign="center">
-            <Header.Content style={{ margin: 10, marginTop: 20 }}>
-              projects
-            </Header.Content>
-            <Header.Subheader>status</Header.Subheader>
-          </Header>
+          <Grid
+            textAlign="center"
+            style={{ height: '75vh' }}
+            verticalAlign="middle"
+          >
+            <Grid.Column style={{ maxWidth: 450 }}>
+              <Header as="h2" icon textAlign="center">
+                <Image
+                  style={{ width: 80 }}
+                  src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
+                  circular
+                />
+                <Header.Content style={{ margin: 10, marginTop: 20 }}>
+                  {data.getUser.username}
+                </Header.Content>
+                <Header.Subheader>{data.getUser.status}</Header.Subheader>
+              </Header>
+              <Header as="h2" icon textAlign="center">
+                <Header.Content style={{ margin: 10, marginTop: 20 }}>
+                  skills
+                </Header.Content>
+                <Header.Subheader>status</Header.Subheader>
+              </Header>
+              <Header as="h2" icon textAlign="center">
+                <Header.Content style={{ margin: 10, marginTop: 20 }}>
+                  projects
+                </Header.Content>
+                <Header.Subheader>status</Header.Subheader>
+              </Header>
+            </Grid.Column>
+          </Grid>
         </>
       )}
     </div>

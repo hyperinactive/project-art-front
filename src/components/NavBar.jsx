@@ -36,6 +36,15 @@ const NavBar = () => {
         as={Link}
         to="/"
       >
+        Garbage post route
+      </Menu.Item>
+      <Menu.Item
+        name="user"
+        active={activeItem === 'user'}
+        onClick={handleItemClick}
+        as={Link}
+        to={`user/${user.id}`}
+      >
         {user.username}
       </Menu.Item>
       <Menu.Item
@@ -48,7 +57,13 @@ const NavBar = () => {
       <Menu.Menu position="right">
         <Menu.Item name="logout" onClick={logout} />
       </Menu.Menu>
-      <Menu.Item name="settings">
+      <Menu.Item
+        name="settings"
+        active={activeItem === 'settings'}
+        onClick={handleItemClick}
+        as={Link}
+        to={`/settings/${user.id}`}
+      >
         <Icon name="setting" />
       </Menu.Item>
     </Menu>

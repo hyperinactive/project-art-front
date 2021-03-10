@@ -22,11 +22,9 @@ const Home = () => {
   // if so we're gonna display the loading component
   // if not we're displaying the posts
   return (
-    <div className="home">
-      <Grid columns={3} divided>
-        <Grid.Row className="home__grid-row">
-          <h1 className="home__grid-title">Recent posts</h1>
-        </Grid.Row>
+    <div className="home" style={{ marginTop: 50 }}>
+      <Grid centered columns={3} divided>
+        <Grid.Row className="home__grid-row" />
         {user && (
           <Grid.Row>
             <Grid.Column>

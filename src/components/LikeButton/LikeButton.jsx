@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { Button, Icon, Label } from 'semantic-ui-react';
@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import './LikeButton.css';
 
+import { NavigationContext } from '../../context/NavigationProvider';
 import { LIKE_POST } from '../../graphql';
 
 // props post and user
@@ -13,6 +14,7 @@ import { LIKE_POST } from '../../graphql';
 // user is user
 const LikeButton = ({ post: { id, likeCount, likes }, user }) => {
   const [liked, setLiked] = useState(false);
+  const { setActiveItem } = useContext(NavigationContext);
 
   // happens once per component render
   // if the post is already likes, set the bool to true and viceversa
@@ -66,7 +68,13 @@ const LikeButton = ({ post: { id, likeCount, likes }, user }) => {
     )
   ) : (
     <Button as="div" labelPosition="right">
-      <Button as={Link} to="/login" color="orange" basic>
+      <Button
+        as={Link}
+        to="/login"
+        color="orange"
+        basic
+        onClick={() => setActiveItem('login')}
+      >
         <Icon name="heart" />
       </Button>
       <Label basic color="orange" pointing="left">
