@@ -41,4 +41,15 @@ const LOGIN_USER = gql`
   }
 `;
 
-export { REGISTER_USER, LOGIN_USER };
+const GET_USER = gql`
+  query getUser($userID: ID!) {
+    getUser(userID: $userID) {
+      id
+      username
+      email
+      status
+    }
+  }
+`;
+
+export { REGISTER_USER, LOGIN_USER, GET_USER };

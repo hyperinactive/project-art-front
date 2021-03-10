@@ -7,12 +7,12 @@ const NotFoundPage = () => {
 
   return (
     <div>
-      <p style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center' }}>
         <h1>Uh oh, page not found</h1>
         <Link to="/" onClick={() => setActiveItem('home')}>
           Take me home (Country roads)
         </Link>
-      </p>
+      </div>
     </div>
   );
 };

@@ -1,14 +1,14 @@
 import { useQuery } from '@apollo/client';
-import React, { useState } from 'react';
-import { Loader, Input, Grid } from 'semantic-ui-react';
+import React, { useState, useContext } from 'react';
+import { Loader, Input, Grid, Button } from 'semantic-ui-react';
 import { GET_PROJECTS } from '../../graphql';
 import ProjectGroupCard from '../ProjectGroupCard';
+import { UserContext } from '../../context/UserProvider';
 
 import './ProjectGroup.css';
 
 const ProjectGroup = () => {
-  const placeholder = 'hello world';
-
+  const { user } = useContext(UserContext);
   const { loading, error, data } = useQuery(GET_PROJECTS, {
     pollInterval: 10000,
   });
@@ -19,13 +19,27 @@ const ProjectGroup = () => {
 
   return (
     <div style={{ textAlign: 'center' }} className="projectGroup">
-      <h1>Project group --{placeholder}</h1>
+      <h1>Project group</h1>
       {loading && (
         <Loader size="huge" active>
           Computing, things, beep bop
         </Loader>
       )}
       <hr />
+      {user && (
+        <Button
+          as="div"
+          size="large"
+          color="orange"
+          animated="fade"
+          tabIndex="0"
+          style={{ marginTop: 10, display: 'inline-block' }}
+        >
+          <div className="visible content">Create a project?</div>
+          <div className="hidden content">Create a project!</div>
+        </Button>
+      )}
+
       {/* TODO: please custom design this... placeholder components */}
       {/* TODO: use flexbox or something, semantic sucks */}
       <Grid columns={3} doubling stackable textAlign="center">
@@ -33,7 +47,7 @@ const ProjectGroup = () => {
           <Input
             placeholder="search and destory"
             icon="search"
-            style={{ margin: 20 }}
+            style={{ margin: 20, display: 'inline-block' }}
             onChange={(e) => {
               setSearchTerm(e.target.value);
             }}
@@ -47,8 +61,8 @@ const ProjectGroup = () => {
                 project.name.toLowerCase().includes(searchTerm.toLowerCase())
               )
               .map((project) => (
-                <Grid.Column>
-                  <ProjectGroupCard key={project.id} project={project} />
+                <Grid.Column key={project.id}>
+                  <ProjectGroupCard project={project} />
                 </Grid.Column>
               ))}
         </Grid.Row>

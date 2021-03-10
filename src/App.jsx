@@ -36,10 +36,13 @@ const App = () => (
             <Route exact path="/projects" component={ProjectGroup} />
             {/* TODO: user settings and user profile */}
             <Route exact path="/settings/:userID" component={Settings} />
+
             <Route exact path="/user/:userID" component={Profile} />
             {/* TODO: sub zero, north pole, no chance of any sun, winds holwing, freezing todo */}
             <Route exact path="/chat" component={Feed} />
-            <Route path="*" component={NotFoundPage} />
+
+            <Route exact path="/404" component={NotFoundPage} />
+            <Route component={NotFoundPage} />
           </Switch>
         </NavigationProvider>
       </Container>
