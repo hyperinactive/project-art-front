@@ -37,4 +37,23 @@ const GET_PROJECT = gql`
   }
 `;
 
-export { GET_PROJECTS, GET_PROJECT };
+const CREATE_PROJECT = gql`
+  mutation createProjectGroup($name: String!) {
+    createProjectGroup(name: $name) {
+      id
+      name
+      description
+      memberCount
+      owner {
+        id
+        username
+      }
+      members {
+        id
+        username
+      }
+    }
+  }
+`;
+
+export { GET_PROJECTS, GET_PROJECT, CREATE_PROJECT };
