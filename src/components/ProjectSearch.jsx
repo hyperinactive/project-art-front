@@ -2,9 +2,9 @@ import { useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { Loader, Input, Grid } from 'semantic-ui-react';
 import { GET_PROJECTS } from '../graphql';
-import ProjectGroupCard from './ProjectGroupCard';
+import ProjectCard from './ProjectCard';
 
-const ProjectGroupSearch = () => {
+const ProjectSearch = () => {
   const { loading, error, data } = useQuery(GET_PROJECTS, {
     pollInterval: 10000,
   });
@@ -14,7 +14,7 @@ const ProjectGroupSearch = () => {
   if (data) console.log(data);
 
   return (
-    <div className="projectGroupSearch">
+    <div className="projectSearch">
       {loading && (
         <Loader size="huge" active>
           Computing, things, beep bop
@@ -37,13 +37,14 @@ const ProjectGroupSearch = () => {
 
         <Grid.Row>
           {data &&
-            data.getProjectGroups
+            data.getProjects &&
+            data.getProjects
               .filter((project) =>
                 project.name.toLowerCase().includes(searchTerm.toLowerCase())
               )
               .map((project) => (
                 <Grid.Column key={project.id}>
-                  <ProjectGroupCard project={project} />
+                  <ProjectCard project={project} />
                 </Grid.Column>
               ))}
         </Grid.Row>
@@ -52,4 +53,4 @@ const ProjectGroupSearch = () => {
   );
 };
 
-export default ProjectGroupSearch;
+export default ProjectSearch;

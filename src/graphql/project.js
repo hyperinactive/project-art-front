@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 const GET_PROJECTS = gql`
-  query getProjectGroups {
-    getProjectGroups {
+  query getProjects {
+    getProjects {
       id
       name
       description
@@ -19,8 +19,8 @@ const GET_PROJECTS = gql`
 `;
 
 const GET_PROJECT = gql`
-  query getProjectGroup($projectGroupID: ID!) {
-    getProjectGroup(projectGroupID: $projectGroupID) {
+  query getProject($projectID: ID!) {
+    getProject(projectID: $projectID) {
       id
       name
       description
@@ -38,8 +38,8 @@ const GET_PROJECT = gql`
 `;
 
 const CREATE_PROJECT = gql`
-  mutation createProjectGroup($name: String!) {
-    createProjectGroup(name: $name) {
+  mutation createProject($name: String!) {
+    createProject(name: $name) {
       id
       name
       description

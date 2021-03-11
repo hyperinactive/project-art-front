@@ -5,23 +5,23 @@ import { useQuery } from '@apollo/client';
 import React from 'react';
 import { GET_PROJECT } from '../../graphql';
 
-const ProjectGroup = (props) => {
+const Project = (props) => {
   console.log(props.match.params);
-  const projectGroupID = props.match.params.projectID;
+  const { projectID } = props.match.params;
   const { data } = useQuery(GET_PROJECT, {
     variables: {
-      projectGroupID,
+      projectID,
     },
     onError: (err) => {
       console.log(err);
     },
   });
   return (
-    <div className="projectGroup" style={{ textAlign: 'center' }}>
+    <div className="project" style={{ textAlign: 'center' }}>
       {data && (
         <>
-          <h1>{data.getProjectGroup.name}</h1>
-          <h3>{data.getProjectGroup.owner.username}</h3>
+          <h1>{data.getProject.name}</h1>
+          <h3>{data.getProject.owner.username}</h3>
         </>
       )}
 
@@ -30,4 +30,4 @@ const ProjectGroup = (props) => {
   );
 };
 
-export default ProjectGroup;
+export default Project;
