@@ -19,8 +19,8 @@ const GET_PROJECTS = gql`
 `;
 
 const GET_PROJECT = gql`
-  query getProjectGroup($projectID: ID!) {
-    getProjectGroups(projectID: $projectID) {
+  query getProjectGroup($projectGroupID: ID!) {
+    getProjectGroup(projectGroupID: $projectGroupID) {
       id
       name
       description

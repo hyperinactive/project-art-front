@@ -14,11 +14,12 @@ import Login from './components/routes/Login';
 import UserRoute from './components/routes/UserRoute';
 import SinglePost from './components/routes/SinglePost';
 import NotFoundPage from './components/routes/NotFoundPage';
-import ProjectGroup from './components/routes/ProjectGroup';
+import ProjectGroups from './components/routes/ProjectGroups';
 import Feed from './components/routes/Feed';
 import Settings from './components/routes/Settings';
 import Profile from './components/routes/Profile';
 import ProjectGroupForm from './components/ProjectGroupForm';
+import ProjectGroup from './components/routes/ProjectGroup';
 
 const App = () => (
   <UserProvider>
@@ -34,12 +35,13 @@ const App = () => (
             <UserRoute exact path="/register" component={Register} />
             <UserRoute exact path="/login" component={Login} />
             <Route exact path="/posts/:postID" component={SinglePost} />
-            <Route exact path="/projects" component={ProjectGroup} />
+            <Route exact path="/projects" component={ProjectGroups} />
             <Route
               exact
               path="/projects/createProject"
               component={ProjectGroupForm}
             />
+            <Route exact path="/projects/:projectID" component={ProjectGroup} />
             {/* TODO: user settings and user profile */}
             <Route exact path="/settings/:userID" component={Settings} />
 

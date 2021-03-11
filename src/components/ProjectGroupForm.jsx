@@ -24,6 +24,9 @@ const ProjectGroupForm = () => {
       //     data: cacheDataClone,
       //   });
     },
+    onCompleted: (data) => {
+      console.log(data);
+    },
 
     onError: (err) => {
       console.log(err.graphQLErrors[0].extensions.exception.errors);
