@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useMutation } from '@apollo/client';
 import React, { useState } from 'react';
 import { Button, Grid, Form, Header } from 'semantic-ui-react';
 import { CREATE_PROJECT } from '../graphql/project';
 
-const ProjectForm = () => {
+const ProjectForm = (props) => {
   // TODO: needs to redirect to the project page or smth
   const [name, setName] = useState('');
   const [createProject] = useMutation(CREATE_PROJECT, {
@@ -25,11 +26,10 @@ const ProjectForm = () => {
       //   });
     },
     onCompleted: (data) => {
-      console.log(data);
+      props.history.push(`/projects/${data.createProject.id}`);
     },
 
     onError: (err) => {
-      console.log(err);
       console.log(err.graphQLErrors[0].extensions.exception.errors);
       // setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },

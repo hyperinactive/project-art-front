@@ -1,15 +1,31 @@
 /* eslint-disable react/prop-types */
+import { useMutation } from '@apollo/client';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Header, Image } from 'semantic-ui-react';
 import { UserContext } from '../context/UserProvider';
+import { ADD_MEMBER, GET_PROJECT } from '../graphql';
 
 // project.project.<attributes>...
 const ProjectProfile = ({ project }) => {
   const { user } = useContext(UserContext);
 
-  const handleClick = () => {
-    console.log('handling the click');
+  const [addMember] = useMutation(ADD_MEMBER, {
+    variables: {
+      projectID: project.id,
+    },
+    update: (cache, result) => {
+      cache.writeQuery({
+        query: GET_PROJECT,
+        data: {
+          getProject: result.data.addMember,
+        },
+      });
+    },
+  });
+  const handleClick = (e) => {
+    e.preventDefault();
+    addMember();
   };
   return (
     <div

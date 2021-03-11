@@ -56,4 +56,23 @@ const CREATE_PROJECT = gql`
   }
 `;
 
-export { GET_PROJECTS, GET_PROJECT, CREATE_PROJECT };
+const ADD_MEMBER = gql`
+  mutation addMember($projectID: ID!) {
+    addMember(projectID: $projectID) {
+      id
+      name
+      description
+      memberCount
+      owner {
+        id
+        username
+      }
+      members {
+        id
+        username
+      }
+    }
+  }
+`;
+
+export { GET_PROJECTS, GET_PROJECT, CREATE_PROJECT, ADD_MEMBER };

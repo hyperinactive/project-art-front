@@ -11,7 +11,7 @@ import ProjectWorkspace from '../ProjectWorkspace';
 import ProjectProfile from '../ProjectProfile';
 
 const isMemeber = (project, user) =>
-  !!project.members.find((member) => member.id === user.id);
+  project.members.find((member) => member.id === user.id) !== undefined;
 
 const Project = (props) => {
   const { user } = useContext(UserContext);
@@ -20,14 +20,8 @@ const Project = (props) => {
     variables: {
       projectID,
     },
-
-    onError: (err) => {
-      console.log(err);
-    },
+    pollInterval: 3000,
   });
-
-  if (data) console.log(data);
-  if (user) console.log(user);
 
   return (
     <div className="project" style={{ textAlign: 'center' }}>
