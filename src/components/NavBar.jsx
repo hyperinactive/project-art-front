@@ -43,7 +43,7 @@ const NavBar = () => {
         active={activeItem === 'user'}
         onClick={handleItemClick}
         as={Link}
-        to={`user/${user.id}`}
+        to={`/user/${user.id}`}
       >
         {user.username}
       </Menu.Item>

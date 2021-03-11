@@ -37,8 +37,10 @@ const Project = (props) => {
         <Loader size="huge" active>
           Computing, things, beep bop
         </Loader>
-      ) : user && data ? (
-        isMemeber(data.getProject, user) ? (
+      ) : (
+        user &&
+        data &&
+        (isMemeber(data.getProject, user) ? (
           <>
             <h1>Join us page -- user -- is memeber</h1>
             <ProjectWorkspace />
@@ -46,13 +48,9 @@ const Project = (props) => {
         ) : (
           <>
             <h1>Join us page -- user -- is not member</h1>
-            <ProjectProfile />
+            <ProjectProfile project={data.getProject} />
           </>
-        )
-      ) : (
-        <>
-          <h1>Join us page -- not user</h1>
-        </>
+        ))
       )}
     </div>
   );
