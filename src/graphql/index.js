@@ -12,4 +12,5 @@ export {
   CREATE_POST,
   DELETE_POST,
   LIKE_POST,
+  CREATE_PROJECT_POST,
 } from './postGQL';

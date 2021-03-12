@@ -141,6 +141,32 @@ const GET_POSTS_CHUNK = gql`
   }
 `;
 
+// TODO: to be the default way of creating posts
+// TODO: maybe don't just send a post type but also the project, at least id
+const CREATE_PROJECT_POST = gql`
+  mutation createProjectPost($projectID: ID!, $body: String!) {
+    createProjectPost(projectID: $projectID, body: $body) {
+      id
+      body
+      createdAt
+      username
+      likes {
+        id
+        username
+        createdAt
+      }
+      likeCount
+      comments {
+        id
+        username
+        body
+        createdAt
+      }
+      commentCount
+    }
+  }
+`;
+
 export {
   GET_POST,
   GET_POSTS,
@@ -148,4 +174,5 @@ export {
   DELETE_POST,
   LIKE_POST,
   GET_POSTS_CHUNK,
+  CREATE_PROJECT_POST,
 };

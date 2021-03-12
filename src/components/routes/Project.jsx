@@ -20,7 +20,6 @@ const Project = (props) => {
     variables: {
       projectID,
     },
-    pollInterval: 3000,
   });
 
   return (
@@ -35,15 +34,9 @@ const Project = (props) => {
         user &&
         data &&
         (isMemeber(data.getProject, user) ? (
-          <>
-            <h1>Join us page -- user -- is memeber</h1>
-            <ProjectWorkspace />
-          </>
+          <ProjectWorkspace project={data.getProject} />
         ) : (
-          <>
-            <h1>Join us page -- user -- is not member</h1>
-            <ProjectProfile project={data.getProject} />
-          </>
+          <ProjectProfile project={data.getProject} />
         ))
       )}
     </div>
