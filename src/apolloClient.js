@@ -1,4 +1,10 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import {
+  ApolloClient,
+  InMemoryCache,
+  // createHttpLink,
+  ApolloLink,
+} from '@apollo/client';
+import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from 'apollo-link-context';
 
 // https://www.apollographql.com/docs/react/get-started/
@@ -7,11 +13,17 @@ import { setContext } from 'apollo-link-context';
 // subject to change
 // we're just wrapping the App with the Apollo provider, a client that will connect to the backend
 
+// -----------------------------------------------------------------------------------------
+// CONFLICTS with the uploadLink, upload link the only way to communicate through the graphql endpoint
 // need to create the client to connect to our server on the backend
 // creating the link
 // not really needed, could've done the raw link instead
-const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql', // dev uri lmao
+// const httpLink = createHttpLink({
+//   uri: 'http://localhost:4000/graphql', // dev uri lmao
+// });
+
+const uploadLink = createUploadLink({
+  uri: 'http://localhost:4000/graphql',
 });
 
 // need auth headers in our requests
@@ -60,7 +72,9 @@ const cache = new InMemoryCache({
 // link has to go before httoLink
 // easy solution .concat
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  // link: concat(authLink, httpLink),
+  // link: ApolloLink.from([authLink, httpLink, uploadLink]),
+  link: ApolloLink.concat(authLink, uploadLink),
   // cache: new InMemoryCache(),
   cache,
 });

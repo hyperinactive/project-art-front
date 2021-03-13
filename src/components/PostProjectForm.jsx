@@ -2,52 +2,47 @@ import React, { useState } from 'react';
 import { Button, Form, Message } from 'semantic-ui-react';
 // import { cloneDeep } from 'lodash';
 import { useMutation } from '@apollo/client';
+import PropType from 'prop-types';
 
-import { CREATE_PROJECT_POST } from '../graphql';
+import { CREATE_PROJECT_POST, GET_PROJECT } from '../graphql';
 
-const PostProjectForm = (project) => {
-  console.log(project);
+const PostProjectForm = ({ project }) => {
   const [body, setBody] = useState('');
   const [errors, setErrors] = useState({});
 
-  // we've been using the server errors and translated them into client ones, but here we'll just use the client
-  // eslint-disable-next-line no-unused-vars
   const [createPost] = useMutation(CREATE_PROJECT_POST, {
     variables: {
       projectID: project.id,
       body,
     },
-    // we're gonna ask proxy to look for our items in the apollo client
-    update: () => {
-      // // the result of the CREATE_POST will go into result
-      // // gql returns an obj with data: { createPosts: { <our data> } }
-      // // so our response is in result.data.getPosts
+    update: (cache, result) => {
+      const cacheData = cache.readQuery({
+        query: GET_PROJECT,
+        variables: {
+          projectID: project.id,
+        },
+      });
 
-      // // take a look in the cache via proxy.readQuery
-      // // provide it with a query
-      // const cacheData = cache.readQuery({
-      //   query: GET_POSTS,
-      // });
-
-      // // getPosts is read-only...
-      // // so we need a copy of the obj <- mutating the cache IS NOT CONSIDERED A GOOD PRACTICE
+      console.log(result);
+      console.log(cacheData);
       // const cacheDataClone = cloneDeep(cacheData);
       // cacheDataClone.getPosts = [
-      //   result.data.createPost,
-      //   ...cacheDataClone.getPosts,
+      //   result.data.createProjectPost,
+      //   ...cacheDataClone.getProject.posts,
       // ];
 
-      // // we're updating cacheData with new posts
-
-      // // write new data into the cache
       // cache.writeQuery({
-      //   query: GET_POSTS,
+      //   query: GET_PROJECT,
       //   data: cacheDataClone,
       // });
       setBody('');
     },
     onError: (err) => {
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      console.log(err);
+      // setErrors(err.graphQLErrors[0].extensions.exception.errors);
+    },
+    onCompleted: (data) => {
+      console.log(data);
     },
   });
 
@@ -87,6 +82,14 @@ const PostProjectForm = (project) => {
       )}
     </div>
   );
+};
+
+PostProjectForm.propTypes = {
+  project: PropType.shape({
+    id: PropType.string.isRequired,
+    name: PropType.string.isRequired,
+    description: PropType.string.isRequired,
+  }).isRequired,
 };
 
 export default PostProjectForm;

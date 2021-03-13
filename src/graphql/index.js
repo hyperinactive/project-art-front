@@ -13,4 +13,5 @@ export {
   DELETE_POST,
   LIKE_POST,
   CREATE_PROJECT_POST,
+  UPLOAD_FILE,
 } from './postGQL';

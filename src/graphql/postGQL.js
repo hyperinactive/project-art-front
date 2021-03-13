@@ -167,6 +167,16 @@ const CREATE_PROJECT_POST = gql`
   }
 `;
 
+const UPLOAD_FILE = gql`
+  mutation uploadFile($file: Upload!) {
+    uploadFile(file: $file) {
+      filename
+      mimetype
+      encoding
+    }
+  }
+`;
+
 export {
   GET_POST,
   GET_POSTS,
@@ -175,4 +185,5 @@ export {
   LIKE_POST,
   GET_POSTS_CHUNK,
   CREATE_PROJECT_POST,
+  UPLOAD_FILE,
 };
