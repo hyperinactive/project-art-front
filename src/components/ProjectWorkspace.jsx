@@ -65,6 +65,7 @@ const ProjectWorkspace = ({ project }) => {
                   display: 'flex',
                   flexDirection: 'column-reverse',
                   alignItems: 'center',
+                  width: '100%',
                 }}
               >
                 {data &&

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import { Button, Icon, Label } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 import './LikeButton.css';
@@ -35,7 +35,6 @@ const LikeButton = ({ post: { id, likeCount, likes }, user }) => {
   const likeButton = user ? (
     liked ? (
       <Button
-        as="div"
         labelPosition="right"
         onClick={(e) => {
           e.preventDefault();
@@ -44,14 +43,11 @@ const LikeButton = ({ post: { id, likeCount, likes }, user }) => {
       >
         <Button color="orange">
           <Icon name="heart" />
-        </Button>
-        <Label basic color="orange" pointing="left">
           {likeCount}
-        </Label>
+        </Button>
       </Button>
     ) : (
       <Button
-        as="div"
         labelPosition="right"
         onClick={(e) => {
           e.preventDefault();
@@ -60,14 +56,12 @@ const LikeButton = ({ post: { id, likeCount, likes }, user }) => {
       >
         <Button color="orange" basic>
           <Icon name="heart" />
-        </Button>
-        <Label basic color="orange" pointing="left">
           {likeCount}
-        </Label>
+        </Button>
       </Button>
     )
   ) : (
-    <Button as="div" labelPosition="right">
+    <Button labelPosition="right">
       <Button
         as={Link}
         to="/login"
@@ -77,13 +71,10 @@ const LikeButton = ({ post: { id, likeCount, likes }, user }) => {
       >
         <Icon name="heart" />
       </Button>
-      <Label basic color="orange" pointing="left">
-        {likeCount}
-      </Label>
     </Button>
   );
 
-  return <div className="likeButton">{likeButton}</div>;
+  return likeButton;
 };
 
 LikeButton.defaultProps = {

@@ -3,7 +3,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Image, Label, Card, Icon, Button } from 'semantic-ui-react';
+import { Image, Label, Card, Icon, Button, Dropdown } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 import { UserContext } from '../context/UserProvider';
@@ -21,6 +21,7 @@ const Post = ({
     likes,
     commentCount,
     comments,
+    imageURL,
   },
 }) => {
   const likeHandle = (e) => {
@@ -31,43 +32,90 @@ const Post = ({
   const { user } = useContext(UserContext);
 
   return (
-    <div>
-      <Card>
-        <Card.Content className="post" as={Link} to={`/posts/${id}`}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: 10,
+        width: '100%',
+        margin: 'auto',
+      }}
+      className="post"
+    >
+      <Card fluid>
+        <Card.Content>
           <Image
-            floated="right"
+            floated="left"
+            circular
             size="mini"
-            src="https://react.semantic-ui.com/images/avatar/large/molly.png" // TODO: placeholder
+            src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
           />
-          <Card.Header>{username}</Card.Header>
-          <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
-          <Card.Description>{body}</Card.Description>
-        </Card.Content>
-        <Card.Content extra>
-          {/* pass the like component id of the post, likes, likeCount */}
-          {/* could've used context inside the like component itself, but just passing down the user works too */}
-          <LikeButton post={{ id, likes, likeCount }} user={user} />
-
-          <Button as="div" labelPosition="right">
-            {/* redirect unsigned users to login */}
-            {user ? (
-              <Button color="red" basic>
-                <Icon name="comments" />
-              </Button>
-            ) : (
-              <Button color="red" as={Link} to="/login" basic>
-                <Icon name="comments" />
-              </Button>
-            )}
-
-            <Label basic color="red" pointing="left">
-              {commentCount}
-            </Label>
-          </Button>
-
-          {user && user.username === username && (
-            <DeleteButton postID={id} type="post" />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              float: 'left',
+              textAlign: 'left',
+            }}
+          >
+            <h3 style={{ margin: 0 }}>{user.username}</h3>
+            <p style={{ color: '#6f6f6f' }}>{moment(createdAt).fromNow()}</p>
+            <p>{body}</p>
+          </div>
+          {user && user.username === username ? (
+            <div style={{ float: 'right' }}>
+              <Dropdown
+                icon="ellipsis vertical"
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+              >
+                <Dropdown.Menu>
+                  <Dropdown.Item text="Delete" />
+                  <Dropdown.Item text="Edit" />
+                  <Dropdown.Item text="Share" />
+                  <Dropdown.Item>
+                    <DeleteButton postID={id} type="post" />
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+              {/* <DeleteButton postID={id} type="post" /> */}
+            </div>
+          ) : (
+            <div style={{ float: 'right' }}>
+              <Dropdown
+                icon="ellipsis vertical"
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+              >
+                <Dropdown.Menu>
+                  <Dropdown.Item text="Share" />
+                  <Dropdown.Item text="Report" />
+                  <Dropdown.Item>
+                    <DeleteButton postID={id} type="post" />
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+              {/* <DeleteButton postID={id} type="post" /> */}
+            </div>
           )}
+        </Card.Content>
+        {imageURL && (
+          <Card.Content>
+            <Image size="medium" src={imageURL} />
+          </Card.Content>
+        )}
+
+        <Card.Content extra>
+          <div className="ui two buttons">
+            <LikeButton post={{ id, likes, likeCount }} user={user} />
+            <Button color="red" basic>
+              <Icon name="comments" />
+              {commentCount}
+            </Button>
+          </div>
         </Card.Content>
       </Card>
     </div>

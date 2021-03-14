@@ -6,7 +6,8 @@ import { useMutation } from '@apollo/client';
 import { useDropzone } from 'react-dropzone';
 import PropType from 'prop-types';
 
-import { CREATE_PROJECT_POST } from '../graphql';
+import { cloneDeep } from '@apollo/client/utilities';
+import { CREATE_PROJECT_POST, GET_PROJECT_POSTS } from '../graphql';
 
 const PostProjectForm = ({ project }) => {
   // STATES
@@ -34,9 +35,32 @@ const PostProjectForm = ({ project }) => {
   // ----------------------------------------------------------------------------------------
 
   const [createPost] = useMutation(CREATE_PROJECT_POST, {
+    update: (cache, result) => {
+      const cacheData = cache.readQuery({
+        query: GET_PROJECT_POSTS,
+
+        variables: {
+          projectID: project.id,
+        },
+      });
+
+      const cacheDataClone = cloneDeep(cacheData);
+      cacheDataClone.getProjectPosts = [
+        ...cacheDataClone.getProjectPosts,
+        result.data.createProjectPost,
+      ];
+
+      cache.writeQuery({
+        query: GET_PROJECT_POSTS,
+        variables: {
+          projectID: project.id,
+        },
+        data: cacheDataClone,
+      });
+    },
     onError: (err) => {
       console.log(err);
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      // setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     onCompleted: () => {
       setBody('');

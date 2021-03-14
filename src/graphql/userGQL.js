@@ -21,6 +21,7 @@ const REGISTER_USER = gql`
       username
       createdAt
       token
+      status
     }
   }
 `;
@@ -37,6 +38,7 @@ const LOGIN_USER = gql`
       username
       createdAt
       token
+      status
     }
   }
 `;
