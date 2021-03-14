@@ -176,6 +176,29 @@ const UPLOAD_FILE = gql`
   }
 `;
 
+const GET_PROJECT_POSTS = gql`
+  query getProjectPosts($projectID: ID!) {
+    getProjectPosts(projectID: $projectID) {
+      id
+      username
+      createdAt
+      body
+      likes {
+        id
+        createdAt
+      }
+      likeCount
+      comments {
+        id
+        body
+        username
+      }
+      commentCount
+      imageURL
+    }
+  }
+`;
+
 export {
   GET_POST,
   GET_POSTS,
@@ -185,4 +208,5 @@ export {
   GET_POSTS_CHUNK,
   CREATE_PROJECT_POST,
   UPLOAD_FILE,
+  GET_PROJECT_POSTS,
 };

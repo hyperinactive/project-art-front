@@ -30,14 +30,15 @@ const Project = (props) => {
         <Loader size="huge" active>
           Computing, things, beep bop
         </Loader>
-      ) : (
-        user &&
+      ) : user ? (
         data &&
         (isMemeber(data.getProject, user) ? (
           <ProjectWorkspace project={data.getProject} />
         ) : (
           <ProjectProfile project={data.getProject} />
         ))
+      ) : (
+        <ProjectProfile project={data.getProject} />
       )}
     </div>
   );
