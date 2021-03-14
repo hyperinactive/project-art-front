@@ -144,8 +144,8 @@ const GET_POSTS_CHUNK = gql`
 // TODO: to be the default way of creating posts
 // TODO: maybe don't just send a post type but also the project, at least id
 const CREATE_PROJECT_POST = gql`
-  mutation createProjectPost($projectID: ID!, $body: String!) {
-    createProjectPost(projectID: $projectID, body: $body) {
+  mutation createProjectPost($projectID: ID!, $body: String!, $image: Upload) {
+    createProjectPost(projectID: $projectID, body: $body, image: $image) {
       id
       body
       createdAt
@@ -163,6 +163,7 @@ const CREATE_PROJECT_POST = gql`
         createdAt
       }
       commentCount
+      imageURL
     }
   }
 `;
@@ -170,9 +171,7 @@ const CREATE_PROJECT_POST = gql`
 const UPLOAD_FILE = gql`
   mutation uploadFile($file: Upload!) {
     uploadFile(file: $file) {
-      filename
-      mimetype
-      encoding
+      url
     }
   }
 `;

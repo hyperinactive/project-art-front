@@ -4,8 +4,6 @@ import { Button } from 'semantic-ui-react';
 import { UserContext } from '../../context/UserProvider';
 import ProjectSearch from '../ProjectSearch';
 
-import './Project.css';
-
 const Project = () => {
   const { user } = useContext(UserContext);
 
