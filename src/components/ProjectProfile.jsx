@@ -35,6 +35,7 @@ const ProjectProfile = ({ project }) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        marginTop: 100,
       }}
     >
       <Header as="h2" icon textAlign="center">

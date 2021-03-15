@@ -15,13 +15,11 @@ const LoginForm = (props) => {
   const [isPassVisible, setIsPassVisible] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
 
   // now we have access to our context data
   // we get the data from the result and pass it to our login function
   const context = useContext(UserContext);
-
-  // eslint-disable-next-line no-unused-vars
-  const [errors, setErrors] = useState({});
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     // update will trigger if everything's went smoothly
@@ -45,8 +43,8 @@ const LoginForm = (props) => {
       // it is in the extension
       // console.log(err.graphQLErrors[0].extensions.exception);
 
-      // console.log(err.graphQLErrors[0].extensions.exception.errors);
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      console.log(err.graphQLErrors[0].extensions.exception.errors);
     },
   });
 
@@ -124,14 +122,14 @@ const LoginForm = (props) => {
             {/* </Segment> */}
           </Form>
           {/* {Object.keys(errors).length > 0 && (
-          <Message
-            error
-            header="Errors with the submission"
-            list={Object.values(errors).map((value) => (
-              <li key={value}>{value}</li>
-            ))}
-          />
-        )} */}
+            <Message
+              error
+              header="Errors with the submission"
+              list={Object.values(errors).map((value) => (
+                <li key={value}>{value}</li>
+              ))}
+            />
+          )} */}
           <Button
             as="div"
             fluid

@@ -36,7 +36,7 @@ const NavBar = () => {
         as={Link}
         to="/"
       >
-        Garbage post route
+        Home
       </Menu.Item>
       <Menu.Item
         name="user"
@@ -64,7 +64,7 @@ const NavBar = () => {
         as={Link}
         to={`/settings/${user.id}`}
       >
-        <Icon name="setting" />
+        <Icon name="setting" style={{ margin: 0 }} />
       </Menu.Item>
     </Menu>
   ) : (

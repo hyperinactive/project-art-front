@@ -35,7 +35,9 @@ const LikeButton = ({ post: { id, likeCount, likes }, user }) => {
   const likeButton = user ? (
     liked ? (
       <Button
+        fluid
         labelPosition="right"
+        as="div"
         onClick={(e) => {
           e.preventDefault();
           likePost();
@@ -49,19 +51,21 @@ const LikeButton = ({ post: { id, likeCount, likes }, user }) => {
     ) : (
       <Button
         labelPosition="right"
+        fluid
+        as="div"
         onClick={(e) => {
           e.preventDefault();
           likePost();
         }}
       >
-        <Button color="orange" basic>
+        <Button color="orange" basic fluid>
           <Icon name="heart" />
           {likeCount}
         </Button>
       </Button>
     )
   ) : (
-    <Button labelPosition="right">
+    <Button fluid labelPosition="right" as="div">
       <Button
         as={Link}
         to="/login"

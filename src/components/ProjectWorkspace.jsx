@@ -4,7 +4,7 @@ import PropType from 'prop-types';
 import { useQuery } from '@apollo/client';
 import PostProjectForm from './PostProjectForm';
 import { GET_PROJECT_POSTS } from '../graphql';
-import Post from './Post';
+import PostCard from './PostCard';
 
 const ProjectWorkspace = ({ project }) => {
   // TODO: setup the feed
@@ -12,7 +12,7 @@ const ProjectWorkspace = ({ project }) => {
     variables: {
       projectID: project.id,
     },
-    pollInterval: 3000,
+    // pollInterval: 3000,
     onCompleted: () => {
       console.log(data);
     },
@@ -23,7 +23,16 @@ const ProjectWorkspace = ({ project }) => {
 
   return (
     <div className="projectWorkspace">
-      <h1 style={{ marginTop: 40 }}>{project.name} -- Workspace</h1>
+      <div style={{ backgroundColor: '#e8e8e8', width: '100%' }}>
+        <h2
+          style={{
+            marginTop: 40,
+            float: 'left',
+          }}
+        >
+          {project.name}
+        </h2>
+      </div>
       <Grid container divided columns={3} style={{ marginTop: 40 }}>
         <Grid.Column width={1}>
           <Grid.Row stretched>
@@ -71,7 +80,7 @@ const ProjectWorkspace = ({ project }) => {
                 {data &&
                   data.getProjectPosts &&
                   data.getProjectPosts.map((post) => (
-                    <Post key={post.id} post={post} />
+                    <PostCard key={post.id} post={post} />
                   ))}
               </div>
             </Grid.Column>
