@@ -36,29 +36,20 @@ const ProjectWorkspace = ({ project }) => {
       <Grid container divided columns={3} style={{ marginTop: 40 }}>
         <Grid.Column width={2}>
           <Grid.Row centered>
-            <Grid.Row>
-              <Image
-                avatar
-                size="tiny"
-                src="https://react.semantic-ui.com/images/avatar/large/molly.png"
-              />
-            </Grid.Row>
-
-            <Grid.Row>
-              <Image
-                avatar
-                size="tiny"
-                src="https://react.semantic-ui.com/images/avatar/large/molly.png"
-              />
-            </Grid.Row>
-
-            <Grid.Row>
-              <Image
-                avatar
-                size="tiny"
-                src="http://localhost:4000/files/17694acf-1c0e-48c1-80de-fbde5bd1dfcbdownload.jpeg"
-              />
-            </Grid.Row>
+            {project &&
+              project.members &&
+              project.members.map((member) => (
+                <Grid.Row key={member.id}>
+                  <Image
+                    rounded
+                    size="tiny"
+                    src={
+                      member.imageURL ||
+                      `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
+                    }
+                  />
+                </Grid.Row>
+              ))}
           </Grid.Row>
         </Grid.Column>
         <Grid.Column width={11}>
@@ -99,6 +90,10 @@ ProjectWorkspace.propTypes = {
     id: PropType.string.isRequired,
     name: PropType.string.isRequired,
     description: PropType.string.isRequired,
+    members: PropType.arrayOf({
+      id: PropType.string.isRequired,
+      imageURL: PropType.string.isRequired,
+    }),
   }).isRequired,
 };
 

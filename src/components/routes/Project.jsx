@@ -32,6 +32,7 @@ const Project = (props) => {
         </Loader>
       ) : user ? (
         data &&
+        data.getProject &&
         (isMemeber(data.getProject, user) ? (
           <ProjectWorkspace project={data.getProject} />
         ) : (

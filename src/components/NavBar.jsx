@@ -28,7 +28,7 @@ const NavBar = () => {
 
   // if we got a logged-in user display the personalized component with the logout item
   const navBar = user ? (
-    <Menu tabular size="massive" color="orange">
+    <Menu tabular stackable size="massive" color="orange">
       <Menu.Item
         name="home"
         active={activeItem === 'home'}
@@ -68,7 +68,7 @@ const NavBar = () => {
       </Menu.Item>
     </Menu>
   ) : (
-    <Menu tabular size="massive" color="orange">
+    <Menu tabular stackable size="massive" color="orange">
       <Menu.Item
         name="home"
         active={activeItem === 'home'}
