@@ -34,32 +34,34 @@ const ProjectWorkspace = ({ project }) => {
         </h2>
       </div>
       <Grid container divided columns={3} style={{ marginTop: 40 }}>
-        <Grid.Column width={1}>
-          <Grid.Row stretched>
-            <Image
-              circular
-              floated="right"
-              size="massive"
-              src="https://react.semantic-ui.com/images/avatar/large/molly.png"
-              style={{ margin: 10 }}
-            />
-            <Image
-              circular
-              floated="right"
-              size="massive"
-              src="https://react.semantic-ui.com/images/avatar/large/molly.png"
-              style={{ margin: 10 }}
-            />
-            <Image
-              circular
-              floated="right"
-              size="massive"
-              src="http://localhost:4000/files/17694acf-1c0e-48c1-80de-fbde5bd1dfcbdownload.jpeg"
-              style={{ margin: 10 }}
-            />
+        <Grid.Column width={2}>
+          <Grid.Row centered>
+            <Grid.Row>
+              <Image
+                avatar
+                size="tiny"
+                src="https://react.semantic-ui.com/images/avatar/large/molly.png"
+              />
+            </Grid.Row>
+
+            <Grid.Row>
+              <Image
+                avatar
+                size="tiny"
+                src="https://react.semantic-ui.com/images/avatar/large/molly.png"
+              />
+            </Grid.Row>
+
+            <Grid.Row>
+              <Image
+                avatar
+                size="tiny"
+                src="http://localhost:4000/files/17694acf-1c0e-48c1-80de-fbde5bd1dfcbdownload.jpeg"
+              />
+            </Grid.Row>
           </Grid.Row>
         </Grid.Column>
-        <Grid.Column width={12}>
+        <Grid.Column width={11}>
           <Grid.Row textAlign="center">
             <Grid.Column>
               {loading && (

@@ -54,4 +54,14 @@ const GET_USER = gql`
   }
 `;
 
-export { REGISTER_USER, LOGIN_USER, GET_USER };
+const GET_FRIENDS = gql`
+  query getFriends {
+    getFriends {
+      id
+      username
+      imageURL
+    }
+  }
+`;
+
+export { REGISTER_USER, LOGIN_USER, GET_USER, GET_FRIENDS };

@@ -75,4 +75,19 @@ const ADD_MEMBER = gql`
   }
 `;
 
-export { GET_PROJECTS, GET_PROJECT, CREATE_PROJECT, ADD_MEMBER };
+const GET_USER_PROJECTS = gql`
+  query getUserProjects {
+    getUserProjects {
+      id
+      name
+    }
+  }
+`;
+
+export {
+  GET_PROJECTS,
+  GET_PROJECT,
+  CREATE_PROJECT,
+  ADD_MEMBER,
+  GET_USER_PROJECTS,
+};
