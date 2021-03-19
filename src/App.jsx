@@ -14,12 +14,12 @@ import Login from './components/routes/Login';
 import UserRoute from './components/routes/UserRoute';
 import SinglePost from './components/routes/SinglePost';
 import NotFoundPage from './components/routes/NotFoundPage';
-import Projects from './components/routes/Projects';
+import Projects from './components/routes/Projects/Projects';
 import Feed from './components/routes/Feed';
 import Settings from './components/routes/Settings';
 import Profile from './components/routes/Profile';
-import ProjectForm from './components/ProjectForm';
-import Project from './components/routes/Project';
+import Project from './components/routes/Projects/Project/Project';
+import ProjectForm from './components/routes/Projects/ProjectForm';
 
 const App = () => (
   <UserProvider>

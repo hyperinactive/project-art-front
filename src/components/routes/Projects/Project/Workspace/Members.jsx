@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import React from 'react';
-import { GET_MEMBERS } from '../../graphql';
+import { GET_MEMBERS } from '../../../../../graphql';
 
 // TODO: GET_PROJECT_MEMBERS and GET_PROJECT_INFO
 const Members = (projectID) => {

@@ -3,8 +3,8 @@ import { useMutation } from '@apollo/client';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Header, Image } from 'semantic-ui-react';
-import { UserContext } from '../context/UserProvider';
-import { ADD_MEMBER, GET_PROJECT } from '../graphql';
+import { UserContext } from '../../../../context/UserProvider';
+import { ADD_MEMBER, GET_PROJECT } from '../../../../graphql';
 
 // project.project.<attributes>...
 const ProjectProfile = ({ project }) => {

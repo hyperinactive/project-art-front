@@ -3,9 +3,9 @@ import { Grid, Loader } from 'semantic-ui-react';
 import PropType from 'prop-types';
 import { useQuery } from '@apollo/client';
 import PostProjectForm from './PostProjectForm';
-import { GET_PROJECT_POSTS } from '../graphql';
-import PostCard from './PostCard';
-import Members from './routes/Members';
+import { GET_PROJECT_POSTS } from '../../../../../graphql';
+import PostCard from '../../../../PostCard';
+import Members from './Members';
 
 const ProjectWorkspace = ({ project }) => {
   // TODO: setup the feed

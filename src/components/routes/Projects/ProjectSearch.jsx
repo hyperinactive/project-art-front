@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { Loader, Input, Grid } from 'semantic-ui-react';
-import { GET_PROJECTS } from '../graphql';
+import { GET_PROJECTS } from '../../../graphql';
 import ProjectCard from './ProjectCard';
 
 const ProjectSearch = () => {

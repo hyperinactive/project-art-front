@@ -7,7 +7,7 @@ import { useDropzone } from 'react-dropzone';
 import PropType from 'prop-types';
 
 import { cloneDeep } from '@apollo/client/utilities';
-import { CREATE_PROJECT_POST, GET_PROJECT_POSTS } from '../graphql';
+import { CREATE_PROJECT_POST, GET_PROJECT_POSTS } from '../../../../../graphql';
 
 const PostProjectForm = ({ project }) => {
   // STATES

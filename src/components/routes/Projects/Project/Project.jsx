@@ -5,10 +5,10 @@
 import { useQuery } from '@apollo/client';
 import React, { useContext } from 'react';
 import { Loader } from 'semantic-ui-react';
-import { GET_MEMBERS, GET_PROJECT } from '../../graphql';
-import { UserContext } from '../../context/UserProvider';
-import ProjectWorkspace from '../ProjectWorkspace';
-import ProjectProfile from '../ProjectProfile';
+import { UserContext } from '../../../../context/UserProvider';
+import { GET_MEMBERS, GET_PROJECT } from '../../../../graphql';
+import ProjectWorkspace from './Workspace/ProjectWorkspace';
+import ProjectProfile from './ProjectProfile';
 
 const isMemeber = (members, user) =>
   members.find((member) => member.id === user.id) !== undefined;
