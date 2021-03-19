@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Grid, Form, Header } from 'semantic-ui-react';
-import { CREATE_PROJECT } from '../graphql/project';
+import { CREATE_PROJECT } from '../graphql';
 
 const ProjectForm = () => {
   // TODO: needs to redirect to the project page or smth

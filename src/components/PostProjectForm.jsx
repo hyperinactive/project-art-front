@@ -69,8 +69,7 @@ const PostProjectForm = ({ project }) => {
     },
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     createPost({
       variables: {
         projectID: project.id,
@@ -105,7 +104,12 @@ const PostProjectForm = ({ project }) => {
           )}
         </div>
       </>
-      <Form onSubmit={handleSubmit}>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
         <Form.Field>
           <Form.Input
             placeholder="tell me smth new"

@@ -27,7 +27,6 @@ const PostCard = ({
     likeCount,
     likes,
     commentCount,
-    comments,
     imageURL,
     user: postUser,
   },
@@ -144,7 +143,6 @@ PostCard.defaultProps = {
   likeCount: 0,
   commentCount: 0,
   likes: [],
-  comments: [],
   props: [],
 };
 
@@ -157,7 +155,6 @@ PostCard.propTypes = {
   likeCount: PropTypes.number,
   commentCount: PropTypes.number,
   likes: PropTypes.array,
-  comments: PropTypes.array,
   props: PropTypes.array,
 };
 

@@ -29,10 +29,6 @@ const GET_PROJECT = gql`
         id
         username
       }
-      members {
-        id
-        username
-      }
     }
   }
 `;
@@ -84,10 +80,21 @@ const GET_USER_PROJECTS = gql`
   }
 `;
 
+const GET_MEMBERS = gql`
+  query getProjectMembers($projectID: ID!) {
+    getProjectMembers(projectID: $projectID) {
+      id
+      username
+      imageURL
+    }
+  }
+`;
+
 export {
   GET_PROJECTS,
   GET_PROJECT,
   CREATE_PROJECT,
   ADD_MEMBER,
   GET_USER_PROJECTS,
+  GET_MEMBERS,
 };

@@ -6,7 +6,8 @@ export {
   CREATE_PROJECT,
   ADD_MEMBER,
   GET_USER_PROJECTS,
-} from './project';
+  GET_MEMBERS,
+} from './projectGQL';
 export {
   GET_POST,
   GET_POSTS,

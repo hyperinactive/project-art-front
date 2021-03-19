@@ -1,10 +1,11 @@
 import React from 'react';
-import { Grid, Image, Loader } from 'semantic-ui-react';
+import { Grid, Loader } from 'semantic-ui-react';
 import PropType from 'prop-types';
 import { useQuery } from '@apollo/client';
 import PostProjectForm from './PostProjectForm';
 import { GET_PROJECT_POSTS } from '../graphql';
 import PostCard from './PostCard';
+import Members from './routes/Members';
 
 const ProjectWorkspace = ({ project }) => {
   // TODO: setup the feed
@@ -12,7 +13,7 @@ const ProjectWorkspace = ({ project }) => {
     variables: {
       projectID: project.id,
     },
-    // pollInterval: 3000,
+    pollInterval: 1500,
     onCompleted: () => {
       console.log(data);
     },
@@ -23,33 +24,22 @@ const ProjectWorkspace = ({ project }) => {
 
   return (
     <div className="projectWorkspace">
-      <div style={{ backgroundColor: '#e8e8e8', width: '100%' }}>
-        <h2
-          style={{
-            marginTop: 40,
-            float: 'left',
-          }}
-        >
-          {project.name}
-        </h2>
-      </div>
-      <Grid container divided columns={3} style={{ marginTop: 40 }}>
+      <Grid container columns={3} style={{ marginTop: 40 }}>
+        <Grid.Row columns={1}>
+          <h2
+            style={{
+              margin: 25,
+              marginTop: 10,
+              marginBottom: 10,
+              float: 'left',
+            }}
+          >
+            {project.name}
+          </h2>
+        </Grid.Row>
         <Grid.Column width={2}>
           <Grid.Row centered>
-            {project &&
-              project.members &&
-              project.members.map((member) => (
-                <Grid.Row key={member.id}>
-                  <Image
-                    rounded
-                    size="tiny"
-                    src={
-                      member.imageURL ||
-                      `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
-                    }
-                  />
-                </Grid.Row>
-              ))}
+            <Members projectID={project.id} />
           </Grid.Row>
         </Grid.Column>
         <Grid.Column width={11}>
