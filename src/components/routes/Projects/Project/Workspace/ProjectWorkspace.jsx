@@ -7,13 +7,14 @@ import { GET_PROJECT_POSTS } from '../../../../../graphql';
 import PostCard from '../../../../PostCard';
 import Members from './Members';
 
-const ProjectWorkspace = ({ project }) => {
+// eslint-disable-next-line react/prop-types
+const ProjectWorkspace = ({ project, members }) => {
   // TODO: setup the feed
   const { data, loading } = useQuery(GET_PROJECT_POSTS, {
     variables: {
       projectID: project.id,
     },
-    pollInterval: 1500,
+    pollInterval: 3000,
     onCompleted: () => {
       console.log(data);
     },
@@ -39,7 +40,7 @@ const ProjectWorkspace = ({ project }) => {
         </Grid.Row>
         <Grid.Column width={2}>
           <Grid.Row centered>
-            <Members projectID={project.id} />
+            <Members members={members} />
           </Grid.Row>
         </Grid.Column>
         <Grid.Column width={11}>

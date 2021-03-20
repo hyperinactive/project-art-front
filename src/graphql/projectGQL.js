@@ -11,9 +11,6 @@ const GET_PROJECTS = gql`
         id
         username
       }
-      members {
-        username
-      }
     }
   }
 `;

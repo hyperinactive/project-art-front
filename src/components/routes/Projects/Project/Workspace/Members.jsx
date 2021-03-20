@@ -1,21 +1,25 @@
-import { useQuery } from '@apollo/client';
+/* eslint-disable react/prop-types */
 import React from 'react';
-import { GET_MEMBERS } from '../../../../../graphql';
+import { Grid, Image } from 'semantic-ui-react';
 
 // TODO: GET_PROJECT_MEMBERS and GET_PROJECT_INFO
-const Members = (projectID) => {
-  const { data: dData, loading } = useQuery(GET_MEMBERS, {
-    variables: {
-      projectID,
-    },
-    onCompleted() {
-      console.log(dData);
-    },
-  });
-
-  if (loading) return <div className="loading">Loading</div>;
-
-  return <div>some member list</div>;
+const Members = ({ members }) => {
+  console.log(members);
+  return (
+    <div className="members">
+      {members.getProjectMembers.map((member) => (
+        <Grid.Row key={member.id} style={{ margin: 10 }}>
+          <Image
+            rounded
+            size="tiny"
+            src={
+              member.imageURL || `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
+            }
+          />
+        </Grid.Row>
+      ))}
+    </div>
+  );
 };
 
 export default Members;

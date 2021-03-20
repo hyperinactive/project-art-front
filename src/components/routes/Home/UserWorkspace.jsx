@@ -1,11 +1,13 @@
 import { useQuery } from '@apollo/client';
 import React, { useContext } from 'react';
-import { Grid, Image, Loader } from 'semantic-ui-react';
+import { useHistory } from 'react-router-dom';
+import { Grid, Image, Loader, Dropdown } from 'semantic-ui-react';
 import { UserContext } from '../../../context/UserProvider';
 import { GET_FRIENDS, GET_USER_PROJECTS } from '../../../graphql';
 
 const UserWorkspace = () => {
   const { user } = useContext(UserContext);
+  const history = useHistory();
 
   const { data, loading, error } = useQuery(GET_FRIENDS);
   const {
@@ -23,6 +25,48 @@ const UserWorkspace = () => {
   // if so we're gonna display the loading component
   // if not we're displaying the posts
 
+  const trigger =
+    data &&
+    data.getFriends &&
+    data.getFriends.map((friend) => (
+      <Grid.Row key={friend.id} itemID={friend.id}>
+        <div
+          style={{
+            paddingBottom: 10,
+            paddingTop: 10,
+          }}
+        >
+          <Image
+            rounded
+            size="tiny"
+            src={
+              friend.imageURL || `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
+            }
+          />
+        </div>
+      </Grid.Row>
+    ));
+
+  const DropdownMenu = () => (
+    <Dropdown trigger={trigger} pointing="top left" icon={null}>
+      <Dropdown.Menu>
+        <Dropdown.Item
+          text="Profile"
+          icon="user"
+          onClick={(e) => {
+            history.push(
+              `/user/${e.target.parentElement.parentElement.parentElement.children[0].getAttribute(
+                'itemID'
+              )}`
+            );
+          }}
+        />
+        <Dropdown.Item text="Text" icon="paper plane" />
+        <Dropdown.Item text="Settings" icon="settings" />
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+
   return (
     <div className="userWorkspace">
       <Grid centered columns={3} divided>
@@ -39,29 +83,8 @@ const UserWorkspace = () => {
                   style={{
                     textAlign: 'center',
                   }}
-                >
-                  {data &&
-                    data.getFriends &&
-                    data.getFriends.map((friend) => (
-                      <Grid.Row key={friend.id}>
-                        <div
-                          style={{
-                            paddingBottom: 10,
-                            paddingTop: 10,
-                          }}
-                        >
-                          <Image
-                            rounded
-                            size="tiny"
-                            src={
-                              friend.imageURL ||
-                              `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
-                            }
-                          />
-                        </div>
-                      </Grid.Row>
-                    ))}
-                </div>
+                />
+                <DropdownMenu />
               </Grid.Row>
             </Grid.Column>
           )}
@@ -73,19 +96,21 @@ const UserWorkspace = () => {
                 Computing, things, beep bop
               </Loader>
             ) : (
-              <Grid.Row centered>
-                {projectData &&
-                  projectData.getUserProjects &&
-                  projectData.getUserProjects.map((project) => (
-                    <Grid.Row key={project.id}>
-                      <Image
-                        rounded
-                        size="tiny"
-                        src={`${process.env.PUBLIC_URL}/defaultAvatar.jpeg`}
-                      />
-                    </Grid.Row>
-                  ))}
-              </Grid.Row>
+              <>
+                <Grid.Row centered>
+                  {projectData &&
+                    projectData.getUserProjects &&
+                    projectData.getUserProjects.map((project) => (
+                      <Grid.Row key={project.id}>
+                        <Image
+                          rounded
+                          size="tiny"
+                          src={`${process.env.PUBLIC_URL}/defaultAvatar.jpeg`}
+                        />
+                      </Grid.Row>
+                    ))}
+                </Grid.Row>
+              </>
             )}
           </Grid.Column>
         </Grid.Row>
