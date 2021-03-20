@@ -50,6 +50,8 @@ const GET_USER = gql`
       username
       email
       status
+      skills
+      imageURL
     }
   }
 `;
@@ -64,4 +66,26 @@ const GET_FRIENDS = gql`
   }
 `;
 
-export { REGISTER_USER, LOGIN_USER, GET_USER, GET_FRIENDS };
+const UPDATE_USER = gql`
+  mutation updateUser(
+    $username: String!
+    $status: String!
+    $skills: String!
+    $image: Upload
+  ) {
+    updateUser(
+      username: $username
+      status: $status
+      skills: $skills
+      image: $image
+    ) {
+      id
+      username
+      createdAt
+      token
+      imageURL
+    }
+  }
+`;
+
+export { REGISTER_USER, LOGIN_USER, GET_USER, GET_FRIENDS, UPDATE_USER };

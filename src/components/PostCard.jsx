@@ -114,7 +114,7 @@ const PostCard = ({
           </Card.Content>
           {imageURL && (
             <Card.Content>
-              <Image size="medium" src={imageURL} />
+              <Image size="medium" src={`http://localhost:4000/${imageURL}`} />
             </Card.Content>
           )}
 

@@ -1,18 +1,34 @@
-import { useQuery } from '@apollo/client';
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-undef */
+/* eslint-disable react/jsx-props-no-spreading */
+import { useMutation, useQuery } from '@apollo/client';
+import React, { useContext, useState } from 'react';
+import { useParams, Redirect } from 'react-router-dom';
 import { Grid, Header, Loader, Image, Form, Button } from 'semantic-ui-react';
-import { GET_USER } from '../../../graphql';
+import { UserContext } from '../../../context/UserProvider';
+import { GET_USER, UPDATE_USER } from '../../../graphql';
 import './Settings.css';
 
 const Settings = () => {
+  const { user, login } = useContext(UserContext);
   const { userID } = useParams();
+
+  if (!user || userID !== user.id) {
+    return <Redirect to="/" />;
+  }
+
+  const [errors, setErrors] = useState({});
   const [state, setState] = useState({
     username: '',
-    email: '',
     skills: '',
     status: '',
   });
+  const [preview, setPreview] = useState(
+    `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
+  );
+  const [image, setImage] = useState(null);
+
   const { data, loading } = useQuery(GET_USER, {
     variables: {
       userID,
@@ -20,21 +36,65 @@ const Settings = () => {
     onCompleted: () => {
       setState({
         username: data.getUser.username,
-        email: data.getUser.email,
         skills: data.getUser.skills,
         status: data.getUser.status,
       });
+      if (data.getUser.imageURL) {
+        setPreview(`http://localhost:4000/${data.getUser.imageURL}`);
+      }
+      setImage(`http://localhost:4000/${data.getUser.imageURL}`);
+    },
+    onError: (err) => {
+      console.log(err);
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+    },
+  });
+
+  const [updateUser] = useMutation(UPDATE_USER, {
+    update: (cache, result) => {
+      cache.writeQuery({
+        query: GET_USER,
+        variables: {
+          userID: user.id,
+        },
+        data: result.data.updateUser,
+      });
+    },
+    onCompleted: (res) => {
+      console.log(res);
+      login(res.updateUser);
     },
     onError: (err) => {
       console.log(err);
     },
   });
 
+  const inputOnChange = (e) => {
+    console.log(e.target.files[0]);
+    setPreview(URL.createObjectURL(e.target.files[0]));
+    setImage(e.target.files[0]);
+    console.log(image);
+  };
+
   const handleChange = (e) => {
     setState((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    updateUser({
+      variables: {
+        username: state.username,
+        status: state.status,
+        skills: state.skills,
+        image,
+      },
+    });
+    console.log(state);
+    console.log(image);
   };
 
   return (
@@ -47,18 +107,26 @@ const Settings = () => {
         <>
           <Grid
             textAlign="center"
-            style={{ height: '75vh' }}
+            style={{ height: '90vh' }}
             verticalAlign="middle"
           >
             <Grid.Column style={{ maxWidth: 450 }}>
-              <Form>
+              <Form onSubmit={handleSubmit}>
                 <Form.Group>
                   <Header as="h4" icon textAlign="center">
                     <Image
+                      className="settings__avatar"
                       style={{ width: 80 }}
-                      src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
+                      src={preview}
                       rounded
                     />
+
+                    <Form.Input
+                      type="file"
+                      style={{ marginTop: 10 }}
+                      onChange={inputOnChange}
+                    />
+
                     <Form.Input
                       label="username"
                       type="text"
@@ -66,19 +134,23 @@ const Settings = () => {
                       value={state.username}
                       name="username"
                       onChange={handleChange}
+                      error={errors.usernameCheck}
                     />
                     <Form.Input
                       label="status"
                       type="text"
                       className="settings__input"
                       value={state.status}
+                      name="status"
                       onChange={handleChange}
                     />
-                    <Form.Input
+                    <Form.TextArea
+                      style={{ textAlign: 'center' }}
                       label="skills"
                       type="text"
                       className="settings__input"
                       value={state.skills}
+                      name="skills"
                       onChange={handleChange}
                     />
                   </Header>

@@ -13,6 +13,9 @@ const Profile = (props) => {
     variables: {
       userID,
     },
+    onCompleted: () => {
+      console.log(data);
+    },
     onError: (err) => {
       console.log(err.graphQLErrors[0].extensions.exception.errors);
     },
@@ -39,7 +42,10 @@ const Profile = (props) => {
               <Header as="h2" icon textAlign="center">
                 <Image
                   style={{ width: 80 }}
-                  src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
+                  src={
+                    data.getUser.imageURL ||
+                    `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
+                  }
                   circular
                 />
                 <Header.Content style={{ margin: 10, marginTop: 20 }}>

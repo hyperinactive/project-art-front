@@ -42,6 +42,7 @@ export const UserProvider = (props) => {
   checkTokenExpiration();
 
   const login = (data) => {
+    console.log('called from the context');
     // to have data persist after a page reload we'll use the localStorage to store the tokens of the logged users
     // we're making a field called ueserToken and setting the user.token to it
     localStorage.setItem('userToken', data.token);

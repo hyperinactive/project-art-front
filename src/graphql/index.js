@@ -1,4 +1,10 @@
-export { REGISTER_USER, LOGIN_USER, GET_USER, GET_FRIENDS } from './userGQL';
+export {
+  REGISTER_USER,
+  LOGIN_USER,
+  GET_USER,
+  GET_FRIENDS,
+  UPDATE_USER,
+} from './userGQL';
 export { DELETE_COMMENT, CREATE_COMMENT } from './commentGQL';
 export {
   GET_PROJECT,
