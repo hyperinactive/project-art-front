@@ -1,16 +1,15 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/destructuring-assignment */
 import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/client';
 import { Button, Form, Grid, Header, Icon } from 'semantic-ui-react';
-import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 
 import { UserContext } from '../../context/UserProvider';
 import { LOGIN_USER } from '../../graphql';
 import { NavigationContext } from '../../context/NavigationProvider';
 
-const LoginForm = (props) => {
+const LoginForm = () => {
   const { setActiveItem } = useContext(NavigationContext);
+  const history = useHistory();
 
   const [isPassVisible, setIsPassVisible] = useState(false);
   const [username, setUsername] = useState('');
@@ -28,7 +27,7 @@ const LoginForm = (props) => {
       context.login(result.data.login);
 
       // take us to the home page if register succeeded
-      props.history.push('/');
+      history.push('/');
       setActiveItem('home');
     },
     // it expects some variables to be sent for mutations
@@ -140,7 +139,7 @@ const LoginForm = (props) => {
             tabIndex="0"
             style={{ marginTop: 10 }}
             onClick={() => {
-              props.history.push('/register');
+              history.push('/register');
               setActiveItem('register');
             }}
           >
@@ -151,12 +150,6 @@ const LoginForm = (props) => {
       </Grid>
     </div>
   );
-};
-
-// TODO: fix this please for the love of God
-// history prop?
-LoginForm.propTypes = {
-  history: PropTypes.any.isRequired,
 };
 
 export default LoginForm;

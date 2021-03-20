@@ -16,7 +16,7 @@ import SinglePost from './components/routes/SinglePost';
 import NotFoundPage from './components/routes/NotFoundPage';
 import Projects from './components/routes/Projects/Projects';
 import Feed from './components/routes/Feed';
-import Settings from './components/routes/Settings';
+import Settings from './components/routes/Settings/Settings';
 import Profile from './components/routes/Profile';
 import Project from './components/routes/Projects/Project/Project';
 import ProjectForm from './components/routes/Projects/ProjectForm';

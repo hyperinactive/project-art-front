@@ -21,9 +21,6 @@ const UserWorkspace = () => {
   });
 
   if (error || projectError) return <h1>Error</h1>;
-  // here, we're using the loading bool to tell us if the data is being fetched
-  // if so we're gonna display the loading component
-  // if not we're displaying the posts
 
   const trigger =
     data &&

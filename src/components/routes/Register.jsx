@@ -12,10 +12,12 @@ const Register = (props) => {
   const { setActiveItem } = useContext(NavigationContext);
 
   // gets the job done but too repetative
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [state, setState] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
 
   const [isPassVisible, setIsPassVisible] = useState(false);
 
@@ -23,6 +25,13 @@ const Register = (props) => {
 
   // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    setState((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const [registerUser, { loading }] = useMutation(REGISTER_USER, {
     // update will trigger if everything's went smoothly
@@ -35,10 +44,10 @@ const Register = (props) => {
     },
     // it expects some variables to be sent for mutations
     variables: {
-      username,
-      email,
-      password,
-      confirmPassword,
+      username: state.username,
+      email: state.email,
+      password: state.password,
+      confirmPassword: state.confirmPassword,
     },
     // handle errors
     onError: (err) => {
@@ -73,14 +82,12 @@ const Register = (props) => {
             {/* <Segment stacked> */}
             <Form.Input
               fluid
+              name="username"
               placeholder="username"
               type="text"
               error={errors.username || errors.usernameInUse}
-              value={username}
-              onChange={(e) => {
-                setUsername(e.target.value);
-                setErrors({});
-              }}
+              value={state.username}
+              onChange={handleChange}
             />
             <Form.Input
               fluid
@@ -88,29 +95,23 @@ const Register = (props) => {
               placeholder="some.mail@com"
               type="email"
               error={errors.email || errors.emailInUse}
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setErrors({});
-              }}
+              value={state.email}
+              onChange={handleChange}
             />
             <Form.Input
               fluid
+              name="password"
               placeholder="password"
               type={isPassVisible ? 'text' : 'password'}
               error={errors.password}
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                setErrors({});
-              }}
+              value={state.password}
+              onChange={handleChange}
             >
               <input />
               <Button
                 type="button"
                 onClick={() => setIsPassVisible(!isPassVisible)}
               >
-                {/* {isPassVisible ? 'visible' : 'hidden'} */}
                 <Icon
                   name={isPassVisible ? 'eye' : 'eye slash'}
                   style={{ margin: 0 }}
@@ -119,14 +120,12 @@ const Register = (props) => {
             </Form.Input>
             <Form.Input
               fluid
+              name="confirmPassword"
               placeholder="confirm password"
               type={isPassVisible ? 'text' : 'password'}
               error={errors.confirmPassword}
-              value={confirmPassword}
-              onChange={(e) => {
-                setConfirmPassword(e.target.value);
-                setErrors({});
-              }}
+              value={state.confirmPassword}
+              onChange={handleChange}
             />
 
             <Button

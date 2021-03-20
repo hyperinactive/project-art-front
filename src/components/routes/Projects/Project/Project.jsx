@@ -1,25 +1,19 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-undef */
-/* eslint-disable react/prop-types */
 import { useQuery } from '@apollo/client';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Loader } from 'semantic-ui-react';
+import { useParams } from 'react-router-dom';
 import { UserContext } from '../../../../context/UserProvider';
 import { GET_MEMBERS, GET_PROJECT } from '../../../../graphql';
 import ProjectWorkspace from './Workspace/ProjectWorkspace';
 import ProjectProfile from './ProjectProfile';
 
-const isMemeber = (members, user) => {
-  console.log(members);
-  console.log('is a member?');
-  console.log(members.find((member) => member.id === user.id) !== undefined);
-  return members.find((member) => member.id === user.id) !== undefined;
-};
-const Project = (props) => {
+const isMemeber = (members, user) =>
+  members.find((member) => member.id === user.id) !== undefined;
+const Project = () => {
   const { user } = useContext(UserContext);
-  const { projectID } = props.match.params;
+  const { projectID } = useParams();
 
   const { data: projectData, loading: projectLoading } = useQuery(GET_PROJECT, {
     variables: {
