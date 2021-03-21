@@ -13,7 +13,9 @@ const Members = ({ members }) => {
             rounded
             size="tiny"
             src={
-              member.imageURL || `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
+              member.imageURL
+                ? `http://localhost:4000/files/${member.imageURL}`
+                : `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
             }
           />
         </Grid.Row>

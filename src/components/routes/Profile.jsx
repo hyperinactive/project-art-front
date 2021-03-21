@@ -43,10 +43,11 @@ const Profile = (props) => {
                 <Image
                   style={{ width: 80 }}
                   src={
-                    data.getUser.imageURL ||
-                    `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
+                    data.getUser.imageURL
+                      ? `http://localhost:4000/files/${data.getUser.imageURL}`
+                      : `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
                   }
-                  circular
+                  rounded
                 />
                 <Header.Content style={{ margin: 10, marginTop: 20 }}>
                   {data.getUser.username}

@@ -200,6 +200,7 @@ const GET_PROJECT_POSTS = gql`
         id
         username
         status
+        imageURL
       }
     }
   }

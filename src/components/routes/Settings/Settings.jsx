@@ -40,9 +40,9 @@ const Settings = () => {
         status: data.getUser.status,
       });
       if (data.getUser.imageURL) {
-        setPreview(`http://localhost:4000/${data.getUser.imageURL}`);
+        setPreview(`http://localhost:4000/files/${data.getUser.imageURL}`);
       }
-      setImage(`http://localhost:4000/${data.getUser.imageURL}`);
+      setImage(`http://localhost:4000/files/${data.getUser.imageURL}`);
     },
     onError: (err) => {
       console.log(err);

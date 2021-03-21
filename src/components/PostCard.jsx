@@ -38,6 +38,7 @@ const PostCard = ({
   };
 
   const { user } = useContext(UserContext);
+  console.log(postUser);
 
   return (
     <div
@@ -58,7 +59,11 @@ const PostCard = ({
               floated="left"
               circular
               size="mini"
-              src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
+              src={
+                postUser.imageURL
+                  ? `http://localhost:4000/files/${postUser.imageURL}`
+                  : 'https://react.semantic-ui.com/images/avatar/large/steve.jpg'
+              }
             />
             <div
               style={{
@@ -114,7 +119,14 @@ const PostCard = ({
           </Card.Content>
           {imageURL && (
             <Card.Content>
-              <Image size="medium" src={`http://localhost:4000/${imageURL}`} />
+              <Image
+                size="medium"
+                src={
+                  imageURL
+                    ? `http://localhost:4000/files/${imageURL}`
+                    : 'https://react.semantic-ui.com/images/avatar/large/steve.jpg'
+                }
+              />
             </Card.Content>
           )}
 
