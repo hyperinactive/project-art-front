@@ -1,5 +1,4 @@
 /* eslint-disable react/forbid-prop-types */
-/* eslint-disable no-unused-vars */
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -30,15 +29,8 @@ const PostCard = ({
     imageURL,
     user: postUser,
   },
-  props,
 }) => {
-  const likeHandle = (e) => {
-    // e.stopPropagation(); // didn't work cause we're using links, prevernDefault does work though
-    e.preventDefault();
-  };
-
   const { user } = useContext(UserContext);
-  console.log(postUser);
 
   return (
     <div
@@ -62,7 +54,7 @@ const PostCard = ({
               src={
                 postUser.imageURL
                   ? `http://localhost:4000/files/${postUser.imageURL}`
-                  : 'https://react.semantic-ui.com/images/avatar/large/steve.jpg'
+                  : `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
               }
             />
             <div
@@ -74,7 +66,6 @@ const PostCard = ({
               }}
             >
               <h3 style={{ margin: 0 }}>{postUser.username}</h3>
-              <p style={{ color: '#6f6f6f', margin: 0 }}>{postUser.status}</p>
               <p style={{ color: '#6f6f6f' }}>{moment(createdAt).fromNow()}</p>
               <p>{body}</p>
             </div>
@@ -155,7 +146,6 @@ PostCard.defaultProps = {
   likeCount: 0,
   commentCount: 0,
   likes: [],
-  props: [],
 };
 
 PostCard.propTypes = {
@@ -167,7 +157,6 @@ PostCard.propTypes = {
   likeCount: PropTypes.number,
   commentCount: PropTypes.number,
   likes: PropTypes.array,
-  props: PropTypes.array,
 };
 
 export default PostCard;

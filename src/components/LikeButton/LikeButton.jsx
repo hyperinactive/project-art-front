@@ -65,14 +65,16 @@ const LikeButton = ({ post: { id, likeCount, likes }, user }) => {
       </Button>
     )
   ) : (
-    <Button fluid labelPosition="right" as="div">
-      <Button
-        as={Link}
-        to="/login"
-        color="orange"
-        basic
-        onClick={() => setActiveItem('login')}
-      >
+    <Button
+      labelPosition="right"
+      fluid
+      as={Link}
+      to="/login"
+      onClick={() => {
+        setActiveItem('login');
+      }}
+    >
+      <Button color="orange" basic fluid>
         <Icon name="heart" />
       </Button>
     </Button>

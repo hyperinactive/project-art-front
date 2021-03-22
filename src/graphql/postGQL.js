@@ -7,10 +7,23 @@ const GET_POST = gql`
       body
       createdAt
       username
+      imageURL
       likes {
         id
         username
         createdAt
+      }
+      user {
+        id
+        status
+        imageURL
+        username
+      }
+      project {
+        id
+        members {
+          id
+        }
       }
       likeCount
       comments {

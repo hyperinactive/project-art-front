@@ -1,8 +1,8 @@
 import React from 'react';
 import { Grid, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-// TODO: GET_PROJECT_MEMBERS and GET_PROJECT_INFO
 const Members = ({ members }) => (
   <div className="members">
     {members.map((member) => (
@@ -15,6 +15,8 @@ const Members = ({ members }) => (
               ? `http://localhost:4000/files/${member.imageURL}`
               : `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
           }
+          as={Link}
+          to={`/user/${member.id}`}
         />
       </Grid.Row>
     ))}
