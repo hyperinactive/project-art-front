@@ -26,6 +26,9 @@ const GET_PROJECT = gql`
         id
         username
       }
+      members {
+        id
+      }
     }
   }
 `;
@@ -81,6 +84,7 @@ const GET_MEMBERS = gql`
   query getProjectMembers($projectID: ID!) {
     getProjectMembers(projectID: $projectID) {
       id
+      status
       username
       imageURL
     }

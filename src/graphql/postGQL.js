@@ -189,11 +189,6 @@ const GET_PROJECT_POSTS = gql`
         createdAt
       }
       likeCount
-      comments {
-        id
-        body
-        username
-      }
       commentCount
       imageURL
       user {

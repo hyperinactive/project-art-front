@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Header, Image } from 'semantic-ui-react';
 import { UserContext } from '../../../../context/UserProvider';
-import { ADD_MEMBER, GET_PROJECT } from '../../../../graphql';
+import { ADD_MEMBER, GET_MEMBERS } from '../../../../graphql';
 
 // project.project.<attributes>...
 const ProjectProfile = ({ project }) => {
@@ -16,11 +16,15 @@ const ProjectProfile = ({ project }) => {
     },
     update: (cache, result) => {
       cache.writeQuery({
-        query: GET_PROJECT,
-        data: {
-          getProject: result.data.addMember,
+        query: GET_MEMBERS,
+        variables: {
+          projectID: project.id,
         },
+        data: result.data.addMember,
       });
+    },
+    onCompleted: () => {
+      console.log('completed');
     },
   });
   const handleClick = (e) => {

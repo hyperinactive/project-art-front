@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Image } from 'semantic-ui-react';
+import { Card } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -9,12 +9,6 @@ const ProjectCard = ({
   <div style={{ paddingTop: 10, margin: 20 }} className="projectCard">
     <Card fluid className="projectCard__card" as={Link} to={`/projects/${id}`}>
       <Card.Content>
-        <Image
-          avatar
-          floated="left"
-          src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
-          className="projectCard__avatar"
-        />
         <Card.Header>{name}</Card.Header>
         <Card.Meta>{description}</Card.Meta>
       </Card.Content>

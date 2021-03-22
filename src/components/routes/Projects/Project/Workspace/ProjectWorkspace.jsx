@@ -81,10 +81,11 @@ ProjectWorkspace.propTypes = {
     id: PropType.string.isRequired,
     name: PropType.string.isRequired,
     description: PropType.string.isRequired,
-    members: PropType.arrayOf({
-      id: PropType.string.isRequired,
-      imageURL: PropType.string.isRequired,
-    }),
+    members: PropType.arrayOf(
+      PropType.shape({
+        id: PropType.string.isRequired,
+      })
+    ),
   }).isRequired,
 };
 
