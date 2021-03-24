@@ -3,7 +3,7 @@ import { Grid, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const Members = ({ members }) => (
+const Members = ({ members, type }) => (
   <div className="members">
     {members.map((member) => (
       <Grid.Row key={member.id} style={{ margin: 10 }}>
@@ -16,7 +16,7 @@ const Members = ({ members }) => (
               : `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
           }
           as={Link}
-          to={`/user/${member.id}`}
+          to={`/${type}/${member.id}`}
         />
       </Grid.Row>
     ))}
@@ -27,6 +27,7 @@ Members.defaultProps = {
   members: PropTypes.shape({
     imageURL: null,
     map: () => {},
+    type: '',
   }),
 };
 
@@ -40,6 +41,7 @@ Members.propTypes = {
       map: PropTypes.func,
     })
   ),
+  type: PropTypes.string.isRequired,
 };
 
 export default Members;

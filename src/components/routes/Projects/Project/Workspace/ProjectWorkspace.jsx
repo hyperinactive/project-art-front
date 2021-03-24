@@ -40,7 +40,7 @@ const ProjectWorkspace = ({ project, members }) => {
         </Grid.Row>
         <Grid.Column width={2}>
           <Grid.Row centered>
-            <Members members={members} />
+            <Members members={members} type="user" />
           </Grid.Row>
         </Grid.Column>
         <Grid.Column width={11}>

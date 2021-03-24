@@ -6,7 +6,7 @@ import ProjectCard from './ProjectCard';
 
 const ProjectSearch = () => {
   const { loading, error, data } = useQuery(GET_PROJECTS, {
-    pollInterval: 3000,
+    pollInterval: 1500,
   });
   const [searchTerm, setSearchTerm] = useState('');
 

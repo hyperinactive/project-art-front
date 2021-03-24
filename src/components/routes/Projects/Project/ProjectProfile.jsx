@@ -1,10 +1,12 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useMutation } from '@apollo/client';
+import { cloneDeep } from '@apollo/client/utilities';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Header, Image } from 'semantic-ui-react';
 import { UserContext } from '../../../../context/UserProvider';
-import { ADD_MEMBER, GET_MEMBERS } from '../../../../graphql';
+import { ADD_MEMBER, GET_MEMBERS, GET_PROJECT } from '../../../../graphql';
 
 // project.project.<attributes>...
 const ProjectProfile = ({ project }) => {
@@ -15,12 +17,53 @@ const ProjectProfile = ({ project }) => {
       projectID: project.id,
     },
     update: (cache, result) => {
+      const members = cache.readQuery({
+        query: GET_MEMBERS,
+        variables: {
+          projectID: project.id,
+        },
+      });
+
+      const membersClone = {};
+      membersClone.getProjectMembers = [
+        ...cloneDeep(members.getProjectMembers),
+        result.data.addMember,
+      ];
+
       cache.writeQuery({
         query: GET_MEMBERS,
         variables: {
           projectID: project.id,
         },
-        data: result.data.addMember,
+        data: {
+          getProjectMembers: membersClone.getProjectMembers,
+        },
+      });
+
+      const projectData = cache.readQuery({
+        query: GET_PROJECT,
+        variables: {
+          projectID: project.id,
+        },
+      });
+
+      const projectClone = {};
+      projectClone.getProject = cloneDeep(projectData.getProject);
+      projectClone.getProject.members = [
+        ...projectClone.getProject.members,
+        result.data.addMember.id,
+      ];
+
+      cache.writeQuery({
+        query: GET_PROJECT,
+        variables: {
+          projectID: project.id,
+        },
+        data: {
+          getProject: {
+            members: projectClone.getProject.members,
+          },
+        },
       });
     },
     onCompleted: () => {

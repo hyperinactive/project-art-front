@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useMutation } from '@apollo/client';
+import { cloneDeep } from '@apollo/client/utilities';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Grid, Form, Header } from 'semantic-ui-react';
-import { CREATE_PROJECT } from '../../../graphql';
+import { CREATE_PROJECT, GET_PROJECTS } from '../../../graphql';
 
 const ProjectForm = () => {
   // TODO: needs to redirect to the project page or smth
@@ -15,6 +16,24 @@ const ProjectForm = () => {
   const [createProject] = useMutation(CREATE_PROJECT, {
     variables: {
       name,
+    },
+    update: (cache, result) => {
+      const projects = cache.readQuery({
+        query: GET_PROJECTS,
+      });
+
+      const projectsClone = cloneDeep(projects);
+      projectsClone.getProjects = [
+        ...projectsClone.getProjects,
+        result.data.createProject,
+      ];
+
+      cache.writeQuery({
+        query: GET_PROJECTS,
+        data: {
+          getProjects: projectsClone.getProjects,
+        },
+      });
     },
     onCompleted: (data) => {
       setIsCrated((prevState) => ({

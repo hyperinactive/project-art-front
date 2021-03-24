@@ -56,17 +56,8 @@ const ADD_MEMBER = gql`
   mutation addMember($projectID: ID!) {
     addMember(projectID: $projectID) {
       id
-      name
-      description
-      memberCount
-      owner {
-        id
-        username
-      }
-      members {
-        id
-        username
-      }
+      username
+      imageURL
     }
   }
 `;
