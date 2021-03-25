@@ -13,8 +13,8 @@ import {
 import PropTypes from 'prop-types';
 
 import { UserContext } from '../context/UserProvider';
-import LikeButton from './LikeButton/LikeButton';
-import DeleteButton from './DeleteButton';
+import LikeButton from './shared/LikeButton/LikeButton';
+import DeleteButton from './shared/DeleteButton';
 
 // destructuring directly from the props
 const PostCard = ({

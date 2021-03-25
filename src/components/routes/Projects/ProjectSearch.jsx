@@ -11,7 +11,6 @@ const ProjectSearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   if (error) return <div>Uh, oh, error</div>;
-  if (data) console.log(data);
 
   return (
     <div className="projectSearch">

@@ -8,8 +8,8 @@ import { useHistory, useParams, Redirect } from 'react-router-dom';
 import { GET_POST } from '../../graphql';
 
 import { UserContext } from '../../context/UserProvider';
-import LikeButton from '../LikeButton/LikeButton';
-import DeleteButton from '../DeleteButton';
+import LikeButton from '../shared/LikeButton/LikeButton';
+import DeleteButton from '../shared/DeleteButton';
 import PlainComment from '../PlainComment';
 import CommentForm from '../CommentForm';
 

@@ -4,7 +4,12 @@ import { useMutation } from '@apollo/client';
 import { Button, Icon, Confirm } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-import { DELETE_COMMENT, DELETE_POST, GET_POSTS, GET_POST } from '../graphql';
+import {
+  DELETE_COMMENT,
+  DELETE_POST,
+  GET_POSTS,
+  GET_POST,
+} from '../../graphql';
 
 const DeleteButton = (props) => {
   const { postID, commentID, callback, type } = props;
@@ -71,16 +76,6 @@ const DeleteButton = (props) => {
         callback();
       }
     },
-    // NOTE: refetchQueries gets the job done
-    // downside: extra calls to the server
-    // need to figure out why the cache doesn't detect changes in posts after comment deletion
-
-    // recomment this!
-    // refetchQueries: [{ query: GET_POSTS }],
-
-    // onError() {
-    //   console.log(error);
-    // },
   });
 
   return (

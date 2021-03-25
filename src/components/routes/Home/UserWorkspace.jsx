@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Grid, Loader } from 'semantic-ui-react';
 import { UserContext } from '../../../context/UserProvider';
 import { GET_FRIENDS, GET_USER_PROJECTS } from '../../../graphql';
-import Members from '../Projects/Project/Workspace/Members';
+import Members from '../../shared/Members';
 
 const UserWorkspace = () => {
   const { user } = useContext(UserContext);

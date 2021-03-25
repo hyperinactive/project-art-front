@@ -53,10 +53,11 @@ const Project = () => {
             members={mData.getProjectMembers}
           />
         ) : (
-          <ProjectProfile project={data.getProject} />
+          data &&
+          data.getProject && <ProjectProfile project={data.getProject} />
         ))
       ) : (
-        <ProjectProfile project={data.getProject} />
+        data && data.getProject && <ProjectProfile project={data.getProject} />
       )}
     </div>
   );

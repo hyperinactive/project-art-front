@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 import PostProjectForm from './PostProjectForm';
 import { GET_PROJECT_POSTS } from '../../../../../graphql';
 import PostCard from '../../../../PostCard';
-import Members from './Members';
+import Members from '../../../../shared/Members';
 
 // eslint-disable-next-line react/prop-types
 const ProjectWorkspace = ({ project, members }) => {

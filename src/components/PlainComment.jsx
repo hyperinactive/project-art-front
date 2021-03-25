@@ -3,7 +3,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 
 import { Comment, Icon } from 'semantic-ui-react';
-import DeleteButton from './DeleteButton';
+import DeleteButton from './shared/DeleteButton';
 
 const PlainComment = ({
   props: { id, createdAt, username, body },

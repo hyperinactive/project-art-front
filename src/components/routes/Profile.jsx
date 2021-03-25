@@ -1,14 +1,14 @@
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prop-types */
 import { useQuery } from '@apollo/client';
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import { Grid, Header, Image, Loader } from 'semantic-ui-react';
 
 import { GET_USER } from '../../graphql';
 
-const Profile = (props) => {
-  const { userID } = props.match.params;
+const Profile = () => {
+  const params = useParams();
+  const { userID } = params;
   const { data, loading, error } = useQuery(GET_USER, {
     variables: {
       userID,
