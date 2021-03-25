@@ -4,6 +4,7 @@ export {
   GET_USER,
   GET_FRIENDS,
   UPDATE_USER,
+  ADD_FRIEND,
 } from './userGQL';
 export { DELETE_COMMENT, CREATE_COMMENT } from './commentGQL';
 export {

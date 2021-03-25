@@ -88,4 +88,20 @@ const UPDATE_USER = gql`
   }
 `;
 
-export { REGISTER_USER, LOGIN_USER, GET_USER, GET_FRIENDS, UPDATE_USER };
+const ADD_FRIEND = gql`
+  mutation addFriend($userID: ID, $username: String) {
+    addFriend(userID: $userID, username: $username) {
+      id
+      username
+    }
+  }
+`;
+
+export {
+  REGISTER_USER,
+  LOGIN_USER,
+  GET_USER,
+  GET_FRIENDS,
+  UPDATE_USER,
+  ADD_FRIEND,
+};

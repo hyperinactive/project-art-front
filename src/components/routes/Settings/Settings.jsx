@@ -10,6 +10,7 @@ import { UserContext } from '../../../context/UserProvider';
 import { GET_USER, UPDATE_USER } from '../../../graphql';
 import './Settings.css';
 
+// TODO: cache update when the imageURL changes
 const Settings = () => {
   const { user, login } = useContext(UserContext);
   const { userID } = useParams();
