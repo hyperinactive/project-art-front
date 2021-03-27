@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { useContext } from 'react';
-import { Grid, Loader, Image, Card, Icon } from 'semantic-ui-react';
+import { Grid, Loader, Image, Card, Icon, Dropdown } from 'semantic-ui-react';
 import { useQuery } from '@apollo/client';
 import moment from 'moment';
-import { useHistory, useParams, Redirect } from 'react-router-dom';
+import { useHistory, useParams, Redirect, Link } from 'react-router-dom';
 import { GET_POST } from '../../graphql';
 
 import { UserContext } from '../../context/UserProvider';
@@ -71,6 +71,27 @@ const SinglePost = () => {
                     </Card.Content>
                   )}
                   <Card.Content>
+                    <div style={{ float: 'right' }}>
+                      <Dropdown
+                        icon="ellipsis vertical"
+                        onClick={(e) => {
+                          e.preventDefault();
+                        }}
+                      >
+                        <Dropdown.Menu>
+                          <Dropdown.Item text="Delete" />
+                          <Dropdown.Item text="Edit" />
+                          <Dropdown.Item text="Share" />
+                          {user && user.username === username && (
+                            <DeleteButton
+                              postID={id}
+                              type="post"
+                              callback={redirect}
+                            />
+                          )}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
                     <Card.Header>{username}</Card.Header>
                     <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
                     <Card.Description>{body}</Card.Description>
@@ -78,14 +99,6 @@ const SinglePost = () => {
                   <hr />
                   <Card.Content extra>
                     <LikeButton user={user} post={{ id, likeCount, likes }} />
-
-                    {user && user.username === username && (
-                      <DeleteButton
-                        postID={id}
-                        type="post"
-                        callback={redirect}
-                      />
-                    )}
                   </Card.Content>
                 </Card>
               </Grid.Row>
@@ -111,6 +124,8 @@ const SinglePost = () => {
                     : `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
                 }
                 rounded
+                as={Link}
+                to={`/user/${postUser.id}`}
                 size="medium"
                 float="right"
               />

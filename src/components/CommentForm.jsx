@@ -39,12 +39,11 @@ const CommentForm = ({ postID }) => {
       });
     },
     onError: (err) => {
-      console.log(err.graphQLErrors[0]);
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
   });
   return (
-    <div className="commentForm">
+    <div className="commentForm" style={{ marginTop: 30, textAlign: 'center' }}>
       <Transition.Group>
         <Form
           reply
@@ -63,8 +62,6 @@ const CommentForm = ({ postID }) => {
                 setComment(e.target.value);
                 setErrors({});
               }}
-              // TODO: set up the error handlers for comments
-              // TODO: actually, the whole error thingy needs a retouch
             />
             <Button
               content="Add Reply"
@@ -72,6 +69,7 @@ const CommentForm = ({ postID }) => {
               icon="edit"
               color="orange"
               type="submit"
+              fluid
             />
           </Form.Field>
         </Form>

@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
-import { Comment, Icon } from 'semantic-ui-react';
+import { Card, Image, Dropdown } from 'semantic-ui-react';
 import DeleteButton from './shared/DeleteButton';
 
 const PlainComment = ({
@@ -10,44 +10,43 @@ const PlainComment = ({
   user,
   postID,
 }) => (
-  <div className="plainComment" style={{ margin: 20 }}>
-    {/* <Card fluid>
+  <div className="plainComment" style={{ marginTop: 15, marginBottom: 15 }}>
+    <Card fluid>
       <Card.Content>
+        <div style={{ float: 'right' }}>
+          <Dropdown
+            icon="ellipsis vertical"
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <Dropdown.Menu>
+              <Dropdown.Item text="Delete" />
+              <Dropdown.Item text="Edit" />
+              <Dropdown.Item text="Share" />
+              {user && user.username === username && (
+                <Dropdown.Item>
+                  <DeleteButton postID={postID} commentID={id} type="comment" />
+                </Dropdown.Item>
+              )}
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+        <Image
+          avatar
+          size="massive"
+          floated="left"
+          src="https://react.semantic-ui.com/images/avatar/large/molly.png"
+        />
         <Card.Header>{username}</Card.Header>
         <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
-        <Card.Description>{body}</Card.Description>
+
+        <Card.Content>
+          <Card.Description>{body}</Card.Description>
+        </Card.Content>
       </Card.Content>
-    </Card> */}
+    </Card>
     {/* NOTE: Comment Groups allow for comment nesting */}
-    <Comment>
-      <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/matt.jpg" />
-      <Comment.Content>
-        <Comment.Author as="a">{username}</Comment.Author>
-        <Comment.Metadata>
-          <div style={{ display: 'inline' }}>{moment(createdAt).fromNow()}</div>
-          <div style={{ display: 'inline', margin: 10 }}>2 days ago</div>
-          <div style={{ display: 'inline' }}>
-            <Icon name="star" />5 Faves
-          </div>
-        </Comment.Metadata>
-        <Comment.Text>{body}</Comment.Text>
-        {/* so many options */}
-        <Comment.Actions>
-          <Comment.Action>Reply</Comment.Action>
-          <Comment.Action>Save</Comment.Action>
-          <Comment.Action>Hide</Comment.Action>
-          <Comment.Action>
-            <Icon name="expand" />
-            Full-screen
-          </Comment.Action>
-          <Comment.Action>
-            {user && user.username === username && (
-              <DeleteButton postID={postID} commentID={id} type="comment" />
-            )}
-          </Comment.Action>
-        </Comment.Actions>
-      </Comment.Content>
-    </Comment>
   </div>
 );
 

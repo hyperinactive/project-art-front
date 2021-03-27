@@ -8,9 +8,15 @@ const checkTokenExpiration = () => {
   if (localStorage.getItem('userToken')) {
     const decodedToken = jwtDecode(localStorage.getItem('userToken'));
 
-    // remove the user token if it expired
-    // log him out actually
-    // TODO: refresh the token when it expires
+    // TODO:
+    // if the expiration is within the 5 minutes, regenerate the token
+    // if (
+    //   decodedToken.exp * 1000 - new Date(Date.now() + 5 * 60 * 1000) <
+    //   60 * 5 * 1000
+    // ) {
+    //   // regen the token
+    // }
+
     if (decodedToken.exp * 1000 < Date.now()) {
       localStorage.removeItem('userToken');
       initialState.user = null;
@@ -42,7 +48,6 @@ export const UserProvider = (props) => {
   checkTokenExpiration();
 
   const login = (data) => {
-    console.log('called from the context');
     // to have data persist after a page reload we'll use the localStorage to store the tokens of the logged users
     // we're making a field called ueserToken and setting the user.token to it
     localStorage.setItem('userToken', data.token);
