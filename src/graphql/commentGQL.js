@@ -22,5 +22,18 @@ const CREATE_COMMENT = gql`
   }
 `;
 
-// eslint-disable-next-line import/prefer-default-export
-export { DELETE_COMMENT, CREATE_COMMENT };
+const GET_COMMENTS = gql`
+  query getComments($postID: ID!) {
+    getComments(postID: $postID) {
+      id
+      createdAt
+      body
+      user {
+        id
+        username
+      }
+    }
+  }
+`;
+
+export { DELETE_COMMENT, CREATE_COMMENT, GET_COMMENTS };

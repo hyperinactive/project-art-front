@@ -5,6 +5,7 @@ import { Form, Button, Transition } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { CREATE_COMMENT, GET_POST } from '../graphql';
 
+// TODO: edit the cache code, comments are being extracted from the commentResolver rather than post one
 const CommentForm = ({ postID }) => {
   const [comment, setComment] = useState('');
   const [errors, setErrors] = useState({});

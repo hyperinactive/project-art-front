@@ -5,13 +5,12 @@ import { Grid, Loader, Image, Card, Icon, Dropdown } from 'semantic-ui-react';
 import { useQuery } from '@apollo/client';
 import moment from 'moment';
 import { useHistory, useParams, Redirect, Link } from 'react-router-dom';
-import { GET_POST } from '../../graphql';
+import { GET_POST } from '../../../graphql';
 
-import { UserContext } from '../../context/UserProvider';
-import LikeButton from '../shared/LikeButton/LikeButton';
-import DeleteButton from '../shared/DeleteButton';
-import PlainComment from '../PlainComment';
-import CommentForm from '../CommentForm';
+import { UserContext } from '../../../context/UserProvider';
+import Comments from './Comments';
+import LikeButton from '../../shared/LikeButton/LikeButton';
+import DeleteButton from '../../shared/DeleteButton';
 
 const isMemeber = (members, fUser) =>
   members.find((member) => member.id === fUser.id) !== undefined;
@@ -22,11 +21,12 @@ const SinglePost = () => {
   const { postID } = params;
   const { user } = useContext(UserContext);
 
+  // TODO: continue with polling?
   const { loading, data } = useQuery(GET_POST, {
     variables: {
       postID,
     },
-    pollInterval: 500,
+    pollInterval: 1500,
     onCompleted: () => {
       console.log(data);
     },
@@ -46,7 +46,6 @@ const SinglePost = () => {
       body,
       createdAt,
       username,
-      comments,
       likes,
       likeCount,
       imageURL,
@@ -103,17 +102,7 @@ const SinglePost = () => {
                 </Card>
               </Grid.Row>
               <Grid.Row>
-                {/* if the user is logged in show the comment form */}
-                {user && <CommentForm fluid postID={postID} />}
-                {comments.map((comment) => (
-                  <PlainComment
-                    key={comment.id}
-                    postID={postID}
-                    commentID={comment.id}
-                    props={comment}
-                    user={user}
-                  />
-                ))}
+                <Comments user={user} postID={id} />
               </Grid.Row>
             </Grid.Column>
             <Grid.Column width={2}>

@@ -6,7 +6,7 @@ export {
   UPDATE_USER,
   ADD_FRIEND,
 } from './userGQL';
-export { DELETE_COMMENT, CREATE_COMMENT } from './commentGQL';
+export { DELETE_COMMENT, CREATE_COMMENT, GET_COMMENTS } from './commentGQL';
 export {
   GET_PROJECT,
   GET_PROJECTS,

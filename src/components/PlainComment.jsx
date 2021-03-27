@@ -6,7 +6,12 @@ import { Card, Image, Dropdown } from 'semantic-ui-react';
 import DeleteButton from './shared/DeleteButton';
 
 const PlainComment = ({
-  props: { id, createdAt, username, body },
+  props: {
+    id,
+    createdAt,
+    body,
+    user: { id: postUserID, username },
+  },
   user,
   postID,
 }) => (
@@ -24,7 +29,7 @@ const PlainComment = ({
               <Dropdown.Item text="Delete" />
               <Dropdown.Item text="Edit" />
               <Dropdown.Item text="Share" />
-              {user && user.username === username && (
+              {user && user.id === postUserID && (
                 <Dropdown.Item>
                   <DeleteButton postID={postID} commentID={id} type="comment" />
                 </Dropdown.Item>
@@ -58,8 +63,11 @@ PlainComment.propTypes = {
   props: PropTypes.shape({
     id: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
     body: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      username: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
   user: PropTypes.shape({
     id: PropTypes.string.isRequired,
