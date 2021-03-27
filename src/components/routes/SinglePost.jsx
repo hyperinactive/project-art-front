@@ -66,7 +66,7 @@ const SinglePost = () => {
                       <Image
                         rounded
                         size="medium"
-                        src={`http://localhost:4000/files/${imageURL}`}
+                        src={`${process.env.REACT_APP_BASE_URL}/files/${imageURL}`}
                       />
                     </Card.Content>
                   )}
@@ -107,7 +107,7 @@ const SinglePost = () => {
               <Image
                 src={
                   postUser.imageURL
-                    ? `http://localhost:4000/files/${postUser.imageURL}`
+                    ? `${process.env.REACT_APP_BASE_URL}/files/${postUser.imageURL}`
                     : `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
                 }
                 rounded

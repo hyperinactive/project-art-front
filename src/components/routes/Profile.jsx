@@ -100,7 +100,7 @@ const Profile = () => {
                   style={{ width: 80 }}
                   src={
                     data.getUser.imageURL
-                      ? `http://localhost:4000/files/${data.getUser.imageURL}`
+                      ? `${process.env.REACT_APP_BASE_URL}/files/${data.getUser.imageURL}`
                       : `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
                   }
                   rounded

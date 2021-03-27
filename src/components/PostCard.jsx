@@ -53,7 +53,7 @@ const PostCard = ({
               size="mini"
               src={
                 postUser.imageURL
-                  ? `http://localhost:4000/files/${postUser.imageURL}`
+                  ? `${process.env.REACT_APP_BASE_URL}/files/${postUser.imageURL}`
                   : `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
               }
             />
@@ -114,7 +114,7 @@ const PostCard = ({
                 size="medium"
                 src={
                   imageURL
-                    ? `http://localhost:4000/files/${imageURL}`
+                    ? `${process.env.REACT_APP_BASE_URL}/files/${imageURL}`
                     : 'https://react.semantic-ui.com/images/avatar/large/steve.jpg'
                 }
               />

@@ -83,6 +83,7 @@ const DeleteButton = (props) => {
       <Button
         color="orange"
         floated="right"
+        style={{ margin: 10, marginRight: 0 }}
         onClick={() => {
           setConfirmOpen(true);
         }}

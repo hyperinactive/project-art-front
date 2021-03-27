@@ -7,6 +7,7 @@ import { CREATE_COMMENT, GET_POST } from '../graphql';
 
 const CommentForm = ({ postID }) => {
   const [comment, setComment] = useState('');
+  const [errors, setErrors] = useState({});
   const [submitComment] = useMutation(CREATE_COMMENT, {
     variables: {
       postID,
@@ -37,12 +38,17 @@ const CommentForm = ({ postID }) => {
         },
       });
     },
+    onError: (err) => {
+      console.log(err.graphQLErrors[0]);
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+    },
   });
   return (
     <div className="commentForm">
       <Transition.Group>
         <Form
           reply
+          noValidate
           onSubmit={() => {
             submitComment();
             setComment('');
@@ -52,8 +58,10 @@ const CommentForm = ({ postID }) => {
             <Form.Input
               placeholder="tell me what you think"
               value={comment}
+              error={errors.body || errors.bodyLength}
               onChange={(e) => {
                 setComment(e.target.value);
+                setErrors({});
               }}
               // TODO: set up the error handlers for comments
               // TODO: actually, the whole error thingy needs a retouch

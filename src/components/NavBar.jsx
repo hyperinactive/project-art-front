@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Icon, Menu } from 'semantic-ui-react';
 import { NavigationContext } from '../context/NavigationProvider';
 
@@ -9,6 +9,7 @@ const NavBar = () => {
   // const context = useContext(UserContext);
   const { user, logout } = useContext(UserContext);
   const { activeItem, setActiveItem } = useContext(NavigationContext);
+  const history = useHistory();
 
   // when the page renders find out the path and highlight the right menu item
   useEffect(() => {
@@ -55,7 +56,14 @@ const NavBar = () => {
         to="/projects"
       />
       <Menu.Menu position="right">
-        <Menu.Item name="logout" onClick={logout} />
+        <Menu.Item
+          name="logout"
+          onClick={() => {
+            logout();
+            history.push('/');
+            setActiveItem('home');
+          }}
+        />
       </Menu.Menu>
       <Menu.Item
         name="settings"
