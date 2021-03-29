@@ -3,9 +3,8 @@ import React, { useState } from 'react';
 import { cloneDeep } from 'lodash';
 import { Form, Button, Transition } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import { CREATE_COMMENT, GET_POST } from '../graphql';
+import { CREATE_COMMENT, GET_COMMENTS } from '../graphql';
 
-// TODO: edit the cache code, comments are being extracted from the commentResolver rather than post one
 const CommentForm = ({ postID }) => {
   const [comment, setComment] = useState('');
   const [errors, setErrors] = useState({});
@@ -16,7 +15,7 @@ const CommentForm = ({ postID }) => {
     },
     update: (cache, result) => {
       const cacheData = cache.readQuery({
-        query: GET_POST,
+        query: GET_COMMENTS,
         variables: {
           postID,
         },
@@ -24,18 +23,18 @@ const CommentForm = ({ postID }) => {
 
       const cacheDataClone = cloneDeep(cacheData);
 
-      cacheDataClone.getPost = [
-        ...cacheData.getPost.comments,
-        result.data.createPost,
+      cacheDataClone.getComments = [
+        ...cacheData.getComments,
+        result.data.createComment,
       ];
 
       cache.writeQuery({
-        query: GET_POST,
+        query: GET_COMMENTS,
         variables: {
           postID,
         },
         data: {
-          getPost: cacheDataClone,
+          getComments: cacheDataClone.getComments,
         },
       });
     },

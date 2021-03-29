@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { defaultAvatar } from '../../appConfig';
 
 const Members = ({ members, type }) => (
   <div className="members">
@@ -13,7 +14,7 @@ const Members = ({ members, type }) => (
           src={
             member.imageURL
               ? `http://localhost:4000/files/${member.imageURL}`
-              : `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
+              : defaultAvatar
           }
           as={Link}
           to={`/${type}/${member.id}`}

@@ -66,6 +66,16 @@ const NavBar = () => {
         />
       </Menu.Menu>
       <Menu.Item
+        name="chat"
+        active={activeItem === 'chat'}
+        onClick={() => {
+          console.log('OMEGALUL');
+        }}
+      >
+        <Icon name="chat" style={{ margin: 0 }} />
+      </Menu.Item>
+
+      <Menu.Item
         name="settings"
         active={activeItem === 'settings'}
         onClick={handleItemClick}

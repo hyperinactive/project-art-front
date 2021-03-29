@@ -9,6 +9,7 @@ import { CREATE_PROJECT, GET_PROJECTS } from '../../../graphql';
 const ProjectForm = () => {
   // TODO: needs to redirect to the project page or smth
   const [name, setName] = useState('');
+  const [errors, setErrors] = useState({});
   const [created, setIsCrated] = useState({
     project: null,
     isCreated: false,
@@ -45,8 +46,9 @@ const ProjectForm = () => {
     },
 
     onError: (err) => {
+      console.log(err);
       console.log(err.graphQLErrors[0].extensions.exception.errors);
-      // setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
   });
   const handleSubmit = (e) => {
@@ -84,6 +86,7 @@ const ProjectForm = () => {
                     placeholder="project name"
                     type="text"
                     value={name}
+                    error={errors.nameInUse || errors.nameLength}
                     onChange={(e) => {
                       e.preventDefault();
                       setName(e.target.value);

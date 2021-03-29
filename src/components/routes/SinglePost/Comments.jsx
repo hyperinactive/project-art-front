@@ -13,6 +13,7 @@ const Comments = ({ user, postID }) => {
     variables: {
       postID,
     },
+    pollInterval: 1500,
     onCompleted: () => {
       console.log(data);
     },
@@ -46,16 +47,6 @@ const Comments = ({ user, postID }) => {
           />
         ))
       )}
-
-      {/* {comments.map((comment) => (
-        <PlainComment
-          key={comment.id}
-          postID={postID}
-          commentID={comment.id}
-          props={comment}
-          user={user}
-        />
-      ))} */}
     </div>
   );
 };

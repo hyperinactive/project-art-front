@@ -6,6 +6,7 @@ import { cloneDeep } from '@apollo/client/utilities';
 import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 import { Button, Grid, Header, Image, Loader } from 'semantic-ui-react';
+import { defaultAvatar } from '../../appConfig';
 import { UserContext } from '../../context/UserProvider';
 
 import { ADD_FRIEND, GET_FRIENDS, GET_USER } from '../../graphql';
@@ -101,7 +102,7 @@ const Profile = () => {
                   src={
                     data.getUser.imageURL
                       ? `${process.env.REACT_APP_BASE_URL}/files/${data.getUser.imageURL}`
-                      : `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
+                      : defaultAvatar
                   }
                   rounded
                 />

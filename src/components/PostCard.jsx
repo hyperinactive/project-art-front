@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import { UserContext } from '../context/UserProvider';
 import LikeButton from './shared/LikeButton/LikeButton';
 import DeleteButton from './shared/DeleteButton';
+import { defaultAvatar } from '../appConfig';
 
 // destructuring directly from the props
 const PostCard = ({
@@ -54,7 +55,7 @@ const PostCard = ({
               src={
                 postUser.imageURL
                   ? `${process.env.REACT_APP_BASE_URL}/files/${postUser.imageURL}`
-                  : `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
+                  : defaultAvatar
               }
             />
             <div

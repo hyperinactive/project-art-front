@@ -3,9 +3,19 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/jsx-props-no-spreading */
 import { useMutation, useQuery } from '@apollo/client';
+import { string } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
-import { Grid, Header, Loader, Image, Form, Button } from 'semantic-ui-react';
+import {
+  Grid,
+  Header,
+  Loader,
+  Image,
+  Form,
+  Button,
+  Message,
+} from 'semantic-ui-react';
+import { defaultAvatar } from '../../../appConfig';
 import { UserContext } from '../../../context/UserProvider';
 import { GET_USER, UPDATE_USER } from '../../../graphql';
 import './Settings.css';
@@ -25,10 +35,9 @@ const Settings = () => {
     skills: '',
     status: '',
   });
-  const [preview, setPreview] = useState(
-    `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
-  );
+  const [preview, setPreview] = useState(defaultAvatar);
   const [image, setImage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(false);
 
   const { data, loading } = useQuery(GET_USER, {
     variables: {
@@ -50,7 +59,6 @@ const Settings = () => {
       );
     },
     onError: (err) => {
-      console.log(err);
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
   });
@@ -66,8 +74,8 @@ const Settings = () => {
       });
     },
     onCompleted: (res) => {
-      console.log(res);
       login(res.updateUser);
+      setSuccessMessage(true);
     },
     onError: (err) => {
       console.log(err);
@@ -75,10 +83,11 @@ const Settings = () => {
   });
 
   const inputOnChange = (e) => {
-    console.log(e.target.files[0]);
-    setPreview(URL.createObjectURL(e.target.files[0]));
-    setImage(e.target.files[0]);
-    console.log(image);
+    if (e.target.files[0]) {
+      setPreview(URL.createObjectURL(e.target.files[0]));
+      setImage(e.target.files[0]);
+      setSuccessMessage(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -86,20 +95,22 @@ const Settings = () => {
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+    setSuccessMessage(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const variables = {
+      username: state.username,
+      status: state.status,
+      skills: state.skills,
+      image: typeof image === 'string' ? null : image,
+    };
+    console.log(variables);
     updateUser({
-      variables: {
-        username: state.username,
-        status: state.status,
-        skills: state.skills,
-        image,
-      },
+      variables,
     });
-    console.log(state);
-    console.log(image);
+    setImage(null);
   };
 
   return (
@@ -116,6 +127,12 @@ const Settings = () => {
             verticalAlign="middle"
           >
             <Grid.Column style={{ maxWidth: 450 }}>
+              {successMessage && (
+                <Message positive>
+                  <Message.Header>User info updated</Message.Header>
+                  <p>everything went smoothly!</p>
+                </Message>
+              )}
               <Form onSubmit={handleSubmit}>
                 <Form.Group>
                   <Header as="h4" icon textAlign="center">

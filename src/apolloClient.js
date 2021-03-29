@@ -6,6 +6,7 @@ import {
 } from '@apollo/client';
 import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from 'apollo-link-context';
+import { baseURL } from './appConfig';
 
 // https://www.apollographql.com/docs/react/get-started/
 
@@ -23,7 +24,7 @@ import { setContext } from 'apollo-link-context';
 // });
 
 const uploadLink = createUploadLink({
-  uri: `${process.env.REACT_APP_BASE_URL}/graphql`,
+  uri: `${baseURL}/graphql`,
 });
 
 // need auth headers in our requests

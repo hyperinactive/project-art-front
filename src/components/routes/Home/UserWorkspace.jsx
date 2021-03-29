@@ -1,9 +1,11 @@
 import { useQuery } from '@apollo/client';
 import React, { useContext } from 'react';
-import { Grid, Loader } from 'semantic-ui-react';
+import { Grid, Loader, Image } from 'semantic-ui-react';
 import { UserContext } from '../../../context/UserProvider';
 import { GET_FRIENDS, GET_USER_PROJECTS } from '../../../graphql';
 import Members from '../../shared/Members';
+import Notifications from './Notifications';
+import { wip } from '../../../appConfig';
 
 // TODO: UserWorkspace needs to be cleaned up after another user logs
 const UserWorkspace = () => {
@@ -15,6 +17,9 @@ const UserWorkspace = () => {
     loading: projectLoading,
     error: projectError,
   } = useQuery(GET_USER_PROJECTS, {
+    onCompleted: () => {
+      console.log(projectData);
+    },
     onError(err) {
       console.log(err);
     },
@@ -44,7 +49,18 @@ const UserWorkspace = () => {
             </Grid.Column>
           )}
 
-          <Grid.Column width={12}>Workspace</Grid.Column>
+          <Grid.Column width={12}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Notifications />
+              <Image src={wip} size="small" />
+            </div>
+          </Grid.Column>
           <Grid.Column width={2}>
             {projectLoading ? (
               <Loader size="huge" active>

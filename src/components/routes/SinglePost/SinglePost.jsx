@@ -110,7 +110,7 @@ const SinglePost = () => {
                 src={
                   postUser.imageURL
                     ? `${process.env.REACT_APP_BASE_URL}/files/${postUser.imageURL}`
-                    : `${process.env.PUBLIC_URL}/defaultAvatar.jpeg`
+                    : `${process.env.PUBLIC_URL}/defaults/defaultAvatar.jpeg`
                 }
                 rounded
                 as={Link}
