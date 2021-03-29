@@ -29,7 +29,13 @@ const NavBar = () => {
 
   // if we got a logged-in user display the personalized component with the logout item
   const navBar = user ? (
-    <Menu tabular stackable size="massive" color="orange">
+    <Menu
+      tabular
+      stackable
+      size="massive"
+      color="orange"
+      style={{ marginTop: 15 }}
+    >
       <Menu.Item
         name="home"
         active={activeItem === 'home'}
@@ -39,7 +45,7 @@ const NavBar = () => {
       >
         Home
       </Menu.Item>
-      <Menu.Item
+      {/* <Menu.Item
         name="user"
         active={activeItem === 'user'}
         onClick={handleItemClick}
@@ -47,7 +53,7 @@ const NavBar = () => {
         to={`/user/${user.id}`}
       >
         {user.username}
-      </Menu.Item>
+      </Menu.Item> */}
       <Menu.Item
         name="projects"
         active={activeItem === 'projects'}
@@ -68,11 +74,11 @@ const NavBar = () => {
       <Menu.Item
         name="chat"
         active={activeItem === 'chat'}
-        onClick={() => {
-          console.log('OMEGALUL');
-        }}
+        onClick={handleItemClick}
+        as={Link}
+        to="/chat"
       >
-        <Icon name="chat" style={{ margin: 0 }} />
+        <Icon name="inbox" style={{ margin: 0 }} />
       </Menu.Item>
 
       <Menu.Item

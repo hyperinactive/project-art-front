@@ -52,6 +52,9 @@ const GET_USER = gql`
       status
       skills
       imageURL
+      friends {
+        id
+      }
     }
   }
 `;

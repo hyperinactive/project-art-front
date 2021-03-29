@@ -11,7 +11,11 @@ import { wip } from '../../../appConfig';
 const UserWorkspace = () => {
   const { user } = useContext(UserContext);
 
-  const { data, loading, error } = useQuery(GET_FRIENDS);
+  const { data, loading, error } = useQuery(GET_FRIENDS, {
+    onCompleted: () => {
+      console.log(data.getFriends);
+    },
+  });
   const {
     data: projectData,
     loading: projectLoading,

@@ -18,6 +18,7 @@ import Projects from './components/routes/Projects/Projects';
 import Feed from './components/routes/Feed';
 import Settings from './components/routes/Settings/Settings';
 import Profile from './components/routes/Profile';
+import Chat from './components/routes/Chat';
 import Project from './components/routes/Projects/Project/Project';
 import ProjectForm from './components/routes/Projects/ProjectForm';
 
@@ -47,7 +48,8 @@ const App = () => (
 
             <Route exact path="/user/:userID" component={Profile} />
             {/* TODO: sub zero, north pole, no chance of any sun, winds holwing, freezing todo */}
-            <Route exact path="/chat" component={Feed} />
+            <Route exact path="/feed" component={Feed} />
+            <Route exact path="/chat" component={Chat} />
 
             <Route exact path="/404" component={NotFoundPage} />
             <Route component={NotFoundPage} />

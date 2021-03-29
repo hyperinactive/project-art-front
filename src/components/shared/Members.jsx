@@ -13,7 +13,7 @@ const Members = ({ members, type }) => (
           size="tiny"
           src={
             member.imageURL
-              ? `http://localhost:4000/files/${member.imageURL}`
+              ? `${process.env.REACT_APP_BASE_URL}/files/${member.imageURL}`
               : defaultAvatar
           }
           as={Link}
@@ -36,8 +36,6 @@ Members.propTypes = {
   members: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
-      username: PropTypes.string.isRequired,
-      status: PropTypes.string.isRequired,
       imageURL: PropTypes.string,
       map: PropTypes.func,
     })
