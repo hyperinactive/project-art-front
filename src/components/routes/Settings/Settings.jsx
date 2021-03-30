@@ -25,10 +25,6 @@ const Settings = () => {
   const { user, login } = useContext(UserContext);
   const { userID } = useParams();
 
-  if (!user || userID !== user.id) {
-    return <Redirect to="/" />;
-  }
-
   const [errors, setErrors] = useState({});
   const [state, setState] = useState({
     username: '',
@@ -112,6 +108,10 @@ const Settings = () => {
     });
     setImage(null);
   };
+
+  if (!user || userID !== user.id) {
+    return <Redirect to="/404" />;
+  }
 
   return (
     <div className="settings">
