@@ -32,7 +32,7 @@ const Project = () => {
   useEffect(() => {
     loadProject();
     loadMembers();
-  }, []);
+  }, [loadProject, loadMembers]);
 
   return (
     <div className="project" style={{ textAlign: 'center' }}>
