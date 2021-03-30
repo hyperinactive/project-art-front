@@ -17,7 +17,7 @@ const NavBar = () => {
 
     const path = !pathName[1] ? 'home' : pathName[1];
     setActiveItem(path);
-  }, []);
+  }, [setActiveItem]);
 
   // if item's active property is true, it will be active (highlighted)
   // { name } deconstruct the current component calling the handleItemClick and take the name of it

@@ -76,7 +76,7 @@ const ProjectWorkspace = ({ project, members }) => {
         projectID: project.id,
       },
     });
-  }, []);
+  }, [loadFeed, project.id]);
 
   // useEffect(() => {
   //   window.addEventListener('scroll', handleScroll);

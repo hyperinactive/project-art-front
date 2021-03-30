@@ -24,7 +24,7 @@ const LikeButton = ({ post: { id, likeCount, likes }, user }) => {
     } else {
       setLiked(false);
     }
-  });
+  }, [user, likes]);
 
   const [likePost] = useMutation(LIKE_POST, {
     // we're looking for postID on the server but we've got id in the client

@@ -24,7 +24,7 @@ const Comments = ({ user, postID }) => {
 
   useEffect(() => {
     loadComments();
-  }, []);
+  }, [loadComments]);
 
   return (
     <div className="comments">
