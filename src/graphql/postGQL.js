@@ -214,6 +214,35 @@ const GET_PROJECT_POSTS = gql`
   }
 `;
 
+const GET_POSTS_FEED = gql`
+  query getPostsFeed($projectID: ID!, $cursor: ID, $skip: Int!) {
+    getPostsFeed(projectID: $projectID, cursor: $cursor, skip: $skip) {
+      posts {
+        id
+        username
+        createdAt
+        body
+        likes {
+          id
+          username
+          createdAt
+        }
+        likeCount
+        commentCount
+        imageURL
+        user {
+          id
+          username
+          status
+          imageURL
+        }
+      }
+      nextCursor
+      hasMoreItems
+    }
+  }
+`;
+
 export {
   GET_POST,
   GET_POSTS,
@@ -224,4 +253,5 @@ export {
   CREATE_PROJECT_POST,
   UPLOAD_FILE,
   GET_PROJECT_POSTS,
+  GET_POSTS_FEED,
 };

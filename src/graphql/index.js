@@ -24,4 +24,5 @@ export {
   CREATE_PROJECT_POST,
   UPLOAD_FILE,
   GET_PROJECT_POSTS,
+  GET_POSTS_FEED,
 } from './postGQL';

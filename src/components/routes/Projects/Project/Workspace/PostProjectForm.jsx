@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useState } from 'react';
@@ -7,7 +8,7 @@ import { useDropzone } from 'react-dropzone';
 import PropType from 'prop-types';
 
 import { cloneDeep } from '@apollo/client/utilities';
-import { CREATE_PROJECT_POST, GET_PROJECT_POSTS } from '../../../../../graphql';
+import { CREATE_PROJECT_POST, GET_POSTS_FEED } from '../../../../../graphql';
 
 const PostProjectForm = ({ project }) => {
   // STATES
@@ -37,30 +38,35 @@ const PostProjectForm = ({ project }) => {
   const [createPost] = useMutation(CREATE_PROJECT_POST, {
     update: (cache, result) => {
       const cacheData = cache.readQuery({
-        query: GET_PROJECT_POSTS,
+        query: GET_POSTS_FEED,
 
         variables: {
           projectID: project.id,
+          skip: 5,
         },
       });
 
       const cacheDataClone = cloneDeep(cacheData);
-      cacheDataClone.getProjectPosts = [
-        ...cacheDataClone.getProjectPosts,
+      cacheDataClone.getPostsFeed.posts = [
+        ...cacheDataClone.getPostsFeed.posts,
         result.data.createProjectPost,
       ];
 
       cache.writeQuery({
-        query: GET_PROJECT_POSTS,
+        query: GET_POSTS_FEED,
         variables: {
           projectID: project.id,
+          skip: 5,
         },
-        data: cacheDataClone,
+        data: {
+          getPostsFeed: {
+            posts: cacheDataClone.getPostsFeed.posts,
+          },
+        },
       });
     },
     onError: (err) => {
-      console.log(err);
-      // setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     onCompleted: () => {
       setBody('');
@@ -68,6 +74,8 @@ const PostProjectForm = ({ project }) => {
       setPreviewImage(null);
     },
   });
+
+  // ----------------------------------------------------------------------------------------
 
   const handleSubmit = () => {
     createPost({
@@ -103,6 +111,11 @@ const PostProjectForm = ({ project }) => {
             <p>Drag an image here or click me!</p>
           )}
         </div>
+        {Object.keys(errors).includes('allowedType') && (
+          <Message negative>
+            <p>File type not allowed</p>
+          </Message>
+        )}
       </>
       <Form
         onSubmit={(e) => {
@@ -127,15 +140,6 @@ const PostProjectForm = ({ project }) => {
           </Button>
         </Form.Field>
       </Form>
-      {Object.keys(errors).length > 0 && (
-        <Message
-          error
-          header="Errors with the submission"
-          list={Object.values(errors).map((value) => (
-            <li key={value}>{value}</li>
-          ))}
-        />
-      )}
     </div>
   );
 };

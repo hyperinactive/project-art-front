@@ -51,6 +51,12 @@ const cache = new InMemoryCache({
             return incoming;
           },
         },
+        getPostsFeed: {
+          keyArgs: false,
+          merge(existing, incoming) {
+            return incoming;
+          },
+        },
       },
     },
     Post: {
@@ -67,6 +73,25 @@ const cache = new InMemoryCache({
         },
       },
     },
+    // PostsCursorResponse: {
+    //   fields: {
+    //     posts: {
+    //       merge(existing, incoming) {
+    //         return incoming;
+    //       },
+    //     },
+    //     nextCursor: {
+    //       merge(existing, incoming) {
+    //         return incoming;
+    //       },
+    //     },
+    //     hasMoreItems: {
+    //       merge(existing, incoming) {
+    //         return incoming;
+    //       },
+    //     },
+    //   },
+    // },
   },
 });
 

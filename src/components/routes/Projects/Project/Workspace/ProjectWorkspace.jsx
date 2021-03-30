@@ -1,27 +1,116 @@
-import React from 'react';
-import { Grid, Loader } from 'semantic-ui-react';
+/* eslint-disable no-param-reassign */
+import React, { useEffect, useState } from 'react';
+import { Button, Grid, Loader } from 'semantic-ui-react';
 import PropType from 'prop-types';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import PostProjectForm from './PostProjectForm';
-import { GET_PROJECT_POSTS } from '../../../../../graphql';
+import { GET_POSTS_FEED } from '../../../../../graphql';
 import PostCard from '../../../../PostCard';
 import Members from '../../../../shared/Members';
 
 // eslint-disable-next-line react/prop-types
 const ProjectWorkspace = ({ project, members }) => {
   // TODO: setup the feed
-  const { data, loading } = useQuery(GET_PROJECT_POSTS, {
-    variables: {
-      projectID: project.id,
-    },
-    pollInterval: 3000,
+
+  // const [isBottom, setIsBottom] = useState(false);
+  const [cursor, setCursor] = useState(null);
+  const [canLoadMore, setCanLoadMore] = useState(true);
+
+  const [
+    loadFeed,
+    { data: feedData, loading: feedLoading, fetchMore },
+  ] = useLazyQuery(GET_POSTS_FEED, {
+    pollInterval: 1500,
     onCompleted: () => {
-      console.log(data);
+      if (!feedData.getPostsFeed.hasMoreItems) setCanLoadMore(false);
+      setCursor(feedData.getPostsFeed.nextCursor);
+      console.log(cursor);
+      // setIsBottom(true);
+      console.log(feedData.getPostsFeed);
     },
-    onError: (error) => {
-      console.log(error);
+    onError: (err) => {
+      console.log({ err });
     },
   });
+
+  const feedMe = () => {
+    fetchMore({
+      variables: {
+        projectID: project.id,
+        cursor,
+        skip: 5,
+      },
+      updateQuery: (prevResult, { fetchMoreResult }) => {
+        if (!fetchMoreResult) {
+          return prevResult;
+        }
+        fetchMoreResult.getPostsFeed.posts = [
+          ...fetchMoreResult.getPostsFeed.posts,
+          ...prevResult.getPostsFeed.posts,
+        ];
+        // --------------------------------------------------------------------
+        setCursor(fetchMoreResult.getPostsFeed.nextCursor);
+        setCanLoadMore(fetchMoreResult.getPostsFeed.hasMoreItems);
+        // if (fetchMoreResult.getPostsFeed.hasMoreItems) setIsBottom(false);
+        // --------------------------------------------------------------------
+        return { ...fetchMoreResult };
+      },
+    });
+  };
+
+  // ----------------------------------------------------------------------------------------
+  // INFINITE SCROLL
+  // const handleScroll = () => {
+  //   const scrollTop =
+  //     (document.documentElement && document.documentElement.scrollTop) ||
+  //     document.body.scrollTop;
+  //   const scrollHeight =
+  //     (document.documentElement && document.documentElement.scrollHeight) ||
+  //     document.body.scrollHeight;
+  //   if (scrollTop + window.innerHeight + 50 >= scrollHeight) {
+  //     setIsBottom(true);
+  //   }
+  // };
+
+  useEffect(() => {
+    loadFeed({
+      variables: {
+        projectID: project.id,
+        skip: 5,
+      },
+    });
+  }, []);
+
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, []);
+
+  // useEffect(() => {
+  //   if (isBottom && canLoadMore) {
+  //     console.log('I hit rock bottom -.-');
+  //     feedME();
+  //   }
+  // }, [isBottom]);
+
+  // const { data } = useQuery(GET_PROJECT_POSTS, {
+  //   variables: {
+  //     projectID: project.id,
+  //   },
+  //   pollInterval: 3000,
+  //   onCompleted: () => {
+  //     console.log(data);
+  //   },
+  //   onError: (error) => {
+  //     console.log(error);
+  //   },
+  // });
+
+  const handleClick = () => {
+    if (canLoadMore) {
+      feedMe();
+    }
+  };
 
   return (
     <div className="projectWorkspace">
@@ -46,7 +135,7 @@ const ProjectWorkspace = ({ project, members }) => {
         <Grid.Column width={11}>
           <Grid.Row textAlign="center">
             <Grid.Column>
-              {loading && (
+              {feedLoading && (
                 <Loader size="huge" active>
                   Computing, things, beep bop
                 </Loader>
@@ -61,12 +150,22 @@ const ProjectWorkspace = ({ project, members }) => {
                   width: '100%',
                 }}
               >
-                {data &&
+                {/* {data &&
                   data.getProjectPosts &&
                   data.getProjectPosts.map((post) => (
                     <PostCard key={post.id} post={post} />
+                  ))} */}
+                {feedData &&
+                  feedData.getPostsFeed.posts &&
+                  feedData.getPostsFeed.posts.map((post) => (
+                    <PostCard key={post.id} post={post} />
                   ))}
               </div>
+              {canLoadMore && (
+                <Button type="button" color="orange" onClick={handleClick}>
+                  Load more!
+                </Button>
+              )}
             </Grid.Column>
           </Grid.Row>
         </Grid.Column>
