@@ -4,7 +4,7 @@ import jwtDecode from 'jwt-decode';
 
 import { initialState, userReducer, actionTypes } from './userReducer';
 
-const checkTokenExpiration = () => {
+const checkTokenExpiration = (dispatch) => {
   if (localStorage.getItem('userToken')) {
     const decodedToken = jwtDecode(localStorage.getItem('userToken'));
 
@@ -18,8 +18,10 @@ const checkTokenExpiration = () => {
     // }
 
     if (decodedToken.exp * 1000 < Date.now()) {
+      // localStorage.removeItem('userToken');
+      // initialState.user = null;
       localStorage.removeItem('userToken');
-      initialState.user = null;
+      dispatch({ type: actionTypes.LOGOUT });
     } else {
       initialState.user = decodedToken;
     }
@@ -45,7 +47,7 @@ export const UserProvider = (props) => {
   // useReducer is the same as useState LUL
   const [state, dispatch] = useReducer(userReducer, initialState);
 
-  checkTokenExpiration();
+  checkTokenExpiration(dispatch);
 
   const login = (data) => {
     // to have data persist after a page reload we'll use the localStorage to store the tokens of the logged users

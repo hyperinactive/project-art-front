@@ -4,7 +4,11 @@ import { cloneDeep } from '@apollo/client/utilities';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Grid, Form, Header } from 'semantic-ui-react';
-import { CREATE_PROJECT, GET_PROJECTS } from '../../../graphql';
+import {
+  CREATE_PROJECT,
+  GET_PROJECTS,
+  GET_USER_PROJECTS,
+} from '../../../graphql';
 
 const ProjectForm = () => {
   // TODO: needs to redirect to the project page or smth
@@ -23,9 +27,19 @@ const ProjectForm = () => {
         query: GET_PROJECTS,
       });
 
+      const userProjects = cache.readQuery({
+        query: GET_USER_PROJECTS,
+      });
+
       const projectsClone = cloneDeep(projects);
       projectsClone.getProjects = [
         ...projectsClone.getProjects,
+        result.data.createProject,
+      ];
+
+      const userProjectsClone = cloneDeep(userProjects);
+      userProjectsClone.getUserProjects = [
+        ...userProjectsClone.getUserProjects,
         result.data.createProject,
       ];
 
@@ -33,6 +47,13 @@ const ProjectForm = () => {
         query: GET_PROJECTS,
         data: {
           getProjects: projectsClone.getProjects,
+        },
+      });
+
+      cache.writeQuery({
+        query: GET_USER_PROJECTS,
+        data: {
+          getUserProjects: userProjectsClone.getUserProjects,
         },
       });
     },

@@ -78,7 +78,7 @@ const Settings = () => {
       setSuccessMessage(true);
     },
     onError: (err) => {
-      console.log(err);
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
   });
 
@@ -96,6 +96,7 @@ const Settings = () => {
       [e.target.name]: e.target.value,
     }));
     setSuccessMessage(false);
+    setErrors({});
   };
 
   const handleSubmit = (e) => {
@@ -106,7 +107,6 @@ const Settings = () => {
       skills: state.skills,
       image: typeof image === 'string' ? null : image,
     };
-    console.log(variables);
     updateUser({
       variables,
     });
@@ -156,7 +156,7 @@ const Settings = () => {
                       value={state.username}
                       name="username"
                       onChange={handleChange}
-                      error={errors.usernameCheck}
+                      error={errors.usernameCheck || errors.usernameLength}
                     />
                     <Form.Input
                       label="status"
@@ -165,6 +165,7 @@ const Settings = () => {
                       value={state.status}
                       name="status"
                       onChange={handleChange}
+                      error={errors.statusLength}
                     />
                     <Form.TextArea
                       style={{ textAlign: 'center' }}
@@ -174,6 +175,7 @@ const Settings = () => {
                       value={state.skills}
                       name="skills"
                       onChange={handleChange}
+                      error={errors.skillsLength}
                     />
                   </Header>
                 </Form.Group>
