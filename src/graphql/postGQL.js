@@ -215,7 +215,7 @@ const GET_PROJECT_POSTS = gql`
 `;
 
 const GET_POSTS_FEED = gql`
-  query getPostsFeed($projectID: ID!, $cursor: ID, $skip: Int!) {
+  query getPostsFeed($projectID: ID!, $cursor: ID, $skip: Int) {
     getPostsFeed(projectID: $projectID, cursor: $cursor, skip: $skip) {
       posts {
         id

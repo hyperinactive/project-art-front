@@ -18,7 +18,6 @@ const Feed = () => {
   const feedMe = () => {
     // get the offset
     const offset = data.getPostsChunk.posts.length;
-    console.log(offset);
 
     // fetch more data and update the cache
     fetchMore({
@@ -27,8 +26,6 @@ const Feed = () => {
         skip: offset,
       },
       updateQuery: (prevResult, { fetchMoreResult }) => {
-        console.log(prevResult);
-        console.log(fetchMoreResult);
         fetchMoreResult.getPostsChunk.posts = [
           ...prevResult.getPostsChunk.posts,
           ...fetchMoreResult.getPostsChunk.posts,
@@ -38,7 +35,6 @@ const Feed = () => {
     });
   };
 
-  if (data) console.log(data.getPostsChunk);
   if (loading) return <div>LOADING</div>;
 
   return (

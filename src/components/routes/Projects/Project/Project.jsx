@@ -15,6 +15,7 @@ const isMemeber = (members, user) =>
 const Project = () => {
   const { user } = useContext(UserContext);
   const { projectID } = useParams();
+  console.log(projectID);
 
   const [loadProject, { data, loading }] = useLazyQuery(GET_PROJECT, {
     variables: {

@@ -42,7 +42,6 @@ const PostProjectForm = ({ project }) => {
 
         variables: {
           projectID: project.id,
-          skip: 5,
         },
       });
 
@@ -56,13 +55,8 @@ const PostProjectForm = ({ project }) => {
         query: GET_POSTS_FEED,
         variables: {
           projectID: project.id,
-          skip: 5,
         },
-        data: {
-          getPostsFeed: {
-            posts: cacheDataClone.getPostsFeed.posts,
-          },
-        },
+        data: cacheDataClone.getPostsFeed.posts,
       });
     },
     onError: (err) => {

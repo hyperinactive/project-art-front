@@ -7,9 +7,6 @@ import { wip } from '../../appConfig';
 
 const Chat = () => {
   const { data, loading, error } = useQuery(GET_FRIENDS, {
-    onCompleted: () => {
-      console.log(data);
-    },
     onError: () => {
       console.log(error);
     },

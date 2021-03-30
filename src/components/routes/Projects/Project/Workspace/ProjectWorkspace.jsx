@@ -21,12 +21,11 @@ const ProjectWorkspace = ({ project, members }) => {
     { data: feedData, loading: feedLoading, fetchMore },
   ] = useLazyQuery(GET_POSTS_FEED, {
     pollInterval: 1500,
+    fetchPolicy: 'network-only', // prevents cache being read initially and showing posts from other projects
     onCompleted: () => {
       if (!feedData.getPostsFeed.hasMoreItems) setCanLoadMore(false);
       setCursor(feedData.getPostsFeed.nextCursor);
-      console.log(cursor);
       // setIsBottom(true);
-      console.log(feedData.getPostsFeed);
     },
     onError: (err) => {
       console.log({ err });
@@ -38,7 +37,6 @@ const ProjectWorkspace = ({ project, members }) => {
       variables: {
         projectID: project.id,
         cursor,
-        skip: 5,
       },
       updateQuery: (prevResult, { fetchMoreResult }) => {
         if (!fetchMoreResult) {
@@ -76,7 +74,6 @@ const ProjectWorkspace = ({ project, members }) => {
     loadFeed({
       variables: {
         projectID: project.id,
-        skip: 5,
       },
     });
   }, []);
@@ -155,17 +152,26 @@ const ProjectWorkspace = ({ project, members }) => {
                   data.getProjectPosts.map((post) => (
                     <PostCard key={post.id} post={post} />
                   ))} */}
-                {feedData &&
+                {feedLoading ? (
+                  <Loader>OS</Loader>
+                ) : (
+                  feedData &&
                   feedData.getPostsFeed.posts &&
                   feedData.getPostsFeed.posts.map((post) => (
                     <PostCard key={post.id} post={post} />
-                  ))}
+                  ))
+                )}
               </div>
-              {canLoadMore && (
-                <Button type="button" color="orange" onClick={handleClick}>
-                  Load more!
-                </Button>
-              )}
+              {canLoadMore &&
+                (feedLoading ? (
+                  <Loader size="huge" active>
+                    Computing, things, beep bop
+                  </Loader>
+                ) : (
+                  <Button type="button" color="orange" onClick={handleClick}>
+                    Load more!
+                  </Button>
+                ))}
             </Grid.Column>
           </Grid.Row>
         </Grid.Column>

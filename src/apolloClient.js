@@ -1,9 +1,11 @@
+/* eslint-disable consistent-return */
 import {
   ApolloClient,
   InMemoryCache,
   // createHttpLink,
   ApolloLink,
 } from '@apollo/client';
+import { relayStylePagination } from '@apollo/client/utilities';
 import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from 'apollo-link-context';
 import { baseURL } from './appConfig';
@@ -51,12 +53,7 @@ const cache = new InMemoryCache({
             return incoming;
           },
         },
-        getPostsFeed: {
-          keyArgs: false,
-          merge(existing, incoming) {
-            return incoming;
-          },
-        },
+        getPostsFeed: relayStylePagination(),
       },
     },
     Post: {
