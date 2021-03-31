@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import { UserContext } from '../context/UserProvider';
 import LikeButton from './shared/LikeButton/LikeButton';
 import DeleteButton from './shared/DeleteButton';
-import { defaultAvatar } from '../appConfig';
+import { baseURL, defaultAvatar } from '../appConfig';
 
 // destructuring directly from the props
 const PostCard = ({
@@ -115,7 +115,7 @@ const PostCard = ({
                 size="medium"
                 src={
                   imageURL
-                    ? `${process.env.REACT_APP_BASE_URL}/files/${imageURL}`
+                    ? `${baseURL}/files/${imageURL}`
                     : 'https://react.semantic-ui.com/images/avatar/large/steve.jpg'
                 }
               />

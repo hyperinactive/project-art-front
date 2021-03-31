@@ -31,6 +31,7 @@ const GET_COMMENTS = gql`
       user {
         id
         username
+        imageURL
       }
     }
   }

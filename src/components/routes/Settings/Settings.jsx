@@ -55,6 +55,7 @@ const Settings = () => {
       );
     },
     onError: (err) => {
+      console.log(err);
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
   });
@@ -74,6 +75,7 @@ const Settings = () => {
       setSuccessMessage(true);
     },
     onError: (err) => {
+      console.log(err);
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
   });
