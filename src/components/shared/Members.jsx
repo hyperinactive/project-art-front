@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { defaultAvatar } from '../../appConfig';
+import { baseURL, defaultAvatar } from '../../appConfig';
 
 const Members = ({ members, type }) => (
   <div className="members">
@@ -13,7 +13,7 @@ const Members = ({ members, type }) => (
           size="tiny"
           src={
             member.imageURL
-              ? `${process.env.REACT_APP_BASE_URL}/files/${member.imageURL}`
+              ? `${baseURL}/files/${member.imageURL}`
               : defaultAvatar
           }
           as={Link}

@@ -54,7 +54,7 @@ const PostCard = ({
               size="mini"
               src={
                 postUser.imageURL
-                  ? `${process.env.REACT_APP_BASE_URL}/files/${postUser.imageURL}`
+                  ? `${baseURL}/files/${postUser.imageURL}`
                   : defaultAvatar
               }
             />

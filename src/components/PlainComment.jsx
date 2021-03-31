@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Card, Image, Dropdown } from 'semantic-ui-react';
 import DeleteButton from './shared/DeleteButton';
-import { defaultAvatar } from '../appConfig';
+import { defaultAvatar, baseURL } from '../appConfig';
 
 const PlainComment = ({
   props: {
@@ -42,11 +42,7 @@ const PlainComment = ({
           avatar
           size="massive"
           floated="left"
-          src={
-            imageURL
-              ? `${process.env.REACT_APP_BASE_URL}/files/${imageURL}`
-              : defaultAvatar
-          }
+          src={imageURL ? `${baseURL}/files/${imageURL}` : defaultAvatar}
         />
         <Card.Header>{username}</Card.Header>
         <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
@@ -72,13 +68,13 @@ PlainComment.propTypes = {
     user: PropTypes.shape({
       id: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired,
-      imageURL: PropTypes.string.isRequired,
+      imageURL: PropTypes.string,
     }).isRequired,
   }).isRequired,
   user: PropTypes.shape({
     id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
-    imageURL: PropTypes.string.isRequired,
+    imageURL: PropTypes.string,
   }),
   postID: PropTypes.string.isRequired,
 };

@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client';
 import moment from 'moment';
 import { useHistory, useParams, Redirect, Link } from 'react-router-dom';
 import { GET_POST } from '../../../graphql';
-import { defaultAvatar } from '../../../appConfig';
+import { baseURL, defaultAvatar } from '../../../appConfig';
 import { UserContext } from '../../../context/UserProvider';
 import Comments from './Comments';
 import LikeButton from '../../shared/LikeButton/LikeButton';
@@ -65,7 +65,7 @@ const SinglePost = () => {
                       <Image
                         rounded
                         size="medium"
-                        src={`${process.env.REACT_APP_BASE_URL}/files/${imageURL}`}
+                        src={`${baseURL}/files/${imageURL}`}
                       />
                     </Card.Content>
                   )}
@@ -109,7 +109,7 @@ const SinglePost = () => {
               <Image
                 src={
                   postUser.imageURL
-                    ? `${process.env.REACT_APP_BASE_URL}/files/${postUser.imageURL}`
+                    ? `${baseURL}/files/${postUser.imageURL}`
                     : defaultAvatar
                 }
                 rounded
