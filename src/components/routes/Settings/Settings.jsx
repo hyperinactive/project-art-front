@@ -15,7 +15,7 @@ import {
   Button,
   Message,
 } from 'semantic-ui-react';
-import { defaultAvatar } from '../../../appConfig';
+import { baseURL, defaultAvatar } from '../../../appConfig';
 import { UserContext } from '../../../context/UserProvider';
 import { GET_USER, UPDATE_USER } from '../../../graphql';
 import './Settings.css';
@@ -46,13 +46,9 @@ const Settings = () => {
         status: data.getUser.status,
       });
       if (data.getUser.imageURL) {
-        setPreview(
-          `${process.env.REACT_APP_BASE_URL}/files/${data.getUser.imageURL}`
-        );
+        setPreview(`${baseURL}/files/${data.getUser.imageURL}`);
       }
-      setImage(
-        `${process.env.REACT_APP_BASE_URL}/files/${data.getUser.imageURL}`
-      );
+      setImage(`${baseURL}/files/${data.getUser.imageURL}`);
     },
     onError: (err) => {
       console.log(err);

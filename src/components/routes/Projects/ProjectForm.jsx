@@ -111,6 +111,7 @@ const ProjectForm = () => {
                     onChange={(e) => {
                       e.preventDefault();
                       setName(e.target.value);
+                      setErrors({});
                     }}
                   />
 
