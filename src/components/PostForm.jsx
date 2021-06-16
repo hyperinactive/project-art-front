@@ -9,8 +9,6 @@ const PostForm = () => {
   const [body, setBody] = useState('');
   const [errors, setErrors] = useState({});
 
-  // we've been using the server errors and translated them into client ones, but here we'll just use the client
-  // eslint-disable-next-line no-unused-vars
   const [createPost] = useMutation(CREATE_POST, {
     variables: {
       body,

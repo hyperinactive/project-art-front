@@ -16,21 +16,19 @@ const ProjectWorkspace = ({ project, members }) => {
   const [cursor, setCursor] = useState(null);
   const [canLoadMore, setCanLoadMore] = useState(true);
 
-  const [
-    loadFeed,
-    { data: feedData, loading: feedLoading, fetchMore },
-  ] = useLazyQuery(GET_POSTS_FEED, {
-    pollInterval: 1500,
-    fetchPolicy: 'network-only', // prevents cache being read initially and showing posts from other projects
-    onCompleted: () => {
-      if (!feedData.getPostsFeed.hasMoreItems) setCanLoadMore(false);
-      setCursor(feedData.getPostsFeed.nextCursor);
-      // setIsBottom(true);
-    },
-    onError: (err) => {
-      console.log({ err });
-    },
-  });
+  const [loadFeed, { data: feedData, loading: feedLoading, fetchMore }] =
+    useLazyQuery(GET_POSTS_FEED, {
+      pollInterval: 1500,
+      fetchPolicy: 'network-only', // prevents cache being read initially and showing posts from other projects
+      onCompleted: () => {
+        if (!feedData.getPostsFeed.hasMoreItems) setCanLoadMore(false);
+        setCursor(feedData.getPostsFeed.nextCursor);
+        // setIsBottom(true);
+      },
+      onError: (err) => {
+        console.log({ err });
+      },
+    });
 
   const feedMe = () => {
     fetchMore({

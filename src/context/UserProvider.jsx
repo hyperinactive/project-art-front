@@ -30,9 +30,11 @@ const checkTokenExpiration = (dispatch) => {
 
 // Creates a Context object. When React renders a component that subscribes to this Context object
 // it will read the current context value from the closest matching Provider above it in the tree.
-// The defaultValue argument is only used when a component does not have a matching Provider above it in the tree.
+// The defaultValue argument is only used when a component
+// does not have a matching Provider above it in the tree.
 // This default value can be helpful for testing components in isolation without wrapping them.
-// Note: passing undefined as a Provider value does not cause consuming components to use defaultValue.
+// Note:
+// passing undefined as a Provider value does not cause consuming components to use defaultValue.
 
 // note: initial state just has a field of user, nothing else...
 // this context creates a nul user and functions that don't do shit
@@ -50,7 +52,8 @@ export const UserProvider = (props) => {
   checkTokenExpiration(dispatch);
 
   const login = (data) => {
-    // to have data persist after a page reload we'll use the localStorage to store the tokens of the logged users
+    // to have data persist after a page reload we'll use the localStorage
+    // to store the tokens of the logged users
     // we're making a field called ueserToken and setting the user.token to it
     localStorage.setItem('userToken', data.token);
     dispatch({

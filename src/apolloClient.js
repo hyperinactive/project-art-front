@@ -12,12 +12,14 @@ import { baseURL } from './appConfig';
 
 // https://www.apollographql.com/docs/react/get-started/
 
-// this can also be done in the App.jsx and would be more "traditional" - to have the App as the index
+// this can also be done in the App.jsx and would be more "traditional"
+// -> to have the App as the index
 // subject to change
 // we're just wrapping the App with the Apollo provider, a client that will connect to the backend
 
 // -----------------------------------------------------------------------------------------
-// CONFLICTS with the uploadLink, upload link the only way to communicate through the graphql endpoint
+// CONFLICTS with the uploadLink, upload link the only way to communicate through
+// the graphql endpoint
 // need to create the client to connect to our server on the backend
 // creating the link
 // not really needed, could've done the raw link instead
