@@ -21,6 +21,7 @@ import Profile from './components/routes/Profile';
 import Chat from './components/routes/Chat';
 import Project from './components/routes/Projects/Project/Project';
 import ProjectForm from './components/routes/Projects/ProjectForm';
+import Friends from './components/routes/Friends';
 
 const App = () => (
   <UserProvider>
@@ -37,6 +38,7 @@ const App = () => (
             <UserRoute exact path="/login" component={Login} />
             <Route exact path="/posts/:postID" component={SinglePost} />
             <Route exact path="/projects" component={Projects} />
+            <Route exact path="/friends" component={Friends} />
             <Route
               exact
               path="/projects/createProject"

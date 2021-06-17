@@ -42,6 +42,7 @@ const UserWorkspace = () => {
             </Loader>
           ) : (
             <Grid.Column width={2}>
+              <div className="h2">My friends</div>
               <Grid.Row>
                 <div
                   style={{
@@ -66,6 +67,7 @@ const UserWorkspace = () => {
             </div>
           </Grid.Column>
           <Grid.Column width={2}>
+            <div className="h2">My projects</div>
             {projectLoading ? (
               <Loader size="huge" active>
                 Computing, things, beep bop
