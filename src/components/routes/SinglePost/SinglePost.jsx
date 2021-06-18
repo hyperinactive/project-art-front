@@ -1,7 +1,15 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { useContext } from 'react';
-import { Grid, Loader, Image, Card, Icon, Dropdown } from 'semantic-ui-react';
+import {
+  Grid,
+  Loader,
+  Image,
+  Card,
+  Icon,
+  Dropdown,
+  Menu,
+} from 'semantic-ui-react';
 import { useQuery } from '@apollo/client';
 import moment from 'moment';
 import { useHistory, useParams, Redirect, Link } from 'react-router-dom';
@@ -106,28 +114,40 @@ const SinglePost = () => {
               </Grid.Row>
             </Grid.Column>
             <Grid.Column width={2}>
-              <Image
-                src={
-                  postUser.imageURL
-                    ? `${baseURL}/files/${postUser.imageURL}`
-                    : defaultAvatar
-                }
-                rounded
-                as={Link}
-                to={`/user/${postUser.id}`}
-                size="medium"
-                float="right"
-              />
-              <h5>{postUser.username}</h5>
-              <p>{postUser.status}</p>
-              <p>
-                <Icon name="heart" color="orange" />
-                {likeCount}
-              </p>
-              <p>
-                <Icon name="comments" color="red" />
-                {commentCount}
-              </p>
+              <Menu vertical>
+                <Menu.Item>
+                  <Image
+                    src={
+                      postUser.imageURL
+                        ? `${baseURL}/files/${postUser.imageURL}`
+                        : defaultAvatar
+                    }
+                    rounded
+                    as={Link}
+                    to={`/user/${postUser.id}`}
+                    size="medium"
+                    float="right"
+                  />
+                </Menu.Item>
+                <Menu.Item>
+                  <h5>{postUser.username}</h5>
+                </Menu.Item>
+                <Menu.Item>
+                  <p>{postUser.status}</p>
+                </Menu.Item>
+                <Menu.Item>
+                  <p>
+                    <Icon name="heart" color="orange" />
+                    {likeCount}
+                  </p>
+                </Menu.Item>
+                <Menu.Item>
+                  <p>
+                    <Icon name="comments" color="red" />
+                    {commentCount}
+                  </p>
+                </Menu.Item>
+              </Menu>
             </Grid.Column>
           </Grid.Row>
         </Grid>

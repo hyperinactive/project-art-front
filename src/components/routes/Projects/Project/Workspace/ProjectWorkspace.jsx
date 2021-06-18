@@ -6,10 +6,10 @@ import { useLazyQuery } from '@apollo/client';
 import PostProjectForm from './PostProjectForm';
 import { GET_POSTS_FEED } from '../../../../../graphql';
 import PostCard from '../../../../PostCard';
-import Members from '../../../../shared/Members';
+import ElementList from '../../../../shared/ElementList';
 
 // eslint-disable-next-line react/prop-types
-const ProjectWorkspace = ({ project, members }) => {
+const ProjectWorkspace = ({ project, elements }) => {
   // TODO: setup the feed
 
   // const [isBottom, setIsBottom] = useState(false);
@@ -124,7 +124,7 @@ const ProjectWorkspace = ({ project, members }) => {
         </Grid.Row>
         <Grid.Column width={2}>
           <Grid.Row centered>
-            <Members members={members} type="user" />
+            <ElementList elements={elements} type="user" />
           </Grid.Row>
         </Grid.Column>
         <Grid.Column width={11}>
@@ -184,7 +184,7 @@ ProjectWorkspace.propTypes = {
     id: PropType.string.isRequired,
     name: PropType.string.isRequired,
     description: PropType.string.isRequired,
-    members: PropType.arrayOf(
+    elements: PropType.arrayOf(
       PropType.shape({
         id: PropType.string.isRequired,
       })

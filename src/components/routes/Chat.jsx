@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import React from 'react';
 import { Card, Grid, Loader, Image } from 'semantic-ui-react';
 import { GET_FRIENDS } from '../../graphql';
-import Members from '../shared/Members';
+import ElementList from '../shared/ElementList';
 import { wip } from '../../appConfig';
 
 const Chat = () => {
@@ -30,7 +30,7 @@ const Chat = () => {
                   textAlign: 'center',
                 }}
               />
-              <Members members={data.getFriends} type="user" />
+              <ElementList elements={data.getFriends} type="user" />
             </Grid.Row>
           )}
         </Grid.Column>

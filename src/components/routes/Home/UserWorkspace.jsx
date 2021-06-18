@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/client';
 import React, { useContext } from 'react';
-import { Grid, Loader, Image } from 'semantic-ui-react';
+import { Grid, Loader, Image, Header } from 'semantic-ui-react';
 import { UserContext } from '../../../context/UserProvider';
 import { GET_FRIENDS, GET_USER_PROJECTS } from '../../../graphql';
-import Members from '../../shared/Members';
+import ElementList from '../../shared/ElementList';
 import Notifications from './Notifications';
 import { wip } from '../../../appConfig';
 
@@ -34,7 +34,9 @@ const UserWorkspace = () => {
   return (
     <div className="userWorkspace">
       <Grid centered columns={3} divided>
-        <h2>Welcome {user.username}</h2>
+        <h2>
+          Welcome <span style={{ color: 'orangered' }}>{user.username}</span>
+        </h2>
         <Grid.Row>
           {loading ? (
             <Loader size="huge" active>
@@ -42,14 +44,14 @@ const UserWorkspace = () => {
             </Loader>
           ) : (
             <Grid.Column width={2}>
-              <div className="h2">My friends</div>
+              <Header>My friends</Header>
               <Grid.Row>
                 <div
                   style={{
                     textAlign: 'center',
                   }}
                 />
-                <Members members={data.getFriends} type="user" />
+                <ElementList elements={data.getFriends} type="user" />
               </Grid.Row>
             </Grid.Column>
           )}
@@ -67,15 +69,15 @@ const UserWorkspace = () => {
             </div>
           </Grid.Column>
           <Grid.Column width={2}>
-            <div className="h2">My projects</div>
+            <Header>My projects</Header>
             {projectLoading ? (
               <Loader size="huge" active>
                 Computing, things, beep bop
               </Loader>
             ) : (
               projectData && (
-                <Members
-                  members={projectData.getUserProjects}
+                <ElementList
+                  elements={projectData.getUserProjects}
                   type="projects"
                 />
               )

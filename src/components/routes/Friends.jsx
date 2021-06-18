@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { Grid, Loader, Input } from 'semantic-ui-react';
-import Members from '../shared/Members';
+import { Grid, Loader, Input, Image } from 'semantic-ui-react';
+import ElementList from '../shared/ElementList';
 import { UserContext } from '../../context/UserProvider';
 import { GET_FRIENDS } from '../../graphql';
 import { GET_USERS } from '../../graphql/userGQL';
+import { baseURL, defaultAvatar } from '../../appConfig';
 
 const Friends = () => {
   const { user } = useState(UserContext);
@@ -44,18 +45,37 @@ const Friends = () => {
       <div className="spacerDiv" style={{ padding: 20 }} />
       <Grid centered columns={2} divided>
         <Grid.Column width={13}>
+          <Input
+            placeholder="search and destory"
+            icon="search"
+            style={{ margin: 20, display: 'inline-block' }}
+          />
           <Grid.Row>
-            <Input
-              placeholder="search and destory"
-              icon="search"
-              style={{ margin: 20, display: 'inline-block' }}
-            />
             {userLoading ? (
               <Loader size="huge" active>
                 Computing, things, beep bop
               </Loader>
             ) : (
-              userData.getUsers.map((e) => <h2>{e.username}</h2>)
+              <Grid doubling columns={5}>
+                {userData.getUsers.map((member) => (
+                  <Grid.Column key={member.id}>
+                    <div style={{ textAlign: 'center' }}>
+                      <Image
+                        rounded
+                        size="tiny"
+                        src={
+                          member.imageURL
+                            ? `${baseURL}/files/${member.imageURL}`
+                            : defaultAvatar
+                        }
+                        as={Link}
+                        to={`/user/${member.id}`}
+                      />
+                      <p>{member.username}</p>
+                    </div>
+                  </Grid.Column>
+                ))}
+              </Grid>
             )}
           </Grid.Row>
         </Grid.Column>
@@ -67,7 +87,7 @@ const Friends = () => {
                 textAlign: 'center',
               }}
             />
-            <Members members={data.getFriends} type="user" />
+            <ElementList elements={data.getFriends} type="user" />
           </Grid.Row>
         </Grid.Column>
       </Grid>
