@@ -100,6 +100,16 @@ const ADD_FRIEND = gql`
   }
 `;
 
+const GET_USERS = gql`
+  query getUsers {
+    getUsers {
+      id
+      username
+      imageURL
+    }
+  }
+`;
+
 export {
   REGISTER_USER,
   LOGIN_USER,
@@ -107,4 +117,5 @@ export {
   GET_FRIENDS,
   UPDATE_USER,
   ADD_FRIEND,
+  GET_USERS,
 };

@@ -38,7 +38,7 @@ const App = () => (
             <UserRoute exact path="/login" component={Login} />
             <Route exact path="/posts/:postID" component={SinglePost} />
             <Route exact path="/projects" component={Projects} />
-            <Route exact path="/friends" component={Friends} />
+            <Route exact path="/connect" component={Friends} />
             <Route
               exact
               path="/projects/createProject"

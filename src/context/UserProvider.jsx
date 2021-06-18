@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { createContext, useReducer } from 'react';
+import { useApolloClient } from '@apollo/client';
 import jwtDecode from 'jwt-decode';
 
 import { initialState, userReducer, actionTypes } from './userReducer';
@@ -48,6 +49,7 @@ export const UserContext = createContext({
 export const UserProvider = (props) => {
   // useReducer is the same as useState LUL
   const [state, dispatch] = useReducer(userReducer, initialState);
+  const client = useApolloClient();
 
   checkTokenExpiration(dispatch);
 
@@ -65,6 +67,9 @@ export const UserProvider = (props) => {
   const logout = () => {
     // upon logout remove the token
     localStorage.removeItem('userToken');
+    // clear the cache of prev user data
+    client.clearStore();
+    client.cache.reset();
     dispatch({ type: actionTypes.LOGOUT });
   };
 

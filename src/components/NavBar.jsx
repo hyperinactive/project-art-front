@@ -61,6 +61,13 @@ const NavBar = () => {
         as={Link}
         to="/projects"
       />
+      <Menu.Item
+        name="connect"
+        active={activeItem === 'connect'}
+        onClick={handleItemClick}
+        as={Link}
+        to="/connect"
+      />
       <Menu.Menu position="right">
         <Menu.Item
           name="logout"
