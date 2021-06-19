@@ -29,12 +29,11 @@ const PostForm = () => {
       // so we need a copy of the obj <- mutating the cache IS NOT CONSIDERED A GOOD PRACTICE
       const cacheDataClone = cloneDeep(cacheData);
       cacheDataClone.getPosts = [
-        result.data.createPost,
         ...cacheDataClone.getPosts,
+        ...result.data.createPost,
       ];
 
       // we're updating cacheData with new posts
-
       // write new data into the cache
       cache.writeQuery({
         query: GET_POSTS,

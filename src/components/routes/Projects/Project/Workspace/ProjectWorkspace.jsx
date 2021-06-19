@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react';
-import { Button, Grid, Loader } from 'semantic-ui-react';
+import { Waypoint } from 'react-waypoint';
+import { Grid, Loader } from 'semantic-ui-react';
 import PropType from 'prop-types';
 import { useLazyQuery } from '@apollo/client';
 import PostProjectForm from './PostProjectForm';
@@ -44,6 +45,7 @@ const ProjectWorkspace = ({ project, elements }) => {
           ...fetchMoreResult.getPostsFeed.posts,
           ...prevResult.getPostsFeed.posts,
         ];
+
         // --------------------------------------------------------------------
         setCursor(fetchMoreResult.getPostsFeed.nextCursor);
         setCanLoadMore(fetchMoreResult.getPostsFeed.hasMoreItems);
@@ -101,11 +103,11 @@ const ProjectWorkspace = ({ project, elements }) => {
   //   },
   // });
 
-  const handleClick = () => {
-    if (canLoadMore) {
-      feedMe();
-    }
-  };
+  // const handleClick = () => {
+  //   if (canLoadMore) {
+  //     feedMe();
+  //   }
+  // };
 
   return (
     <div className="projectWorkspace">
@@ -135,7 +137,6 @@ const ProjectWorkspace = ({ project, elements }) => {
                   Computing, things, beep bop
                 </Loader>
               )}
-
               <PostProjectForm project={project} />
               <div
                 style={{
@@ -155,12 +156,26 @@ const ProjectWorkspace = ({ project, elements }) => {
                 ) : (
                   feedData &&
                   feedData.getPostsFeed.posts &&
-                  feedData.getPostsFeed.posts.map((post) => (
-                    <PostCard key={post.id} post={post} />
+                  feedData.getPostsFeed.posts.map((post, i) => (
+                    <React.Fragment key={post.id}>
+                      <PostCard post={post} />
+                      {i === 0 && (
+                        <Waypoint
+                          onEnter={() => {
+                            console.log(post);
+                            console.log('10th element');
+                            if (canLoadMore) {
+                              feedMe();
+                            }
+                          }}
+                        />
+                      )}
+                    </React.Fragment>
                   ))
                 )}
               </div>
-              {canLoadMore &&
+              {/* Button variant */}
+              {/* {canLoadMore &&
                 (feedLoading ? (
                   <Loader size="huge" active>
                     Computing, things, beep bop
@@ -169,7 +184,12 @@ const ProjectWorkspace = ({ project, elements }) => {
                   <Button type="button" color="orange" onClick={handleClick}>
                     Load more!
                   </Button>
-                ))}
+                ))} */}
+              {feedLoading && (
+                <Loader size="huge" active>
+                  Computing, things, beep bop
+                </Loader>
+              )}
             </Grid.Column>
           </Grid.Row>
         </Grid.Column>

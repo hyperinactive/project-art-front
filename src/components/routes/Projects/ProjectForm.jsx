@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { cloneDeep } from '@apollo/client/utilities';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -18,6 +18,18 @@ const ProjectForm = () => {
     project: null,
     isCreated: false,
   });
+
+  // error prevention, not classy but doesn't the job
+  // in case the user projects haven't been fetched at this point
+  useQuery(GET_USER_PROJECTS, {
+    onCompleted: () => {
+      console.log('Fetched user projects');
+    },
+    onError(err) {
+      console.log(err);
+    },
+  });
+
   const [createProject] = useMutation(CREATE_PROJECT, {
     variables: {
       name,
@@ -68,8 +80,8 @@ const ProjectForm = () => {
 
     onError: (err) => {
       console.log(err);
-      console.log(err.graphQLErrors[0].extensions.exception.errors);
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      // console.log(err.graphQLErrors[0].extensions.exception.errors);
+      // setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
   });
   const handleSubmit = (e) => {

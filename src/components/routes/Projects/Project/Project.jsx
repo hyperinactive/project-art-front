@@ -51,7 +51,7 @@ const Project = () => {
         (isMemeber(data.getProject.members, user) ? (
           <ProjectWorkspace
             project={data.getProject}
-            members={mData.getProjectMembers}
+            elements={mData.getProjectMembers}
           />
         ) : (
           data &&

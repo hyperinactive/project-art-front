@@ -48,7 +48,7 @@ const PostProjectForm = ({ project }) => {
       const cacheDataClone = cloneDeep(cacheData);
       cacheDataClone.getPostsFeed.posts = [
         ...cacheDataClone.getPostsFeed.posts,
-        result.data.createProjectPost,
+        ...result.data.createProjectPost,
       ];
 
       cache.writeQuery({

@@ -5,6 +5,7 @@ import { cloneDeep } from '@apollo/client/utilities';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Header, Image } from 'semantic-ui-react';
+import { defaultAvatar } from '../../../../appConfig';
 import { UserContext } from '../../../../context/UserProvider';
 import { ADD_MEMBER, GET_MEMBERS, GET_PROJECT } from '../../../../graphql';
 
@@ -89,11 +90,7 @@ const ProjectProfile = ({ project }) => {
         <Header.Content>{project.name}</Header.Content>
         <Header.Subheader>{project.description}</Header.Subheader>
       </Header>
-      <Image
-        circular
-        src="https://react.semantic-ui.com/images/avatar/large/molly.png"
-        size="tiny"
-      />
+      <Image circular src={defaultAvatar} size="tiny" />
       {user ? (
         <Button color="orange" onClick={handleClick} style={{ margin: 20 }}>
           Join the project!
