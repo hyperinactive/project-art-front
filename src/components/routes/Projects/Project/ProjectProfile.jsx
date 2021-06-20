@@ -1,13 +1,18 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useMutation } from '@apollo/client';
-import { cloneDeep } from '@apollo/client/utilities';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { cloneDeep } from 'lodash';
 import { Button, Header, Image } from 'semantic-ui-react';
 import { defaultAvatar } from '../../../../appConfig';
 import { UserContext } from '../../../../context/UserProvider';
-import { ADD_MEMBER, GET_MEMBERS, GET_PROJECT } from '../../../../graphql';
+import {
+  ADD_MEMBER,
+  GET_MEMBERS,
+  GET_PROJECT,
+  GET_USER_PROJECTS,
+} from '../../../../graphql';
 
 // project.project.<attributes>...
 const ProjectProfile = ({ project }) => {
@@ -64,6 +69,23 @@ const ProjectProfile = ({ project }) => {
           getProject: {
             members: projectClone.getProject.members,
           },
+        },
+      });
+
+      const userProjects = cache.readQuery({
+        query: GET_USER_PROJECTS,
+      });
+
+      const userProjectsClone = cloneDeep(userProjects);
+      userProjectsClone.getUserProjects = [
+        ...userProjectsClone.getUserProjects,
+        projectClone.getProject,
+      ];
+
+      cache.writeQuery({
+        query: GET_USER_PROJECTS,
+        data: {
+          getUserProjects: userProjectsClone.getUserProjects,
         },
       });
     },

@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import React from 'react';
-import { Card, Grid, Loader, Image } from 'semantic-ui-react';
+import { Card, Grid, Loader, Image, Header } from 'semantic-ui-react';
 import { GET_FRIENDS } from '../../graphql';
 import ElementList from '../shared/ElementList';
 import { wip } from '../../appConfig';
@@ -18,23 +18,19 @@ const Chat = () => {
     <div className="chat" style={{ textAlign: 'center' }}>
       <h2 style={{ marginTop: 45 }}>{placeholder}</h2>
       <Grid container columns={2} style={{ marginTop: 40 }} divided>
-        <Grid.Column width={4}>
+        <Grid.Column width={2}>
           {loading ? (
             <Loader size="huge" active>
               Computing, things, beep bop
             </Loader>
           ) : (
             <Grid.Row centered>
-              <div
-                style={{
-                  textAlign: 'center',
-                }}
-              />
+              <Header>My friends</Header>
               <ElementList elements={data.getFriends} type="user" />
             </Grid.Row>
           )}
         </Grid.Column>
-        <Grid.Column width={12}>
+        <Grid.Column width={14}>
           <Grid.Row centered>
             <Card>
               <Card.Content>

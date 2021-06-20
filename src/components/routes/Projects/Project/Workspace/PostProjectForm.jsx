@@ -63,7 +63,7 @@ const PostProjectForm = ({ project }) => {
         fields: {
           getPostsFeed: (previous) => {
             const previousClone = cloneDeep(previous);
-            previousClone.posts = [previousClone.posts, createProjectPost];
+            previousClone.posts = [...previousClone.posts, createProjectPost];
             return previousClone;
           },
         },

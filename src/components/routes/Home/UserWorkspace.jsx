@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import React, { useContext } from 'react';
-import { Grid, Loader, Image, Header } from 'semantic-ui-react';
+import { Grid, Loader, Image, Header, Card } from 'semantic-ui-react';
 import { UserContext } from '../../../context/UserProvider';
 import { GET_FRIENDS, GET_USER_PROJECTS } from '../../../graphql';
 import ElementList from '../../shared/ElementList';
@@ -66,6 +66,17 @@ const UserWorkspace = () => {
             >
               <Notifications />
               <Image src={wip} size="small" />
+              <div style={{ textAlign: 'center' }}>
+                <Card centered>
+                  <Card.Content>
+                    <Card.Header>This is the user feed demo!</Card.Header>
+                    <Card.Description>
+                      (which is under construction)
+                    </Card.Description>
+                    <Card.Meta>(which I will get to, yeah...)</Card.Meta>
+                  </Card.Content>
+                </Card>
+              </div>
             </div>
           </Grid.Column>
           <Grid.Column width={2}>

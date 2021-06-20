@@ -12,14 +12,13 @@ import { GET_POSTS_FEED } from '../../../../../graphql';
 import PostCard from '../../../../PostCard';
 import ElementList from '../../../../shared/ElementList';
 
-// eslint-disable-next-line react/prop-types
 const ProjectWorkspace = ({ project, elements }) => {
-  // TODO: setup the feed
-
   // const [isBottom, setIsBottom] = useState(false);
   const [cursor, setCursor] = useState(null);
   const [canLoadMore, setCanLoadMore] = useState(true);
 
+  // TODO: pollInterval calls this and messes up the cache
+  // NOTE: may have to do with the cursor being "sent back"
   const [loadFeed, { data, loading, fetchMore }] = useLazyQuery(
     GET_POSTS_FEED,
     {
@@ -254,12 +253,12 @@ ProjectWorkspace.propTypes = {
     id: PropType.string.isRequired,
     name: PropType.string.isRequired,
     description: PropType.string.isRequired,
-    elements: PropType.arrayOf(
-      PropType.shape({
-        id: PropType.string.isRequired,
-      })
-    ),
   }).isRequired,
+  elements: PropType.arrayOf(
+    PropType.shape({
+      id: PropType.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default ProjectWorkspace;
