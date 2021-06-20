@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable consistent-return */
 import {
   ApolloClient,
@@ -5,7 +6,9 @@ import {
   // createHttpLink,
   ApolloLink,
 } from '@apollo/client';
-import { relayStylePagination } from '@apollo/client/utilities';
+// import { cloneDeep } from 'lodash';
+
+// import { relayStylePagination } from '@apollo/client/utilities';
 import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from 'apollo-link-context';
 import { baseURL } from './appConfig';
@@ -42,20 +45,63 @@ const authLink = setContext(() => {
   };
 });
 
-// TODO: need to read up on caching
-// setting policies on root Query doesn't feel right
-// NOTE: docs use typeDefs
+// merge policy
+// const offsetFromCursor = (items, cursor) => {
+//   // Search from the back of the list because the cursor we're
+//   // looking for is typically the ID of the last item.
+//   for (let i = 0; i < items.length; i++) {
+//     const item = items[i];
+//     // Using readField works for both non-normalized objects
+//     // (returning item.id) and normalized references (returning
+//     // the id field from the referenced entity object), so it's
+//     // a good idea to use readField when you're not sure what
+//     // kind of elements you're dealing with.
+//     if (item.id === cursor) {
+//       // Add one because the cursor identifies the item just
+//       // before the first item in the page we care about.
+//       return i + 1;
+//     }
+//   }
+//   // Report that the cursor could not be found.
+//   return -1;
+// };
+
 const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
         getPosts: {
           // just replace them
-          merge(existing, incoming) {
+          merge(_, incoming) {
             return incoming;
           },
         },
-        getPostsFeed: relayStylePagination(),
+        // getPostsFeed: relayStylePagination(),
+        // getPostsFeed: {
+        //   keyArgs: ['id'],
+
+        //   merge(existing, incoming, { args }) {
+        //     let cursor = null;
+        //     if (args.cursor !== undefined) {
+        //       cursor = args.cursor;
+        //     }
+        //     const merged = existing
+        //       ? cloneDeep(existing)
+        //       : { posts: [], hasMoreItems: false, nextCursor: null };
+        //     let offset = offsetFromCursor(merged.posts, cursor);
+        //     // If we couldn't find the cursor, default to appending to
+        //     // the end of the list, so we don't lose any data.
+        //     if (offset < 0) offset = merged.posts.length;
+        //     // Now that we have a reliable offset, the rest of this logic
+        //     // is the same as in offsetLimitPagination.
+        //     for (let i = 0; i < incoming.posts.length; ++i) {
+        //       merged.posts.unshift(incoming.posts[i]);
+        //     }
+        //     merged.hasMoreItems = incoming.hasMoreItems;
+        //     merged.nextCursor = incoming.nextCursor;
+        //     return merged;
+        //   },
+        // },
       },
     },
     Post: {

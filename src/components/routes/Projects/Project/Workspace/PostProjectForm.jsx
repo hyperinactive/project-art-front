@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useState } from 'react';
 import { Button, Form, Message, Image } from 'semantic-ui-react';
-import { useMutation } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { useDropzone } from 'react-dropzone';
 import PropType from 'prop-types';
 
@@ -36,32 +37,41 @@ const PostProjectForm = ({ project }) => {
   // ----------------------------------------------------------------------------------------
 
   const [createPost] = useMutation(CREATE_PROJECT_POST, {
-    update: (cache, result) => {
-      const cacheData = cache.readQuery({
-        query: GET_POSTS_FEED,
+    update: (cache, { data: { createProjectPost } }) => {
+      // const cacheData = cache.readQuery({
+      //   query: GET_POSTS_FEED,
 
-        variables: {
-          projectID: project.id,
+      //   variables: {
+      //     projectID: project.id,
+      //   },
+      // });
+
+      // const cacheDataClone = cloneDeep(cacheData);
+      // cacheDataClone.getPostsFeed.posts = [
+      //   ...cacheDataClone.getPostsFeed.posts,
+      //   createProjectPost,
+      // ];
+
+      // cache.writeQuery({
+      //   query: GET_POSTS_FEED,
+      //   variables: {
+      //     projectID: project.id,
+      //   },
+      //   data: cacheDataClone.getPostsFeed.posts,
+      // });
+      cache.modify({
+        fields: {
+          getPostsFeed: (previous) => {
+            const previousClone = cloneDeep(previous);
+            previousClone.posts = [previousClone.posts, createProjectPost];
+            return previousClone;
+          },
         },
-      });
-
-      const cacheDataClone = cloneDeep(cacheData);
-      cacheDataClone.getPostsFeed.posts = [
-        ...cacheDataClone.getPostsFeed.posts,
-        ...result.data.createProjectPost,
-      ];
-
-      cache.writeQuery({
-        query: GET_POSTS_FEED,
-        variables: {
-          projectID: project.id,
-        },
-        data: cacheDataClone.getPostsFeed.posts,
       });
     },
     onError: (err) => {
       console.log({ err });
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      // setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     onCompleted: () => {
       setBody('');
