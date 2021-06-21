@@ -63,7 +63,12 @@ const PostProjectForm = ({ project }) => {
         fields: {
           getPostsFeed: (previous) => {
             const previousClone = cloneDeep(previous);
+            // cannot apppend new posts to a null, so check for it
+            if (previousClone.posts === null) {
+              previousClone.posts = [];
+            }
             previousClone.posts = [...previousClone.posts, createProjectPost];
+            console.log(previousClone);
             return previousClone;
           },
         },
@@ -71,7 +76,7 @@ const PostProjectForm = ({ project }) => {
     },
     onError: (err) => {
       console.log({ err });
-      // setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     onCompleted: () => {
       setBody('');

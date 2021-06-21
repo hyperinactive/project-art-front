@@ -1,9 +1,4 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable no-undef */
-/* eslint-disable react/jsx-props-no-spreading */
 import { useMutation, useQuery } from '@apollo/client';
-import { string } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
 import {
@@ -15,10 +10,12 @@ import {
   Button,
   Message,
 } from 'semantic-ui-react';
+import { cloneDeep } from 'lodash';
 import { baseURL, defaultAvatar } from '../../../appConfig';
 import { UserContext } from '../../../context/UserProvider';
 import { GET_USER, UPDATE_USER } from '../../../graphql';
 import './Settings.css';
+import { GET_USERS } from '../../../graphql/userGQL';
 
 // TODO: cache update when the imageURL changes
 const Settings = () => {
@@ -65,6 +62,46 @@ const Settings = () => {
         },
         data: result.data.updateUser,
       });
+
+      const users = cache.readQuery({
+        query: GET_USERS,
+      });
+
+      const usersClone = cloneDeep(users);
+
+      if (usersClone !== null) {
+        const filtered = usersClone.getUsers.map((e) => {
+          if (e.id.toString() === user.id) {
+            return result.data.updateUser;
+          }
+          return e;
+        });
+
+        cache.writeQuery({
+          query: GET_USERS,
+          data: {
+            getUsers: filtered,
+          },
+        });
+      }
+      // cache.modify({
+      //   fields: {
+      //     getUsers: (previous) => {
+      //       const prevClone = cloneDeep(previous);
+      //       console.log(prevClone);
+      //       const filteredUsers = prevClone.map((e) => {
+      //         console.log(e);
+      //         if (e.id.toString() === user.id) {
+      //           console.log('found it');
+      //           console.log(e);
+      //           return result.data.updateUser;
+      //         }
+      //         return e;
+      //       });
+      //       return filteredUsers;
+      //     },
+      //   },
+      // });
     },
     onCompleted: (res) => {
       login(res.updateUser);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { Grid, Loader, Input, Image } from 'semantic-ui-react';
+import { Grid, Loader, Input, Image, Header } from 'semantic-ui-react';
 import ElementList from '../shared/ElementList';
 import { UserContext } from '../../context/UserProvider';
 import { GET_FRIENDS } from '../../graphql';
@@ -13,6 +13,8 @@ const Friends = () => {
   const history = useHistory();
 
   if (user === null) history.push('/register');
+
+  const [searchTerm, setSearchTerm] = useState('');
 
   const { data, loading, error } = useQuery(GET_FRIENDS, {
     onCompleted: () => {
@@ -49,7 +51,11 @@ const Friends = () => {
             placeholder="search and destory"
             icon="search"
             style={{ margin: 20, display: 'inline-block' }}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+            }}
           />
+
           <Grid.Row>
             {userLoading ? (
               <Loader size="huge" active>
@@ -57,30 +63,39 @@ const Friends = () => {
               </Loader>
             ) : (
               <Grid doubling columns={5}>
-                {userData.getUsers.map((member) => (
-                  <Grid.Column key={member.id}>
-                    <div style={{ textAlign: 'center' }}>
-                      <Image
-                        rounded
-                        size="tiny"
-                        src={
-                          member.imageURL
-                            ? `${baseURL}/files/${member.imageURL}`
-                            : defaultAvatar
-                        }
-                        as={Link}
-                        to={`/user/${member.id}`}
-                      />
-                      <p>{member.username}</p>
-                    </div>
-                  </Grid.Column>
-                ))}
+                {userData &&
+                  userData.getUsers &&
+                  userData.getUsers
+                    .filter((currentUser) =>
+                      currentUser.username
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                    )
+                    .map((member) => (
+                      <Grid.Column key={member.id}>
+                        <div style={{ textAlign: 'center' }}>
+                          <Image
+                            rounded
+                            size="tiny"
+                            src={
+                              member.imageURL
+                                ? `${baseURL}/files/${member.imageURL}`
+                                : defaultAvatar
+                            }
+                            as={Link}
+                            to={`/user/${member.id}`}
+                          />
+                          <p>{member.username}</p>
+                        </div>
+                      </Grid.Column>
+                    ))}
               </Grid>
             )}
           </Grid.Row>
         </Grid.Column>
+
         <Grid.Column width={2}>
-          <div className="h2">My friends</div>
+          <Header>My friends</Header>
           <Grid.Row>
             <div
               style={{
