@@ -61,7 +61,7 @@ const LoginForm = () => {
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as="h1" textAlign="center">
+          <Header as="h1" textAlign="center" className="headline">
             Log me in!
           </Header>
           <Form

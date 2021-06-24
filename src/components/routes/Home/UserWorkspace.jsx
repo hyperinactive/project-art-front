@@ -33,9 +33,12 @@ const UserWorkspace = () => {
   return (
     <div className="userWorkspace">
       <Grid centered columns={3} divided>
-        <h2>
-          Welcome <span style={{ color: 'orangered' }}>{user.username}</span>
-        </h2>
+        <div className="greetings headline">
+          <h2>
+            Welcome <span style={{ color: 'orangered' }}>{user.username}</span>
+          </h2>
+        </div>
+
         <Grid.Row>
           {loading ? (
             <Loader size="huge" active>

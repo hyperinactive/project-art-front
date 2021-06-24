@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Icon, Menu } from 'semantic-ui-react';
+import { Icon, Menu, Sticky, Dropdown } from 'semantic-ui-react';
 import { NavigationContext } from '../context/NavigationProvider';
 
 import { UserContext } from '../context/UserProvider';
@@ -30,14 +30,9 @@ const NavBar = () => {
 
   // if we got a logged-in user display the personalized component with the logout item
   const navBar = user ? (
-    <Menu
-      tabular
-      stackable
-      size="massive"
-      color="orange"
-      style={{ marginTop: 15, marginBot: 15 }}
-    >
+    <Menu stackable size="massive" color="orange">
       <Menu.Item
+        className="navbar__menu__item"
         name="home"
         active={activeItem === 'home'}
         onClick={handleItemClick}
@@ -56,6 +51,7 @@ const NavBar = () => {
         {user.username}
       </Menu.Item> */}
       <Menu.Item
+        className="navbar__menu__item"
         name="projects"
         active={activeItem === 'projects'}
         onClick={handleItemClick}
@@ -63,6 +59,7 @@ const NavBar = () => {
         to="/projects"
       />
       <Menu.Item
+        className="navbar__menu__item"
         name="connect"
         active={activeItem === 'connect'}
         onClick={handleItemClick}
@@ -71,18 +68,54 @@ const NavBar = () => {
       />
       {temporaryTab && (
         <Menu.Item
-          // TODO: Temp should be dynamically changed
+          className="navbar__menu__item"
           name={temporaryTab.name}
           active={activeItem === temporaryTab.name}
           onClick={handleItemClick}
           as={Link}
-          // temporary link
           to={temporaryTab.link}
         />
       )}
 
       <Menu.Menu position="right">
-        <Menu.Item
+        <Menu.Item className="navbar__menu__item">
+          <Dropdown icon="caret down">
+            <Dropdown.Menu>
+              <Dropdown.Item
+                onClick={() => {
+                  setTemporaryTab(null);
+                  logout();
+                  history.push('/');
+                  setActiveItem('home');
+                }}
+              >
+                <Icon name="close" />
+                Logout
+              </Dropdown.Item>
+              <Dropdown.Item
+                name="inbox"
+                as={Link}
+                to="/chat"
+                onClick={handleItemClick}
+              >
+                <Icon name="inbox" style={{ margin: 0 }} />
+                Inbox
+              </Dropdown.Item>
+              <Dropdown.Item
+                name="settings"
+                as={Link}
+                to={`/settings/${user.id}`}
+                onClick={handleItemClick}
+              >
+                <Icon name="setting" />
+                Settings
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Menu.Item>
+
+        {/* <Menu.Item
+          className="navbar__menu__item"
           name="logout"
           onClick={() => {
             setTemporaryTab(null);
@@ -90,9 +123,10 @@ const NavBar = () => {
             history.push('/');
             setActiveItem('home');
           }}
-        />
+        /> */}
       </Menu.Menu>
-      <Menu.Item
+      {/* <Menu.Item
+        className="navbar__menu__item"
         name="chat"
         active={activeItem === 'chat'}
         onClick={handleItemClick}
@@ -100,9 +134,10 @@ const NavBar = () => {
         to="/chat"
       >
         <Icon name="inbox" style={{ margin: 0 }} />
-      </Menu.Item>
+      </Menu.Item> */}
 
-      <Menu.Item
+      {/* <Menu.Item
+        className="navbar__menu__item"
         name="settings"
         active={activeItem === 'settings'}
         onClick={handleItemClick}
@@ -110,11 +145,12 @@ const NavBar = () => {
         to={`/settings/${user.id}`}
       >
         <Icon name="setting" style={{ margin: 0 }} />
-      </Menu.Item>
+      </Menu.Item> */}
     </Menu>
   ) : (
-    <Menu tabular stackable size="massive" color="orange">
+    <Menu stackable size="massive" color="orange">
       <Menu.Item
+        className="navbar__menu__item"
         name="home"
         active={activeItem === 'home'}
         onClick={handleItemClick}
@@ -122,6 +158,7 @@ const NavBar = () => {
         to="/"
       />
       <Menu.Item
+        className="navbar__menu__item"
         name="projects"
         active={activeItem === 'projects'}
         onClick={handleItemClick}
@@ -130,6 +167,7 @@ const NavBar = () => {
       />
       <Menu.Menu position="right">
         <Menu.Item
+          className="navbar__menu__item"
           name="register"
           active={activeItem === 'register'}
           onClick={handleItemClick}
@@ -137,6 +175,7 @@ const NavBar = () => {
           to="/register"
         />
         <Menu.Item
+          className="navbar__menu__item"
           name="login"
           active={activeItem === 'login'}
           onClick={handleItemClick}
@@ -149,7 +188,9 @@ const NavBar = () => {
 
   return (
     <div className="navbar" style={{ paddingTop: 10, marginBottom: 15 }}>
-      {navBar}
+      <Sticky>
+        <div className="navbar__background">{navBar}</div>
+      </Sticky>
     </div>
   );
 };

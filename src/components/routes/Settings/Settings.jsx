@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
 import {
   Grid,
@@ -11,6 +11,8 @@ import {
   Message,
 } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
+
+import { NavigationContext } from '../../../context/NavigationProvider';
 import { baseURL, defaultAvatar } from '../../../appConfig';
 import { UserContext } from '../../../context/UserProvider';
 import { GET_USER, UPDATE_USER } from '../../../graphql';
@@ -21,6 +23,7 @@ import { GET_USERS } from '../../../graphql/userGQL';
 const Settings = () => {
   const { user, login } = useContext(UserContext);
   const { userID } = useParams();
+  const { setTemporaryTab } = useContext(NavigationContext);
 
   const [errors, setErrors] = useState({});
   const [state, setState] = useState({
@@ -31,6 +34,13 @@ const Settings = () => {
   const [preview, setPreview] = useState(defaultAvatar);
   const [image, setImage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(false);
+
+  useEffect(() => {
+    setTemporaryTab({
+      name: 'settings',
+      link: `/settings/${userID}`,
+    });
+  }, []);
 
   const { data, loading } = useQuery(GET_USER, {
     variables: {

@@ -1,0 +1,22 @@
+$background-form-color: rgba(255, 255, 255, 0.3);
+$text-color: rgb(255, 255, 255);
+$accent-color: #f2711c;
+$background-color: #161a1d;
+
+$mainPallete: (
+  'background': rgb(28, 24, 22),
+  'midground': rgb(46, 36, 31),
+  'foreground': rgb(60, 48, 40),
+  'accent': rgb(254, 152, 102),
+  'headlineTextLight': rgb(216, 182, 138),
+  'regularText': rgb(233, 232, 232),
+);
+
+$secondaryPallete: (
+  'background': rgb(25, 23, 29),
+  'midground': rgb(37, 34, 43),
+  'foreground': rgb(49, 46, 57),
+  'accent': rgb(141, 102, 254),
+  'regularText': rgb(178, 166, 216),
+  'accentText': rgb(254, 255, 254),
+);
