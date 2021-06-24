@@ -9,8 +9,8 @@ import {
 
 export const NavigationContext = createContext({
   ...initialState,
-  setActiveItem: (data) => {},
-  setTemporaryTab: (data) => {},
+  setActiveItem: () => {},
+  setTemporaryTab: () => {},
 });
 
 export const NavigationProvider = (props) => {

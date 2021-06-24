@@ -14,7 +14,7 @@ import { cloneDeep } from 'lodash';
 import { baseURL, defaultAvatar } from '../../../appConfig';
 import { UserContext } from '../../../context/UserProvider';
 import { GET_USER, UPDATE_USER } from '../../../graphql';
-import './Settings.css';
+import './Settings.scss';
 import { GET_USERS } from '../../../graphql/userGQL';
 
 // TODO: cache update when the imageURL changes
@@ -215,7 +215,9 @@ const Settings = () => {
                   </Header>
                 </Form.Group>
 
-                <Button type="submit">Submit</Button>
+                <Button type="submit" color="orange">
+                  Submit
+                </Button>
               </Form>
             </Grid.Column>
           </Grid>

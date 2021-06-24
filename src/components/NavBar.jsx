@@ -8,7 +8,7 @@ import { UserContext } from '../context/UserProvider';
 const NavBar = () => {
   // const context = useContext(UserContext);
   const { user, logout } = useContext(UserContext);
-  const { activeItem, setActiveItem, temporaryTab } =
+  const { activeItem, setActiveItem, temporaryTab, setTemporaryTab } =
     useContext(NavigationContext);
   const history = useHistory();
 
@@ -35,7 +35,7 @@ const NavBar = () => {
       stackable
       size="massive"
       color="orange"
-      style={{ marginTop: 15 }}
+      style={{ marginTop: 15, marginBot: 15 }}
     >
       <Menu.Item
         name="home"
@@ -85,6 +85,7 @@ const NavBar = () => {
         <Menu.Item
           name="logout"
           onClick={() => {
+            setTemporaryTab(null);
             logout();
             history.push('/');
             setActiveItem('home');
@@ -147,7 +148,7 @@ const NavBar = () => {
   );
 
   return (
-    <div className="navbar" style={{ paddingTop: 10 }}>
+    <div className="navbar" style={{ paddingTop: 10, marginBottom: 15 }}>
       {navBar}
     </div>
   );

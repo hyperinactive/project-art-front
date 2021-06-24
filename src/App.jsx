@@ -23,6 +23,8 @@ import Project from './components/routes/Projects/Project/Project';
 import ProjectForm from './components/routes/Projects/ProjectForm';
 import Friends from './components/routes/Friends';
 
+import './App.scss';
+
 const App = () => (
   <UserProvider>
     <BrowserRouter>

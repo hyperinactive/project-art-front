@@ -70,7 +70,7 @@ const Register = (props) => {
       >
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as="h1" textAlign="center">
-            Sign up
+            Sign me up!
           </Header>
           <Form
             size="large"

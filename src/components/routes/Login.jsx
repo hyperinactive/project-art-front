@@ -62,7 +62,7 @@ const LoginForm = () => {
       >
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as="h1" textAlign="center">
-            Log-in to your account
+            Log me in!
           </Header>
           <Form
             size="large"
@@ -118,6 +118,23 @@ const LoginForm = () => {
               <div className="visible content">Looks good?</div>
               <div className="hidden content">Sign me in!</div>
             </Button>
+            <Button
+              as="div"
+              fluid
+              size="large"
+              type="submit"
+              color="orange"
+              animated="fade"
+              tabIndex="0"
+              style={{ marginTop: 10 }}
+              onClick={() => {
+                history.push('/register');
+                setActiveItem('register');
+              }}
+            >
+              <div className="visible content">New here?</div>
+              <div className="hidden content">Sign me up!</div>
+            </Button>
             {/* </Segment> */}
           </Form>
           {/* {Object.keys(errors).length > 0 && (
@@ -129,23 +146,6 @@ const LoginForm = () => {
               ))}
             />
           )} */}
-          <Button
-            as="div"
-            fluid
-            size="large"
-            type="submit"
-            color="orange"
-            animated="fade"
-            tabIndex="0"
-            style={{ marginTop: 10 }}
-            onClick={() => {
-              history.push('/register');
-              setActiveItem('register');
-            }}
-          >
-            <div className="visible content">New here?</div>
-            <div className="hidden content">Sign me up!</div>
-          </Button>
         </Grid.Column>
       </Grid>
     </div>
