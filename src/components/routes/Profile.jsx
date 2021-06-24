@@ -7,6 +7,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useHistory, useParams } from 'react-router-dom';
 import { Button, Grid, Header, Image, Loader } from 'semantic-ui-react';
 import { baseURL, defaultAvatar } from '../../appConfig';
+import {
+  NavigationContext,
+  NavigationProvider,
+} from '../../context/NavigationProvider';
 import { UserContext } from '../../context/UserProvider';
 
 import { ADD_FRIEND, GET_FRIENDS, GET_USER } from '../../graphql';
@@ -20,7 +24,8 @@ const Profile = () => {
   const { userID: fUserID } = params;
   const [isFriend, setIsFriend] = useState(false);
   const history = useHistory();
-
+  const { setTemporaryTab, setActiveItem } = useContext(NavigationContext);
+  // load user data to display
   const { data, loading } = useQuery(GET_USER, {
     variables: {
       userID: fUserID,
@@ -29,6 +34,12 @@ const Profile = () => {
       if (isFriendsWith(data.getUser.friends, user.id) !== undefined) {
         setIsFriend(true);
       }
+      // controll the temp tab info
+      setTemporaryTab({
+        name: data.getUser.username,
+        link: `/user/${data.getUser.id}`,
+      });
+      setActiveItem(data.getUser.username);
     },
     onError: () => {
       history.push('/404');

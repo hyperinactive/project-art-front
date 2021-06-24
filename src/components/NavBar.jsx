@@ -8,7 +8,8 @@ import { UserContext } from '../context/UserProvider';
 const NavBar = () => {
   // const context = useContext(UserContext);
   const { user, logout } = useContext(UserContext);
-  const { activeItem, setActiveItem } = useContext(NavigationContext);
+  const { activeItem, setActiveItem, temporaryTab } =
+    useContext(NavigationContext);
   const history = useHistory();
 
   // when the page renders find out the path and highlight the right menu item
@@ -68,6 +69,18 @@ const NavBar = () => {
         as={Link}
         to="/connect"
       />
+      {temporaryTab && (
+        <Menu.Item
+          // TODO: Temp should be dynamically changed
+          name={temporaryTab.name}
+          active={activeItem === temporaryTab.name}
+          onClick={handleItemClick}
+          as={Link}
+          // temporary link
+          to={temporaryTab.link}
+        />
+      )}
+
       <Menu.Menu position="right">
         <Menu.Item
           name="logout"
