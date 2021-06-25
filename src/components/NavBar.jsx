@@ -30,7 +30,7 @@ const NavBar = () => {
 
   // if we got a logged-in user display the personalized component with the logout item
   const navBar = user ? (
-    <Menu stackable size="massive" color="orange">
+    <Menu stackable size="massive" color="orange" className="navbar__menu">
       <Menu.Item
         className="navbar__menu__item"
         name="home"
@@ -72,26 +72,27 @@ const NavBar = () => {
           name={temporaryTab.name}
           active={activeItem === temporaryTab.name}
           onClick={handleItemClick}
-          as={Link}
-          to={temporaryTab.link}
-        />
+        >
+          <React.Fragment as={Link} to={temporaryTab.link}>
+            {temporaryTab.name}
+          </React.Fragment>
+          <div style={{ marginLeft: 20 }}>
+            <Icon
+              name="close"
+              onClick={() => {
+                setTemporaryTab(null);
+                history.push('/');
+                setActiveItem('home');
+              }}
+            />
+          </div>
+        </Menu.Item>
       )}
 
       <Menu.Menu position="right">
         <Menu.Item className="navbar__menu__item">
           <Dropdown icon="caret down">
             <Dropdown.Menu>
-              <Dropdown.Item
-                onClick={() => {
-                  setTemporaryTab(null);
-                  logout();
-                  history.push('/');
-                  setActiveItem('home');
-                }}
-              >
-                <Icon name="close" />
-                Logout
-              </Dropdown.Item>
               <Dropdown.Item
                 name="inbox"
                 as={Link}
@@ -109,6 +110,17 @@ const NavBar = () => {
               >
                 <Icon name="setting" />
                 Settings
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  setTemporaryTab(null);
+                  logout();
+                  history.push('/');
+                  setActiveItem('home');
+                }}
+              >
+                <Icon name="close" />
+                Logout
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
@@ -148,7 +160,7 @@ const NavBar = () => {
       </Menu.Item> */}
     </Menu>
   ) : (
-    <Menu stackable size="massive" color="orange">
+    <Menu stackable size="massive" color="orange" className="navbar__menu">
       <Menu.Item
         className="navbar__menu__item"
         name="home"
@@ -189,7 +201,7 @@ const NavBar = () => {
   return (
     <div className="navbar" style={{ paddingTop: 10, marginBottom: 15 }}>
       <Sticky>
-        <div className="navbar__background">{navBar}</div>
+        <div>{navBar}</div>
       </Sticky>
     </div>
   );

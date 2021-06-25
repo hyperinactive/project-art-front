@@ -46,7 +46,7 @@ const UserWorkspace = () => {
             </Loader>
           ) : (
             <Grid.Column width={2}>
-              <Header>My friends</Header>
+              <Header className="headline">Friends</Header>
               <Grid.Row>
                 <div
                   style={{
@@ -58,7 +58,7 @@ const UserWorkspace = () => {
             </Grid.Column>
           )}
 
-          <Grid.Column width={12}>
+          <Grid.Column width={11}>
             <div
               style={{
                 display: 'flex',
@@ -66,6 +66,7 @@ const UserWorkspace = () => {
                 alignItems: 'center',
               }}
             >
+              <Header className="headline">User feed</Header>
               <Notifications />
               <div style={{ textAlign: 'center' }}>
                 <Card centered>
@@ -81,7 +82,7 @@ const UserWorkspace = () => {
             </div>
           </Grid.Column>
           <Grid.Column width={2}>
-            <Header>My projects</Header>
+            <Header className="headline">Projects</Header>
             {projectLoading ? (
               <Loader size="huge" active>
                 Computing, things, beep bop

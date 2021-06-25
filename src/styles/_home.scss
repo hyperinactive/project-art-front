@@ -1,0 +1,12 @@
+.home {
+  &__gridRow {
+    display: block;
+    width: 100%;
+    text-align: center !important;
+  }
+  &__gridTitle {
+    display: block !important;
+    font-size: xx-large;
+    margin: 1rem auto !important;
+  }
+}

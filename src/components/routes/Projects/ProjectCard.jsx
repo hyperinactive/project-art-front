@@ -3,8 +3,6 @@ import { Card } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import './ProjectCard.scss';
-
 const ProjectCard = ({
   project: { id, name, description, owner, memberCount },
 }) => (

@@ -37,7 +37,14 @@ const ProjectSearch = () => {
         <Grid.Row>
           {data &&
             data.getProjects &&
-            data.getProjects
+            [...data.getProjects]
+              .sort((a, b) => {
+                const al = a.name.toLowerCase();
+                const bl = b.name.toLowerCase();
+
+                if (al > bl) return 1;
+                return -1;
+              })
               .filter((project) =>
                 project.name.toLowerCase().includes(searchTerm.toLowerCase())
               )

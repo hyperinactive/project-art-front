@@ -26,6 +26,7 @@ const Friends = () => {
   });
 
   const { data: userData, loading: userLoading } = useQuery(GET_USERS, {
+    pollInterval: 5000,
     onCompleted: () => {
       console.log(userData.getUsers);
     },
@@ -65,7 +66,14 @@ const Friends = () => {
               <Grid doubling columns={5}>
                 {userData &&
                   userData.getUsers &&
-                  userData.getUsers
+                  [...userData.getUsers]
+                    .sort((a, b) => {
+                      const al = a.username.toLowerCase();
+                      const bl = b.username.toLowerCase();
+
+                      if (al > bl) return 1;
+                      return -1;
+                    })
                     .filter((currentUser) =>
                       currentUser.username
                         .toLowerCase()

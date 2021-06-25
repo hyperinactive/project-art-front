@@ -1,4 +1,8 @@
-@import './variables';
+@import 'variables';
+@import 'config';
+@import 'navbar';
+@import 'home';
+@import 'projectCard';
 
 // TODO: structure this dude...
 @mixin init {
@@ -12,14 +16,8 @@
   height: 100vh;
 }
 
-html {
-  margin: 0;
-  padding: 0;
-}
-
 body {
-  @include init();
-  background-color: map-get($mainPallete, 'background');
+  background: fixed no-repeat map-get($mainPallete, 'background') !important;
   color: map-get($mainPallete, 'regularText');
 
   // app
@@ -28,15 +26,13 @@ body {
   }
   .appContainer {
     @include maxHeight();
-  }
-  .appContainer__innerContainer {
-    position: absolute;
-    min-height: 90vh;
-    background-color: map-get($mainPallete, 'midground');
-  }
 
-  .navbar__menu__item {
-    padding: 1rem 2rem !important;
+    &__innerContainer {
+      position: absolute;
+      min-height: 90vh;
+      background-color: map-get($mainPallete, 'midground');
+      border-radius: 0.5rem;
+    }
   }
 
   // userWorkspace
@@ -51,14 +47,11 @@ body {
 
   // semantic
   .ui {
-    // .form {
-    //   background: $background-form-color;
-    //   padding: 1rem;
-    //   border-radius: 0.5rem !important;
-    // }
     .ui.feed {
+      margin-top: 0;
       .event {
-        background: $background-form-color;
+        background: map-get($map: $mainPallete, $key: 'background') !important;
+        border-radius: 0.5rem;
         margin-bottom: 0.5rem !important;
         padding: 0.5rem;
       }
