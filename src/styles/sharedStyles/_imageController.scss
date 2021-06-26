@@ -1,11 +1,21 @@
 @import '../variables';
 
 .imageController {
-  &__container {
-    @include form;
+  padding: 0 !important;
+  margin: 0 !important;
 
+  &__container {
+    display: flex;
+    justify-content: center;
     width: 100%;
-    padding: 3.5rem;
-    margin-bottom: 1rem;
+  }
+
+  &__placeholder {
+    background: map-get($map: $mainPallete, $key: 'foreground') !important;
+  }
+
+  img {
+    margin: 0 !important;
+    padding: 0 !important;
   }
 }

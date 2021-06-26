@@ -68,7 +68,11 @@ const NavBar = () => {
       />
       {temporaryTab && (
         <Menu.Item
-          className="navbar__menu__item"
+          className={`navbar__menu__item tempTab ${
+            activeItem === temporaryTab.name
+              ? 'tempTab--active'
+              : 'tempTab--inactive'
+          }`}
           name={temporaryTab.name}
           active={activeItem === temporaryTab.name}
           onClick={handleItemClick}
@@ -81,6 +85,7 @@ const NavBar = () => {
             <Icon
               name="close"
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 setTemporaryTab(null);
                 history.push('/');

@@ -10,7 +10,7 @@ const ImageController = ({
   errors,
   setPreviewImage,
   setImageFile,
-  placeholder,
+  before,
 }) => {
   // DROPZONE
   // useCallback will return a memoized version of the callback that only changes if one of the inputs has changed
@@ -36,15 +36,31 @@ const ImageController = ({
         <input {...getInputProps()} />
         {isDragActive ? (
           // eslint-disable-next-line no-unneeded-ternary
-          placeholder === 'text' ? (
-            <p>{placeholder}</p>
+          before !== null ? (
+            { before }
           ) : (
-            <p>idk</p>
+            <p
+              style={{
+                padding: 50,
+                marginBottom: 15,
+              }}
+            >
+              Drop it here
+            </p>
           )
         ) : previewImage ? (
-          <Image centered src={previewImage} style={{ width: 300 }} />
+          <Image centered src={previewImage} style={{ width: 180 }} />
         ) : (
-          <p>idk</p>
+          <div className="imageController__container__placeholder">
+            <p
+              style={{
+                padding: 50,
+                marginBottom: 15,
+              }}
+            >
+              Drag & drop or click here
+            </p>
+          </div>
         )}
       </div>
       {Object.keys(errors).includes('allowedType') && (
@@ -58,16 +74,15 @@ const ImageController = ({
 
 ImageController.defaultProps = {
   errors: [],
-  placeholder: 'text',
+  before: null,
 };
 
 ImageController.propTypes = {
   previewImage: PropTypes.string.isRequired,
   errors: PropTypes.arrayOf(PropTypes.String),
-  onDrop: PropTypes.func.isRequired,
   setImageFile: PropTypes.func.isRequired,
   setPreviewImage: PropTypes.func.isRequired,
-  placeholder: PropTypes.string,
+  before: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 };
 
 export default ImageController;

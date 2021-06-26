@@ -81,6 +81,7 @@ const Register = (props) => {
           >
             {/* <Segment stacked> */}
             <Form.Input
+              className="themeForm"
               fluid
               name="username"
               placeholder="username"
@@ -90,6 +91,7 @@ const Register = (props) => {
               onChange={handleChange}
             />
             <Form.Input
+              className="themeForm"
               fluid
               name="email"
               placeholder="some.mail@com"
@@ -99,6 +101,7 @@ const Register = (props) => {
               onChange={handleChange}
             />
             <Form.Input
+              className="themeForm"
               fluid
               name="password"
               placeholder="password"
@@ -119,6 +122,7 @@ const Register = (props) => {
               </Button>
             </Form.Input>
             <Form.Input
+              className="themeForm"
               fluid
               name="confirmPassword"
               placeholder="confirm password"

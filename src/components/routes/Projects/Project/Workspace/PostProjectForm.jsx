@@ -90,13 +90,15 @@ const PostProjectForm = ({ project }) => {
 
   return (
     <div className="project__postForm" style={{ textAlign: 'center' }}>
-      <ImageController
-        errors={errors}
-        previewImage={previewImage}
-        setImageFile={setImageFile}
-        setPreviewImage={setPreviewImage}
-        placeholder="ahah"
-      />
+      <div className="project__postForm__controller">
+        <ImageController
+          errors={errors}
+          previewImage={previewImage}
+          setImageFile={setImageFile}
+          setPreviewImage={setPreviewImage}
+        />
+      </div>
+
       <Form
         onSubmit={(e) => {
           e.preventDefault();
@@ -105,6 +107,7 @@ const PostProjectForm = ({ project }) => {
       >
         <Form.Field>
           <Form.Input
+            className="themeForm"
             placeholder="tell me smth new"
             name="body"
             value={body}

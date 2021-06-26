@@ -1,15 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import React, { useContext, useState, useEffect } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
-import {
-  Grid,
-  Header,
-  Loader,
-  Image,
-  Form,
-  Button,
-  Message,
-} from 'semantic-ui-react';
+import { Grid, Header, Loader, Form, Button, Message } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
 
 import { NavigationContext } from '../../context/NavigationProvider';
@@ -17,6 +9,7 @@ import { baseURL, defaultAvatar } from '../../appConfig';
 import { UserContext } from '../../context/UserProvider';
 import { GET_USER, UPDATE_USER } from '../../graphql';
 import { GET_USERS } from '../../graphql/userGQL';
+import ImageController from '../shared/ImageController';
 
 // TODO: cache update when the imageURL changes
 const Settings = () => {
@@ -30,9 +23,12 @@ const Settings = () => {
     skills: '',
     status: '',
   });
-  const [preview, setPreview] = useState(defaultAvatar);
-  const [image, setImage] = useState(null);
+  // const [preview, setPreview] = useState(defaultAvatar);
+  // const [image, setImage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(false);
+
+  const [previewImage, setPreviewImage] = useState(defaultAvatar);
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     setTemporaryTab({
@@ -52,9 +48,9 @@ const Settings = () => {
         status: data.getUser.status,
       });
       if (data.getUser.imageURL) {
-        setPreview(`${baseURL}/files/${data.getUser.imageURL}`);
+        setPreviewImage(`${baseURL}/files/${data.getUser.imageURL}`);
       }
-      setImage(`${baseURL}/files/${data.getUser.imageURL}`);
+      setImageFile(`${baseURL}/files/${data.getUser.imageURL}`);
     },
     onError: (err) => {
       console.log(err);
@@ -122,13 +118,13 @@ const Settings = () => {
     },
   });
 
-  const inputOnChange = (e) => {
-    if (e.target.files[0]) {
-      setPreview(URL.createObjectURL(e.target.files[0]));
-      setImage(e.target.files[0]);
-      setSuccessMessage(false);
-    }
-  };
+  // const inputOnChange = (e) => {
+  //   if (e.target.files[0]) {
+  //     setPreviewI(URL.createObjectURL(e.target.files[0]));
+  //     setImage(e.target.files[0]);
+  //     setSuccessMessage(false);
+  //   }
+  // };
 
   const handleChange = (e) => {
     setState((prevState) => ({
@@ -145,12 +141,12 @@ const Settings = () => {
       username: state.username,
       status: state.status,
       skills: state.skills,
-      image: typeof image === 'string' ? null : image,
+      image: typeof image === 'string' ? null : imageFile,
     };
     updateUser({
       variables,
     });
-    setImage(null);
+    setImageFile(null);
   };
 
   if (!user || userID !== user.id) {
@@ -180,23 +176,29 @@ const Settings = () => {
               <Form onSubmit={handleSubmit}>
                 <Form.Group>
                   <Header as="h4" icon textAlign="center">
-                    <Image
+                    {/* <Image
                       className="settings__avatar"
                       style={{ width: 80 }}
                       src={preview}
                       rounded
+                    /> */}
+                    <ImageController
+                      errors={errors}
+                      previewImage={previewImage}
+                      setImageFile={setImageFile}
+                      setPreviewImage={setPreviewImage}
                     />
 
-                    <Form.Input
+                    {/* <Form.Input
                       type="file"
                       style={{ marginTop: 10 }}
                       onChange={inputOnChange}
-                    />
+                    /> */}
 
                     <Form.Input
                       label="username"
                       type="text"
-                      className="settings__input"
+                      className="settings__input themeForm"
                       value={state.username}
                       name="username"
                       onChange={handleChange}
@@ -205,7 +207,7 @@ const Settings = () => {
                     <Form.Input
                       label="status"
                       type="text"
-                      className="settings__input"
+                      className="settings__input themeForm"
                       value={state.status}
                       name="status"
                       onChange={handleChange}
@@ -215,7 +217,7 @@ const Settings = () => {
                       style={{ textAlign: 'center' }}
                       label="skills"
                       type="text"
-                      className="settings__input"
+                      className="settings__input themeForm"
                       value={state.skills}
                       name="skills"
                       onChange={handleChange}

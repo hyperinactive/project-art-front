@@ -2,12 +2,19 @@
   &__projectForm {
     color: map-get($map: $mainPallete, $key: 'regularText') !important;
   }
+
   &__projectCard {
     &__card {
       background: map-get($map: $mainPallete, $key: 'background') !important;
+
       &__cardName {
         color: map-get($map: $mainPallete, $key: 'regularText') !important;
       }
+    }
+  }
+  .postCard {
+    .card {
+      @include form;
     }
   }
 }

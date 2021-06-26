@@ -25,12 +25,13 @@ const ProjectSearch = () => {
       <Grid columns={3} doubling stackable textAlign="center">
         <Grid.Row>
           <Input
+            className="themeForm"
             placeholder="search and destory"
-            icon="search"
             style={{ margin: 20, display: 'inline-block' }}
             onChange={(e) => {
               setSearchTerm(e.target.value);
             }}
+            icon={{ name: 'search', color: 'orange' }}
           />
         </Grid.Row>
 

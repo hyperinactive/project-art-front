@@ -7,4 +7,17 @@
     padding: 1rem 2rem !important;
     color: map-get($map: $mainPallete, $key: 'regularText') !important;
   }
+
+  // dynamic tab icon
+  .tempTab--active {
+    :hover {
+      color: #fff !important;
+    }
+  }
+
+  .tempTab--inactive {
+    :hover {
+      color: $accentColor;
+    }
+  }
 }

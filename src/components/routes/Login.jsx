@@ -73,6 +73,7 @@ const LoginForm = () => {
           >
             {/* <Segment stacked> */}
             <Form.Input
+              className="themeForm"
               fluid
               placeholder="username"
               type="text"
@@ -84,6 +85,7 @@ const LoginForm = () => {
               }}
             />
             <Form.Input
+              className="themeForm"
               fluid
               placeholder="password"
               type={isPassVisible ? 'text' : 'password'}
