@@ -15,14 +15,14 @@ const Chat = () => {
   const placeholder = 'I am the chat component!';
   const { setTemporaryTab } = useContext(NavigationContext);
 
-  if (error) return 'Error, my guy';
-
   useEffect(() => {
     setTemporaryTab({
       name: 'inbox',
       link: `/chat`,
     });
   }, []);
+
+  if (error) return 'Error, my guy';
 
   return (
     <div className="chat" style={{ textAlign: 'center' }}>
