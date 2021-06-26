@@ -69,8 +69,8 @@ const Register = (props) => {
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as="h1" textAlign="center">
-            Sign up
+          <Header as="h1" textAlign="center" className="headline">
+            Sign me up!
           </Header>
           <Form
             size="large"
@@ -81,6 +81,7 @@ const Register = (props) => {
           >
             {/* <Segment stacked> */}
             <Form.Input
+              className="themeForm"
               fluid
               name="username"
               placeholder="username"
@@ -90,6 +91,7 @@ const Register = (props) => {
               onChange={handleChange}
             />
             <Form.Input
+              className="themeForm"
               fluid
               name="email"
               placeholder="some.mail@com"
@@ -99,6 +101,7 @@ const Register = (props) => {
               onChange={handleChange}
             />
             <Form.Input
+              className="themeForm"
               fluid
               name="password"
               placeholder="password"
@@ -119,6 +122,7 @@ const Register = (props) => {
               </Button>
             </Form.Input>
             <Form.Input
+              className="themeForm"
               fluid
               name="confirmPassword"
               placeholder="confirm password"

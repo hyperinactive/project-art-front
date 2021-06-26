@@ -1,0 +1,18 @@
+.home {
+  &__welcome {
+    margin-top: 5rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  &__gridRow {
+    display: block;
+    width: 100%;
+    text-align: center !important;
+  }
+  &__gridTitle {
+    display: block !important;
+    font-size: xx-large;
+    margin: 1rem auto !important;
+  }
+}

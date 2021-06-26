@@ -3,13 +3,10 @@ import { Link } from 'react-router-dom';
 import { Image, Button } from 'semantic-ui-react';
 
 const Welcome = () => (
-  <div
-    className="welcome"
-    style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}
-  >
+  <div className="home__welcome">
     <h2>
       Welcome to project-
-      <i style={{ color: 'brown' }}>art</i>!
+      <i className="accentText">art</i>!
     </h2>
     <Image
       size="small"

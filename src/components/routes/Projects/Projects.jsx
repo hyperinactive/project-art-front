@@ -10,7 +10,7 @@ const Projects = () => {
   return (
     <div style={{ textAlign: 'center', marginTop: 80 }} className="project">
       {user ? (
-        <div>
+        <div className="project__createProject">
           <Button
             as={Link}
             to="/projects/createProject"

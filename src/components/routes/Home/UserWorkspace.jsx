@@ -1,11 +1,10 @@
 import { useQuery } from '@apollo/client';
 import React, { useContext } from 'react';
-import { Grid, Loader, Image, Header, Card } from 'semantic-ui-react';
+import { Grid, Loader, Header, Card } from 'semantic-ui-react';
 import { UserContext } from '../../../context/UserProvider';
 import { GET_FRIENDS, GET_USER_PROJECTS } from '../../../graphql';
 import ElementList from '../../shared/ElementList';
 import Notifications from './Notifications';
-import { wip } from '../../../appConfig';
 
 // TODO: UserWorkspace needs to be cleaned up after another user logs
 const UserWorkspace = () => {
@@ -34,9 +33,12 @@ const UserWorkspace = () => {
   return (
     <div className="userWorkspace">
       <Grid centered columns={3} divided>
-        <h2>
-          Welcome <span style={{ color: 'orangered' }}>{user.username}</span>
-        </h2>
+        <div className="greetings headline">
+          <h2>
+            Welcome <span className="accentText">{user.username}</span>
+          </h2>
+        </div>
+
         <Grid.Row>
           {loading ? (
             <Loader size="huge" active>
@@ -44,7 +46,7 @@ const UserWorkspace = () => {
             </Loader>
           ) : (
             <Grid.Column width={2}>
-              <Header>My friends</Header>
+              <Header className="headline">Friends</Header>
               <Grid.Row>
                 <div
                   style={{
@@ -56,7 +58,7 @@ const UserWorkspace = () => {
             </Grid.Column>
           )}
 
-          <Grid.Column width={12}>
+          <Grid.Column width={11}>
             <div
               style={{
                 display: 'flex',
@@ -64,8 +66,8 @@ const UserWorkspace = () => {
                 alignItems: 'center',
               }}
             >
+              <Header className="headline">User feed</Header>
               <Notifications />
-              <Image src={wip} size="small" />
               <div style={{ textAlign: 'center' }}>
                 <Card centered>
                   <Card.Content>
@@ -80,7 +82,7 @@ const UserWorkspace = () => {
             </div>
           </Grid.Column>
           <Grid.Column width={2}>
-            <Header>My projects</Header>
+            <Header className="headline">Projects</Header>
             {projectLoading ? (
               <Loader size="huge" active>
                 Computing, things, beep bop

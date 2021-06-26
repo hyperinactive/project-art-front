@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-param-reassign */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Waypoint } from 'react-waypoint';
 import { Grid, Loader } from 'semantic-ui-react';
 import PropType from 'prop-types';
@@ -11,18 +11,20 @@ import PostProjectForm from './PostProjectForm';
 import { GET_POSTS_FEED } from '../../../../../graphql';
 import PostCard from '../../../../PostCard';
 import ElementList from '../../../../shared/ElementList';
+import { NavigationContext } from '../../../../../context/NavigationProvider';
 
 const ProjectWorkspace = ({ project, elements }) => {
   // const [isBottom, setIsBottom] = useState(false);
   const [cursor, setCursor] = useState(null);
   const [canLoadMore, setCanLoadMore] = useState(true);
+  const { setTemporaryTab, setActiveItem } = useContext(NavigationContext);
 
   // TODO: pollInterval calls this and messes up the cache
   // NOTE: may have to do with the cursor being "sent back"
   const [loadFeed, { data, loading, fetchMore }] = useLazyQuery(
     GET_POSTS_FEED,
     {
-      // pollInterval: 1500,
+      // pollInterval: 5000,
       // fetchPolicy: 'network-only', // prevents cache being read initially and showing posts from other projects
       onCompleted: () => {
         if (!data.getPostsFeed.hasMoreItems) setCanLoadMore(false);
@@ -128,6 +130,11 @@ const ProjectWorkspace = ({ project, elements }) => {
         projectID: project.id,
       },
     });
+    setTemporaryTab({
+      name: project.name,
+      link: `/projects/${project.id}`,
+    });
+    setActiveItem(project.name);
   }, [loadFeed, project.id]);
 
   // useEffect(() => {

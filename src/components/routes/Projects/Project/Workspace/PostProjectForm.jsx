@@ -1,15 +1,14 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useCallback, useState } from 'react';
-import { Button, Form, Message, Image } from 'semantic-ui-react';
-import { gql, useMutation } from '@apollo/client';
-import { useDropzone } from 'react-dropzone';
+import React, { useState } from 'react';
+import { Button, Form } from 'semantic-ui-react';
+import { useMutation } from '@apollo/client';
 import PropType from 'prop-types';
 
 import { cloneDeep } from '@apollo/client/utilities';
-import { CREATE_PROJECT_POST, GET_POSTS_FEED } from '../../../../../graphql';
+import { CREATE_PROJECT_POST } from '../../../../../graphql';
+import ImageController from '../../../../shared/ImageController';
 
 const PostProjectForm = ({ project }) => {
   // STATES
@@ -23,17 +22,7 @@ const PostProjectForm = ({ project }) => {
   // DROPZONE
   // useCallback will return a memoized version of the callback that only changes if one of the inputs has changed
   // createObjectURL will create a temp url we can use to preview the image
-  const onDrop = useCallback((acceptedFiles) => {
-    const file = acceptedFiles[0];
-    const url = URL.createObjectURL(file);
 
-    setPreviewImage(url);
-    setImageFile(file);
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-  });
   // ----------------------------------------------------------------------------------------
 
   const [createPost] = useMutation(CREATE_PROJECT_POST, {
@@ -68,7 +57,6 @@ const PostProjectForm = ({ project }) => {
               previousClone.posts = [];
             }
             previousClone.posts = [...previousClone.posts, createProjectPost];
-            console.log(previousClone);
             return previousClone;
           },
         },
@@ -101,32 +89,16 @@ const PostProjectForm = ({ project }) => {
   };
 
   return (
-    <div className="postForm" style={{ textAlign: 'center' }}>
-      <>
-        <div
-          style={{
-            padding: 50,
-            background: '#ededed',
-            marginBottom: 15,
-          }}
-          {...getRootProps()}
-          className={`dropzone ${isDragActive && 'isActive'}`}
-        >
-          <input {...getInputProps()} />
-          {isDragActive ? (
-            <p>Drop the files here ...</p>
-          ) : previewImage ? (
-            <Image centered src={previewImage} style={{ width: 300 }} />
-          ) : (
-            <p>Drag an image here or click me!</p>
-          )}
-        </div>
-        {Object.keys(errors).includes('allowedType') && (
-          <Message negative>
-            <p>File type not allowed</p>
-          </Message>
-        )}
-      </>
+    <div className="project__postForm" style={{ textAlign: 'center' }}>
+      <div className="project__postForm__controller">
+        <ImageController
+          errors={errors}
+          previewImage={previewImage}
+          setImageFile={setImageFile}
+          setPreviewImage={setPreviewImage}
+        />
+      </div>
+
       <Form
         onSubmit={(e) => {
           e.preventDefault();
@@ -135,6 +107,7 @@ const PostProjectForm = ({ project }) => {
       >
         <Form.Field>
           <Form.Input
+            className="themeForm"
             placeholder="tell me smth new"
             name="body"
             value={body}

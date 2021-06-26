@@ -7,9 +7,16 @@ const ProjectCard = ({
   project: { id, name, description, owner, memberCount },
 }) => (
   <div style={{ paddingTop: 10, margin: 20 }} className="projectCard">
-    <Card fluid className="projectCard__card" as={Link} to={`/projects/${id}`}>
+    <Card
+      fluid
+      className="project__projectCard__card"
+      as={Link}
+      to={`/projects/${id}`}
+    >
       <Card.Content>
-        <Card.Header>{name}</Card.Header>
+        <Card.Header className="project__projectCard__card__cardName">
+          {name}
+        </Card.Header>
         <Card.Meta>{description}</Card.Meta>
       </Card.Content>
       <Card.Content>

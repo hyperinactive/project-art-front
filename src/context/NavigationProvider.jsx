@@ -9,7 +9,8 @@ import {
 
 export const NavigationContext = createContext({
   ...initialState,
-  setActiveItem: (data) => {},
+  setActiveItem: () => {},
+  setTemporaryTab: () => {},
 });
 
 export const NavigationProvider = (props) => {
@@ -22,9 +23,21 @@ export const NavigationProvider = (props) => {
     });
   };
 
+  const setTemporaryTab = (data) => {
+    dispatch({
+      type: actionTypes.SET_TEMPORARY_TAB,
+      payload: data,
+    });
+  };
+
   return (
     <NavigationContext.Provider
-      value={{ activeItem: state.activeItem, setActiveItem }}
+      value={{
+        activeItem: state.activeItem,
+        setActiveItem,
+        temporaryTab: state.temporaryTab,
+        setTemporaryTab,
+      }}
       {...props}
     />
   );

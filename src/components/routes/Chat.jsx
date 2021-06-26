@@ -1,9 +1,10 @@
 import { useQuery } from '@apollo/client';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Card, Grid, Loader, Image, Header } from 'semantic-ui-react';
 import { GET_FRIENDS } from '../../graphql';
 import ElementList from '../shared/ElementList';
 import { wip } from '../../appConfig';
+import { NavigationContext } from '../../context/NavigationProvider';
 
 const Chat = () => {
   const { data, loading, error } = useQuery(GET_FRIENDS, {
@@ -12,8 +13,17 @@ const Chat = () => {
     },
   });
   const placeholder = 'I am the chat component!';
+  const { setTemporaryTab } = useContext(NavigationContext);
 
   if (error) return 'Error, my guy';
+
+  useEffect(() => {
+    setTemporaryTab({
+      name: 'inbox',
+      link: `/chat`,
+    });
+  }, []);
+
   return (
     <div className="chat" style={{ textAlign: 'center' }}>
       <h2 style={{ marginTop: 45 }}>{placeholder}</h2>

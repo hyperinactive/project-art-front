@@ -25,19 +25,27 @@ const ProjectSearch = () => {
       <Grid columns={3} doubling stackable textAlign="center">
         <Grid.Row>
           <Input
+            className="themeForm"
             placeholder="search and destory"
-            icon="search"
             style={{ margin: 20, display: 'inline-block' }}
             onChange={(e) => {
               setSearchTerm(e.target.value);
             }}
+            icon={{ name: 'search', color: 'orange' }}
           />
         </Grid.Row>
 
         <Grid.Row>
           {data &&
             data.getProjects &&
-            data.getProjects
+            [...data.getProjects]
+              .sort((a, b) => {
+                const al = a.name.toLowerCase();
+                const bl = b.name.toLowerCase();
+
+                if (al > bl) return 1;
+                return -1;
+              })
               .filter((project) =>
                 project.name.toLowerCase().includes(searchTerm.toLowerCase())
               )

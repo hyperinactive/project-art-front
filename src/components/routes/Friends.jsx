@@ -12,7 +12,7 @@ const Friends = () => {
   const { user } = useState(UserContext);
   const history = useHistory();
 
-  if (user === null) history.push('/register');
+  if (user === null) history.push('/login');
 
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -26,6 +26,7 @@ const Friends = () => {
   });
 
   const { data: userData, loading: userLoading } = useQuery(GET_USERS, {
+    pollInterval: 5000,
     onCompleted: () => {
       console.log(userData.getUsers);
     },
@@ -65,7 +66,14 @@ const Friends = () => {
               <Grid doubling columns={5}>
                 {userData &&
                   userData.getUsers &&
-                  userData.getUsers
+                  [...userData.getUsers]
+                    .sort((a, b) => {
+                      const al = a.username.toLowerCase();
+                      const bl = b.username.toLowerCase();
+
+                      if (al > bl) return 1;
+                      return -1;
+                    })
                     .filter((currentUser) =>
                       currentUser.username
                         .toLowerCase()
@@ -85,6 +93,7 @@ const Friends = () => {
                             as={Link}
                             to={`/user/${member.id}`}
                           />
+
                           <p>{member.username}</p>
                         </div>
                       </Grid.Column>
@@ -95,7 +104,7 @@ const Friends = () => {
         </Grid.Column>
 
         <Grid.Column width={2}>
-          <Header>My friends</Header>
+          <Header className="headline">My friends</Header>
           <Grid.Row>
             <div
               style={{

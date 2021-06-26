@@ -61,8 +61,8 @@ const LoginForm = () => {
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as="h1" textAlign="center">
-            Log-in to your account
+          <Header as="h1" textAlign="center" className="headline">
+            Log me in!
           </Header>
           <Form
             size="large"
@@ -73,6 +73,7 @@ const LoginForm = () => {
           >
             {/* <Segment stacked> */}
             <Form.Input
+              className="themeForm"
               fluid
               placeholder="username"
               type="text"
@@ -84,6 +85,7 @@ const LoginForm = () => {
               }}
             />
             <Form.Input
+              className="themeForm"
               fluid
               placeholder="password"
               type={isPassVisible ? 'text' : 'password'}
@@ -118,6 +120,23 @@ const LoginForm = () => {
               <div className="visible content">Looks good?</div>
               <div className="hidden content">Sign me in!</div>
             </Button>
+            <Button
+              as="div"
+              fluid
+              size="large"
+              type="submit"
+              color="orange"
+              animated="fade"
+              tabIndex="0"
+              style={{ marginTop: 10 }}
+              onClick={() => {
+                history.push('/register');
+                setActiveItem('register');
+              }}
+            >
+              <div className="visible content">New here?</div>
+              <div className="hidden content">Sign me up!</div>
+            </Button>
             {/* </Segment> */}
           </Form>
           {/* {Object.keys(errors).length > 0 && (
@@ -129,23 +148,6 @@ const LoginForm = () => {
               ))}
             />
           )} */}
-          <Button
-            as="div"
-            fluid
-            size="large"
-            type="submit"
-            color="orange"
-            animated="fade"
-            tabIndex="0"
-            style={{ marginTop: 10 }}
-            onClick={() => {
-              history.push('/register');
-              setActiveItem('register');
-            }}
-          >
-            <div className="visible content">New here?</div>
-            <div className="hidden content">Sign me up!</div>
-          </Button>
         </Grid.Column>
       </Grid>
     </div>
