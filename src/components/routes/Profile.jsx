@@ -11,8 +11,6 @@ import { UserContext } from '../../context/UserProvider';
 
 import { ADD_FRIEND, GET_FRIENDS, GET_USER } from '../../graphql';
 
-import './Profile.scss';
-
 const isFriendsWith = (friends, userID) =>
   friends.find((friend) => friend.id.toString() === userID.toString());
 

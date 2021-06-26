@@ -13,7 +13,7 @@ import {
 import PropTypes from 'prop-types';
 
 import { UserContext } from '../context/UserProvider';
-import LikeButton from './shared/LikeButton/LikeButton';
+import LikeButton from './shared/LikeButton';
 import DeleteButton from './shared/DeleteButton';
 import { baseURL, defaultAvatar } from '../appConfig';
 

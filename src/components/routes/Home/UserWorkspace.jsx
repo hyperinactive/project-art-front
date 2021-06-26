@@ -35,7 +35,7 @@ const UserWorkspace = () => {
       <Grid centered columns={3} divided>
         <div className="greetings headline">
           <h2>
-            Welcome <span style={{ color: 'orangered' }}>{user.username}</span>
+            Welcome <span className="accentText">{user.username}</span>
           </h2>
         </div>
 

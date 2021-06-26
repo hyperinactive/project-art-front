@@ -12,12 +12,11 @@ import {
 } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
 
-import { NavigationContext } from '../../../context/NavigationProvider';
-import { baseURL, defaultAvatar } from '../../../appConfig';
-import { UserContext } from '../../../context/UserProvider';
-import { GET_USER, UPDATE_USER } from '../../../graphql';
-import './Settings.scss';
-import { GET_USERS } from '../../../graphql/userGQL';
+import { NavigationContext } from '../../context/NavigationProvider';
+import { baseURL, defaultAvatar } from '../../appConfig';
+import { UserContext } from '../../context/UserProvider';
+import { GET_USER, UPDATE_USER } from '../../graphql';
+import { GET_USERS } from '../../graphql/userGQL';
 
 // TODO: cache update when the imageURL changes
 const Settings = () => {

@@ -4,10 +4,8 @@ import { useMutation } from '@apollo/client';
 import { Button, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-import { NavigationContext } from '../../../context/NavigationProvider';
-import { LIKE_POST } from '../../../graphql';
-
-import './LikeButton.scss';
+import { NavigationContext } from '../../context/NavigationProvider';
+import { LIKE_POST } from '../../graphql';
 
 // props post and user
 // destructure and get id likeCount likes from post

@@ -12,7 +12,7 @@ const Friends = () => {
   const { user } = useState(UserContext);
   const history = useHistory();
 
-  if (user === null) history.push('/register');
+  if (user === null) history.push('/login');
 
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -93,6 +93,7 @@ const Friends = () => {
                             as={Link}
                             to={`/user/${member.id}`}
                           />
+
                           <p>{member.username}</p>
                         </div>
                       </Grid.Column>
@@ -103,7 +104,7 @@ const Friends = () => {
         </Grid.Column>
 
         <Grid.Column width={2}>
-          <Header>My friends</Header>
+          <Header className="headline">My friends</Header>
           <Grid.Row>
             <div
               style={{

@@ -1,5 +1,3 @@
-@import 'variables';
-
 .navbar {
   &__menu {
     background-color: map-get($mainPallete, 'midground') !important;

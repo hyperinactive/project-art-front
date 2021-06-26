@@ -1,8 +1,11 @@
 @import 'variables';
 @import 'config';
-@import 'navbar';
-@import 'home';
-@import 'projectCard';
+@import 'routeStyles/navbar';
+@import 'routeStyles/home';
+@import 'routeStyles/project';
+@import 'routeStyles/settings';
+@import 'routeStyles/profile';
+@import 'sharedStyles/imageController';
 
 // TODO: structure this dude...
 @mixin init {
@@ -33,6 +36,10 @@ body {
       background-color: map-get($mainPallete, 'midground');
       border-radius: 0.5rem;
     }
+
+    .accentText {
+      color: map-get($map: $mainPallete, $key: 'accent');
+    }
   }
 
   // userWorkspace
@@ -56,5 +63,10 @@ body {
         padding: 0.5rem;
       }
     }
+  }
+  /* because semantic ui has a rule to change colors of things when focused, got to override it manually */
+  .ui.orange.button:focus,
+  .ui.orange.buttons .button:focus {
+    background-color: #f2711c;
   }
 }

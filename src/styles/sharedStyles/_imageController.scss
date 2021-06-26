@@ -1,0 +1,11 @@
+@import '../variables';
+
+.imageController {
+  &__container {
+    @include form;
+
+    width: 100%;
+    padding: 3.5rem;
+    margin-bottom: 1rem;
+  }
+}

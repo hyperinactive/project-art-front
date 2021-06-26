@@ -3,3 +3,8 @@
   margin: 0;
   pad: 0;
 }
+
+@mixin form {
+  background: map-get($map: $mainPallete, $key: 'foreground') !important;
+  border-radius: 0.3215rem !important;
+}

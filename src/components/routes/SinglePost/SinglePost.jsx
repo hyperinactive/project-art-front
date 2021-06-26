@@ -15,7 +15,7 @@ import { GET_POST } from '../../../graphql';
 import { baseURL, defaultAvatar } from '../../../appConfig';
 import { UserContext } from '../../../context/UserProvider';
 import Comments from './Comments';
-import LikeButton from '../../shared/LikeButton/LikeButton';
+import LikeButton from '../../shared/LikeButton';
 import DeleteButton from '../../shared/DeleteButton';
 
 const isMemeber = (members, fUser) =>

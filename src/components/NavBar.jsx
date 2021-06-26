@@ -72,14 +72,16 @@ const NavBar = () => {
           name={temporaryTab.name}
           active={activeItem === temporaryTab.name}
           onClick={handleItemClick}
+          as={Link}
+          to={temporaryTab.link}
         >
-          <React.Fragment as={Link} to={temporaryTab.link}>
-            {temporaryTab.name}
-          </React.Fragment>
+          {temporaryTab.name}
+
           <div style={{ marginLeft: 20 }}>
             <Icon
               name="close"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setTemporaryTab(null);
                 history.push('/');
                 setActiveItem('home');
