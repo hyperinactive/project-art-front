@@ -12,21 +12,19 @@ const Chat = () => {
       console.log(error);
     },
   });
-  const placeholder = 'I am the chat component!';
   const { setTemporaryTab } = useContext(NavigationContext);
 
   if (error) return 'Error, my guy';
 
   useEffect(() => {
     setTemporaryTab({
-      name: 'inbox',
+      name: 'Inbox',
       link: `/chat`,
     });
   }, []);
 
   return (
     <div className="chat" style={{ textAlign: 'center' }}>
-      <h2 style={{ marginTop: 45 }}>{placeholder}</h2>
       <Grid container columns={2} style={{ marginTop: 40 }} divided>
         <Grid.Column width={2}>
           {loading ? (
@@ -35,7 +33,7 @@ const Chat = () => {
             </Loader>
           ) : (
             <Grid.Row centered>
-              <Header>My friends</Header>
+              <Header className="headline">My friends</Header>
               <ElementList elements={data.getFriends} type="user" />
             </Grid.Row>
           )}

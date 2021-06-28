@@ -32,7 +32,7 @@ const Settings = () => {
 
   useEffect(() => {
     setTemporaryTab({
-      name: 'settings',
+      name: 'Settings',
       link: `/settings/${userID}`,
     });
   }, []);

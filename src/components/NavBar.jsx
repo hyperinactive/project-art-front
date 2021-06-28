@@ -73,8 +73,8 @@ const NavBar = () => {
               ? 'tempTab--active'
               : 'tempTab--inactive'
           }`}
-          name={temporaryTab.name}
-          active={activeItem === temporaryTab.name}
+          name={temporaryTab.name.toLowerCase()}
+          active={activeItem.toLowerCase() === temporaryTab.name.toLowerCase()}
           onClick={handleItemClick}
           as={Link}
           to={temporaryTab.link}

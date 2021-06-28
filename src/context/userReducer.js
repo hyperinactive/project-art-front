@@ -21,8 +21,8 @@ export const userReducer = (state, action) => {
         user: null,
       };
     }
-
+    // on bad dispatch calls
     default:
-      return state;
+      throw new Error(`Unknows action type: ${action.type}`);
   }
 };

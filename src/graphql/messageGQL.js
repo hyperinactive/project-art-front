@@ -1,0 +1,31 @@
+import { gql } from '@apollo/client';
+
+const GET_MESSAGES = gql`
+  query getMessages($toUserID: String!) {
+    getMessages(toUserID: $toUserID) {
+      id
+      createdAt
+      content
+    }
+  }
+`;
+
+const SEND_MESSAGE = gql`
+  mutation sendMessage($toUserID: String!, content: Stirng!) {
+    sendMessage(toUserID: $toUserID, content: $content) {
+      id
+      createdAt
+      content
+      fromUser {
+        id
+        username
+      }
+      toUser {
+        id
+        username
+      }
+    }
+  }
+`;
+
+export { GET_MESSAGES, SEND_MESSAGE };

@@ -10,20 +10,19 @@ export const actionTypes = {
 
 export const navigationReducer = (state, action) => {
   // set active menu item
-  if (action.type === actionTypes.SET_ACTIVE_ITEM) {
-    return {
-      ...state,
-      activeItem: action.payload,
-    };
-  }
+  switch (action.type) {
+    case actionTypes.SET_ACTIVE_ITEM:
+      return {
+        ...state,
+        activeItem: action.payload,
+      };
+    case actionTypes.SET_TEMPORARY_TAB:
+      return {
+        ...state,
+        temporaryTab: action.payload,
+      };
 
-  // set the temporary tab
-  if (action.type === actionTypes.SET_TEMPORARY_TAB) {
-    return {
-      ...state,
-      temporaryTab: action.payload,
-    };
+    default:
+      throw new Error(`Unknows action type: ${action.type}`);
   }
-
-  return state;
 };
