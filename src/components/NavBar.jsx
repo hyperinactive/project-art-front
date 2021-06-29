@@ -103,7 +103,7 @@ const NavBar = () => {
               <Dropdown.Item
                 name="inbox"
                 as={Link}
-                to="/chat"
+                to="/inbox"
                 onClick={handleItemClick}
               >
                 <Icon name="inbox" style={{ margin: 0 }} />

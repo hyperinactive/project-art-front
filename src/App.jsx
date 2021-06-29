@@ -17,7 +17,7 @@ import NotFoundPage from './components/routes/NotFoundPage';
 import Projects from './components/routes/Projects/Projects';
 import Settings from './components/routes/Settings';
 import Profile from './components/routes/Profile';
-import Chat from './components/routes/Chat';
+import Inbox from './components/routes/Inbox';
 import Project from './components/routes/Projects/Project/Project';
 import ProjectForm from './components/routes/Projects/ProjectForm';
 import Friends from './components/routes/Friends';
@@ -50,7 +50,7 @@ const App = () => (
 
               <Route exact path="/user/:userID" component={Profile} />
               {/* TODO: sub zero, north pole, no chance of any sun, winds holwing, freezing todo */}
-              <Route exact path="/chat" component={Chat} />
+              <Route exact path="/inbox" component={Inbox} />
 
               <Route exact path="/404" component={NotFoundPage} />
               <Route component={NotFoundPage} />

@@ -11,7 +11,7 @@ const GET_MESSAGES = gql`
 `;
 
 const SEND_MESSAGE = gql`
-  mutation sendMessage($toUserID: String!, content: Stirng!) {
+  mutation sendMessage($toUserID: String!, $content: String!) {
     sendMessage(toUserID: $toUserID, content: $content) {
       id
       createdAt
