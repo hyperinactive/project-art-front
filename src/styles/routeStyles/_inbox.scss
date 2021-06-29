@@ -3,6 +3,33 @@
     @include form;
     margin-left: 1rem;
     min-height: 80vh !important;
+
+    &__inboxFeed {
+      padding: 1rem;
+      font-size: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+
+      &__message {
+        width: fit-content;
+        background: $accentColor;
+        padding: 0.3rem 1rem;
+      }
+      .receiver {
+        // -> top-left top-right bottom-right bottom-left
+        border-radius: 0.2rem 0.9rem 0.9rem 0.2rem;
+        align-self: flex-start;
+        background: map-get($map: $mainPallete, $key: 'reciever');
+      }
+
+      .sender {
+        // -> top-left top-right bottom-right bottom-left
+        border-radius: 0.9rem 0.2rem 0.2rem 0.9rem;
+        align-self: flex-end;
+        background: map-get($map: $mainPallete, $key: 'sender');
+      }
+    }
   }
 
   &__friendList {

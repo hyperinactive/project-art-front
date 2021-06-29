@@ -6,6 +6,14 @@ const GET_MESSAGES = gql`
       id
       createdAt
       content
+      fromUser {
+        id
+        username
+      }
+      toUser {
+        id
+        username
+      }
     }
   }
 `;
