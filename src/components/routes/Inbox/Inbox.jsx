@@ -1,11 +1,14 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-unused-vars */
 import { useLazyQuery } from '@apollo/client';
 import React, { useContext, useEffect, useState } from 'react';
 import { Grid, Loader, Image } from 'semantic-ui-react';
 
-import { GET_FRIENDS, GET_MESSAGES } from '../../graphql';
-import { baseURL, defaultAvatar, wip } from '../../appConfig';
-import { NavigationContext } from '../../context/NavigationProvider';
+import { GET_FRIENDS, GET_MESSAGES } from '../../../graphql';
+import { baseURL, defaultAvatar, wip } from '../../../appConfig';
+import { NavigationContext } from '../../../context/NavigationProvider';
+import InboxUserCard from './InboxUserCard';
 
 const Inbox = () => {
   const [
@@ -27,7 +30,7 @@ const Inbox = () => {
     if (selectedUser) loadMessages({ variables: { toUserID: selectedUser } });
     setTemporaryTab({
       name: 'Inbox',
-      link: `/chat`,
+      link: `/inbox`,
     });
   }, [selectedUser]);
 
@@ -36,7 +39,7 @@ const Inbox = () => {
       <Grid container columns={2} style={{ marginTop: 40 }} divided>
         <Grid.Column width={10}>
           <Grid.Row className="inboxComponent__chat" centered>
-            messages component
+            {selectedUser ? <p>{selectedUser}</p> : <p>messages component</p>}
           </Grid.Row>
         </Grid.Column>
 
@@ -51,29 +54,16 @@ const Inbox = () => {
                 {friendsData &&
                   friendsData.getFriends &&
                   friendsData.getFriends.map((friend) => (
-                    <div
+                    <InboxUserCard
                       key={friend.id}
-                      className="inboxComponent__friendList__friendCard"
-                    >
-                      <Image
-                        className="inboxComponent__friendList__friendCard__avatar"
-                        rounded
-                        size="tiny"
-                        src={
-                          friend.imageURL
-                            ? `${baseURL}/files/${friend.imageURL}`
-                            : defaultAvatar
-                        }
-                      />
-                      <div className="inboxComponent__friendList__friendCard__info">
-                        <h2 className="inboxComponent__friendList__friendCard__info__name headline">
-                          {friend.username}
-                        </h2>
-                        <h4 className="inboxComponent__friendList__friendCard__info__message">
-                          --placeholder message--
-                        </h4>
-                      </div>
-                    </div>
+                      active={selectedUser === friend.id}
+                      username={friend.username}
+                      imageURL={friend.imageURL}
+                      onClick={() => {
+                        setSelectedUser(friend.id);
+                        console.log(selectedUser);
+                      }}
+                    />
                   ))}
               </div>
             </Grid.Row>

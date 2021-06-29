@@ -17,7 +17,7 @@ import NotFoundPage from './components/routes/NotFoundPage';
 import Projects from './components/routes/Projects/Projects';
 import Settings from './components/routes/Settings';
 import Profile from './components/routes/Profile';
-import Inbox from './components/routes/Inbox';
+import Inbox from './components/routes/Inbox/Inbox';
 import Project from './components/routes/Projects/Project/Project';
 import ProjectForm from './components/routes/Projects/ProjectForm';
 import Friends from './components/routes/Friends';
