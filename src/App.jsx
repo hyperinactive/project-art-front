@@ -21,6 +21,7 @@ import Inbox from './components/routes/Inbox/Inbox';
 import Project from './components/routes/Projects/Project/Project';
 import ProjectForm from './components/routes/Projects/ProjectForm';
 import Friends from './components/routes/Friends';
+import { InboxProvider } from './context/InboxProvider';
 
 const App = () => (
   <UserProvider>
@@ -50,7 +51,9 @@ const App = () => (
 
               <Route exact path="/user/:userID" component={Profile} />
               {/* TODO: sub zero, north pole, no chance of any sun, winds holwing, freezing todo */}
-              <Route exact path="/inbox" component={Inbox} />
+              <InboxProvider>
+                <Route exact path="/inbox" component={Inbox} />
+              </InboxProvider>
 
               <Route exact path="/404" component={NotFoundPage} />
               <Route component={NotFoundPage} />

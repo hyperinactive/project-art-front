@@ -4,7 +4,28 @@
   padding: 0;
 }
 
+// custom form against the midground color
 @mixin form {
   background: map-get($map: $mainPallete, $key: 'foreground') !important;
   border-radius: 0.3215rem !important;
+}
+
+// cutom orange scrollbar
+@mixin scrollbar {
+  &::-webkit-scrollbar {
+    width: 0.6rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: map-get($map: $mainPallete, $key: 'accent');
+    border-radius: 0.3125rem;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: $accentColor;
+    border-radius: 0.3125rem;
+  }
+  &::-webkit-scrollbar-corner {
+    background: none;
+  }
 }

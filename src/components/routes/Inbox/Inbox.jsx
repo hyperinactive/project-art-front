@@ -1,14 +1,17 @@
 /* eslint-disable no-nested-ternary */
 import { useLazyQuery } from '@apollo/client';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Grid, Loader } from 'semantic-ui-react';
 
 import { GET_FRIENDS, GET_MESSAGES } from '../../../graphql';
 import { NavigationContext } from '../../../context/NavigationProvider';
 import InboxUserCard from './InboxUserCard';
 import InboxFeed from './InboxFeed';
+import InboxForm from './InboxForm';
+import { InboxContext } from '../../../context/InboxProvider';
 
 const Inbox = () => {
+  const { selectedUser, setSelectedUser } = useContext(InboxContext);
   const [
     loadFriends,
     { data: friendsData, loading: friendsLoading, error: friendsError },
@@ -26,7 +29,6 @@ const Inbox = () => {
     });
 
   const { setTemporaryTab } = useContext(NavigationContext);
-  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     loadFriends();
@@ -53,9 +55,15 @@ const Inbox = () => {
               ) : messagesData &&
                 messagesData.getMessages &&
                 messagesData.getMessages.length > 0 ? (
-                <InboxFeed messages={messagesData.getMessages} />
+                <>
+                  <InboxFeed messages={messagesData.getMessages} />
+                  <InboxForm />
+                </>
               ) : (
-                <p>this is where the messages would be, it there were any...</p>
+                <>
+                  <InboxFeed messages={[]} />
+                  <InboxForm />
+                </>
               )
             ) : (
               <p>select a friend to see messages</p>

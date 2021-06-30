@@ -1,23 +1,31 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { Popup } from 'semantic-ui-react';
+import moment from 'moment';
+
 import { UserContext } from '../../../context/UserProvider';
 
 const InboxFeed = ({ messages }) => {
   const { user } = useContext(UserContext);
-  console.log(user);
-  console.log(messages);
 
   return (
     <div className="inboxComponent__chat__inboxFeed">
       {messages.map((message) => (
-        <div
+        <Popup
           key={message.id}
-          className={`inboxComponent__chat__inboxFeed__message ${
-            message.fromUser.id === user.id ? 'sender' : 'receiver'
-          }`}
-        >
-          {message.content}
-        </div>
+          style={{ opacity: 0.9 }}
+          trigger={
+            <div
+              className={`inboxComponent__chat__inboxFeed__message ${
+                message.fromUser.id === user.id ? 'sender' : 'receiver'
+              }`}
+            >
+              {message.content}
+            </div>
+          }
+          content={moment(message.createdAt).format('MMMM DD, YYYY @ h:mm a')}
+          inverted
+        />
       ))}
     </div>
   );
