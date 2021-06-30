@@ -7,24 +7,34 @@ import { SEND_MESSAGE } from '../../../graphql';
 const InboxForm = () => {
   const { selectedUser } = useContext(InboxContext);
 
-  const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState({
+    content: '',
+    length: 0,
+  });
 
-  const [sendMessage, { data, error }] = useMutation(SEND_MESSAGE, {
+  const [sendMessage] = useMutation(SEND_MESSAGE, {
     variables: {
       toUserID: selectedUser,
       content: message,
     },
-    onCompleted: () => {
+    onCompleted: (data) => {
       console.log(data);
     },
-    onError: () => {
+    onError: (error) => {
       console.log(error);
     },
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (message.length > 128 || message.content.trim() === '') return;
+
     sendMessage();
+    setMessage({
+      content: '',
+      length: 0,
+    });
   };
 
   return (
@@ -32,18 +42,26 @@ const InboxForm = () => {
       <Form size="large" onSubmit={handleSubmit} noValidate>
         {/* <Segment stacked> */}
         <Form.Input
+          className="themeForm"
           fluid
-          placeholder="username"
+          placeholder="send a message"
           type="text"
-          error={errors.username || errors.usernameInUse}
-          value={message}
+          value={message.content}
           onChange={(e) => {
-            setMessage(e.target.value);
-            setErrors({});
+            setMessage({
+              content: e.target.value,
+              length: e.target.value.length,
+            });
           }}
         >
           <input className="inboxComponent__chat__inboxForm__input" />
-          <Button type="button" onClick={() => {}}>
+          <p
+            className={`inboxComponent__chat__inboxForm__messageLength ${
+              message.length > 128 ? 'error' : ''
+            }`}
+          >{`${message.length}/128`}</p>
+
+          <Button type="submit" color="orange">
             <Icon name="paper plane" style={{ margin: 0 }} />
           </Button>
         </Form.Input>
