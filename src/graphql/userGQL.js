@@ -1,6 +1,8 @@
 import { gql } from '@apollo/client';
+import { USER_FIELDS } from './fragments';
 
 const REGISTER_USER = gql`
+  ${USER_FIELDS}
   mutation register(
     # $ -> variables
     $username: String!
@@ -16,42 +18,35 @@ const REGISTER_USER = gql`
         confirmPassword: $confirmPassword
       }
     ) {
-      id
+      ...UserFields
       email
-      username
-      createdAt
       token
-      status
     }
   }
 `;
 
 const LOGIN_USER = gql`
+  ${USER_FIELDS}
   mutation login(
     # $ -> variables
     $username: String!
     $password: String!
   ) {
     login(username: $username, password: $password) {
-      id
+      ...UserFields
       email
-      username
-      createdAt
       token
-      status
     }
   }
 `;
 
 const GET_USER = gql`
+  ${USER_FIELDS}
   query getUser($userID: ID!) {
     getUser(userID: $userID) {
-      id
-      username
+      ...UserFields
       email
-      status
       skills
-      imageURL
       friends {
         id
       }
@@ -70,6 +65,7 @@ const GET_FRIENDS = gql`
 `;
 
 const UPDATE_USER = gql`
+  ${USER_FIELDS}
   mutation updateUser(
     $username: String!
     $status: String!
@@ -82,11 +78,8 @@ const UPDATE_USER = gql`
       skills: $skills
       image: $image
     ) {
-      id
-      username
-      createdAt
+      ...UserFields
       token
-      imageURL
     }
   }
 `;

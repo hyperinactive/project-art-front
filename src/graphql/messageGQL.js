@@ -1,39 +1,31 @@
 import { gql } from '@apollo/client';
+import { MESSAGE_FIELDS } from './fragments';
 
 const GET_MESSAGES = gql`
+  ${MESSAGE_FIELDS}
   query getMessages($toUserID: String!) {
     getMessages(toUserID: $toUserID) {
-      id
-      createdAt
-      content
-      fromUser {
-        id
-        username
-      }
-      toUser {
-        id
-        username
-      }
+      ...MessageFields
     }
   }
 `;
 
 const SEND_MESSAGE = gql`
+  ${MESSAGE_FIELDS}
   mutation sendMessage($toUserID: String!, $content: String!) {
     sendMessage(toUserID: $toUserID, content: $content) {
-      id
-      createdAt
-      content
-      fromUser {
-        id
-        username
-      }
-      toUser {
-        id
-        username
-      }
+      ...MessageFields
     }
   }
 `;
 
-export { GET_MESSAGES, SEND_MESSAGE };
+const NEW_MESSAGE = gql`
+  ${MESSAGE_FIELDS}
+  subscription newMessage {
+    newMessage {
+      ...MainMessageFields
+    }
+  }
+`;
+
+export { GET_MESSAGES, SEND_MESSAGE, NEW_MESSAGE };

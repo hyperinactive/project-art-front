@@ -1,31 +1,20 @@
 import { gql } from '@apollo/client';
+import { PROJECT_FIELDS } from './fragments';
 
 const GET_PROJECTS = gql`
+  ${PROJECT_FIELDS}
   query getProjects {
     getProjects {
-      id
-      name
-      description
-      memberCount
-      owner {
-        id
-        username
-      }
+      ...ProjectFields
     }
   }
 `;
 
 const GET_PROJECT = gql`
+  ${PROJECT_FIELDS}
   query getProject($projectID: ID!) {
     getProject(projectID: $projectID) {
-      id
-      name
-      description
-      memberCount
-      owner {
-        id
-        username
-      }
+      ...ProjectFields
       members {
         id
       }
@@ -34,16 +23,10 @@ const GET_PROJECT = gql`
 `;
 
 const CREATE_PROJECT = gql`
+  ${PROJECT_FIELDS}
   mutation createProject($name: String!) {
     createProject(name: $name) {
-      id
-      name
-      description
-      memberCount
-      owner {
-        id
-        username
-      }
+      ...ProjectFields
       members {
         id
         username
