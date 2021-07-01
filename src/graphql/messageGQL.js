@@ -23,7 +23,7 @@ const NEW_MESSAGE = gql`
   ${MESSAGE_FIELDS}
   subscription newMessage {
     newMessage {
-      ...MainMessageFields
+      ...MessageFields
     }
   }
 `;

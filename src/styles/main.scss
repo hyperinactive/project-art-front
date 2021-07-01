@@ -22,7 +22,7 @@ body {
 
     &__innerContainer {
       position: absolute;
-      min-height: 90vh;
+      min-height: 89vh;
       background-color: map-get($mainPallete, 'midground');
       border-radius: 0.3215rem;
     }

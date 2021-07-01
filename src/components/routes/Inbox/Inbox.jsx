@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-nested-ternary */
-import { useLazyQuery } from '@apollo/client';
+import { useQuery, useSubscription, useApolloClient } from '@apollo/client';
 import React, { useContext, useEffect } from 'react';
 import { Grid, Loader } from 'semantic-ui-react';
+import { cloneDeep } from '@apollo/client/utilities';
 
-import { GET_FRIENDS, GET_MESSAGES } from '../../../graphql';
+import { GET_FRIENDS, GET_MESSAGES, NEW_MESSAGE } from '../../../graphql';
 import { NavigationContext } from '../../../context/NavigationProvider';
 import InboxUserCard from './InboxUserCard';
 import InboxFeed from './InboxFeed';
@@ -11,28 +13,74 @@ import InboxForm from './InboxForm';
 import { InboxContext } from '../../../context/InboxProvider';
 
 const Inbox = () => {
-  const { selectedUser, setSelectedUser } = useContext(InboxContext);
-  const [
-    loadFriends,
-    { data: friendsData, loading: friendsLoading, error: friendsError },
-  ] = useLazyQuery(GET_FRIENDS, {
+  const { cache } = useApolloClient();
+  const { selectedUser, setSelectedUser, friends, setUsers } =
+    useContext(InboxContext);
+
+  const {
+    data: friendsData,
+    loading: friendsLoading,
+    error: friendsError,
+  } = useQuery(GET_FRIENDS, {
+    onCompleted: () => {
+      // TODO: maybe compare the latest messages and sort by the latest message sent
+      // if there are friends set the selected one to the first one
+      if (friendsData.getFriends.length > 0) {
+        setSelectedUser(friendsData.getFriends[0].id);
+        setUsers(friendsData.getFriends);
+        // Object.entries(friends).forEach((friend) => {
+        //   console.log(friend);
+        // });
+      }
+    },
     onError: () => {
       console.log(friendsError);
     },
   });
 
-  const [loadMessages, { data: messagesData, loading: messagesLoading }] =
-    useLazyQuery(GET_MESSAGES, {
-      onError: (err) => {
-        console.log(err);
-      },
-    });
+  const { data: subData } = useSubscription(NEW_MESSAGE, {
+    onSubscriptionData: (data) => {
+      console.log(data);
+      const friendID = data.subscriptionData.data.newMessage.fromUser.id;
+      console.log(friendID);
+
+      const cacheData = cache.readQuery({
+        query: GET_MESSAGES,
+        variables: {
+          toUserID: friendID,
+        },
+      });
+      const cacheClone = cloneDeep(cacheData);
+
+      // if there were no messages just return the new message
+      if (cacheClone.getMessages === null) {
+        cache.writeQuery({
+          query: GET_MESSAGES,
+          variables: { toUserID: friendID },
+          data: {
+            getMessages: [...data.subscriptionData.data.newMessage],
+          },
+        });
+      } else {
+        cacheClone.getMessages = [
+          ...cacheClone.getMessages,
+          data.subscriptionData.data.newMessage,
+        ];
+
+        cache.writeQuery({
+          query: GET_MESSAGES,
+          variables: { toUserID: friendID },
+          data: {
+            getMessages: cacheClone.getMessages,
+          },
+        });
+      }
+    },
+  });
 
   const { setTemporaryTab } = useContext(NavigationContext);
 
   useEffect(() => {
-    loadFriends();
-    if (selectedUser) loadMessages({ variables: { toUserID: selectedUser } });
     setTemporaryTab({
       name: 'Inbox',
       link: `/inbox`,
@@ -48,23 +96,10 @@ const Inbox = () => {
             {/* if a user has been selected, load messages */}
             {/* if messages are being loader display the loader */}
             {selectedUser ? (
-              messagesLoading ? (
-                <Loader size="huge" active>
-                  Computing, things, beep bop
-                </Loader>
-              ) : messagesData &&
-                messagesData.getMessages &&
-                messagesData.getMessages.length > 0 ? (
-                <>
-                  <InboxFeed messages={messagesData.getMessages} />
-                  <InboxForm />
-                </>
-              ) : (
-                <>
-                  <InboxFeed messages={[]} />
-                  <InboxForm />
-                </>
-              )
+              <div className="inboxComponent__chat">
+                <InboxFeed />
+                <InboxForm />
+              </div>
             ) : (
               <p>select a friend to see messages</p>
             )}

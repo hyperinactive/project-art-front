@@ -5,6 +5,7 @@ import { inboxReducer, initialState, actionTypes } from './inboxReducer';
 export const InboxContext = createContext({
   ...initialState,
   setSelectedUser: () => {},
+  setUsers: () => {},
 });
 
 export const InboxProvider = (props) => {
@@ -17,9 +18,16 @@ export const InboxProvider = (props) => {
     });
   };
 
+  const setUsers = (data) => {
+    dispatch({
+      type: actionTypes.SET_USERS,
+      payload: data,
+    });
+  };
+
   return (
     <InboxContext.Provider
-      value={{ selectedUser: state.selectedUser, setSelectedUser }}
+      value={{ selectedUser: state.selectedUser, setSelectedUser, setUsers }}
       {...props}
     />
   );

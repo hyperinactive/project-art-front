@@ -42,8 +42,6 @@ const uploadLink = createUploadLink({
   uri: `${baseURL}/graphql`,
 });
 
-const httpLink = authLink.concat(uploadLink);
-
 const wsLinkURI = baseURL.split('http')[1];
 const wsLink = new WebSocketLink({
   uri: `ws${wsLinkURI}/graphql`,
@@ -67,7 +65,7 @@ const splitLink = split(
     );
   },
   wsLink,
-  httpLink
+  authLink.concat(uploadLink)
 );
 
 // merge policy

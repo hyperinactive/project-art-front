@@ -52,7 +52,9 @@ const CREATE_POST = gql`
     createPost(body: $body) {
       ...PostFields
       ...LikeFields
-      ...CommentFields
+      comments {
+        ...CommentFields
+      }
       commentCount
     }
   }
@@ -66,7 +68,9 @@ const DELETE_POST = gql`
     deletePost(postID: $postID) {
       ...PostFields
       ...LikeFields
-      ...CommentFields
+      comments {
+        ...CommentFields
+      }
       commentCount
     }
   }
@@ -91,7 +95,9 @@ const GET_POSTS_CHUNK = gql`
       posts {
         ...PostFields
         ...LikeFields
-        ...CommentFields
+        comments {
+          ...CommentFields
+        }
         commentCount
       }
       hasMoreItems
@@ -107,7 +113,9 @@ const CREATE_PROJECT_POST = gql`
     createProjectPost(projectID: $projectID, body: $body, image: $image) {
       ...PostFields
       ...LikeFields
-      ...CommentFields
+      comments {
+        ...CommentFields
+      }
       commentCount
       imageURL
     }

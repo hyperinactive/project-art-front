@@ -2,12 +2,14 @@
   &__chat {
     @include form;
     margin-left: 1rem;
-    min-height: 80vh !important;
+    min-height: 79vh !important;
 
     &__inboxFeed {
-      overflow: hidden;
+      // overflow: scroll;
+      @include hidden-scrollbar;
+
       width: 100%;
-      height: 75vh;
+      height: 71vh;
       padding: 1rem;
       font-size: 1.1rem;
       display: flex;
@@ -38,6 +40,7 @@
     &__inboxForm {
       color: map-get($map: $mainPallete, $key: 'regularText');
       padding: 0.5rem;
+      height: fit-content;
 
       &__input {
         background: map-get($map: $mainPallete, $key: 'background') !important;

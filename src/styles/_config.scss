@@ -40,3 +40,9 @@
     background: none;
   }
 }
+
+@mixin hidden-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

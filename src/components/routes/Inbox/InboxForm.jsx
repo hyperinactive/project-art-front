@@ -1,8 +1,10 @@
 import { useMutation } from '@apollo/client';
+import { cloneDeep } from 'lodash';
 import React, { useContext, useState } from 'react';
 import { Form, Icon, Button } from 'semantic-ui-react';
+
 import { InboxContext } from '../../../context/InboxProvider';
-import { SEND_MESSAGE } from '../../../graphql';
+import { GET_MESSAGES, SEND_MESSAGE } from '../../../graphql';
 
 const InboxForm = () => {
   const { selectedUser } = useContext(InboxContext);
@@ -15,13 +17,37 @@ const InboxForm = () => {
   const [sendMessage] = useMutation(SEND_MESSAGE, {
     variables: {
       toUserID: selectedUser,
-      content: message,
+      content: message.content,
     },
     onCompleted: (data) => {
       console.log(data);
     },
     onError: (error) => {
       console.log(error);
+    },
+    update: (cache, result) => {
+      const cacheData = cache.readQuery({
+        query: GET_MESSAGES,
+        variables: {
+          toUserID: selectedUser,
+        },
+      });
+
+      const cacheDataClone = cloneDeep(cacheData);
+      cacheDataClone.getMessages = [
+        ...cacheDataClone.getMessages,
+        result.data.sendMessage,
+      ];
+
+      cache.writeQuery({
+        query: GET_MESSAGES,
+        variables: {
+          toUserID: selectedUser,
+        },
+        data: {
+          getMessages: cacheDataClone.getMessages,
+        },
+      });
     },
   });
 
