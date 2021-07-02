@@ -1,11 +1,21 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-nested-ternary */
-import { useQuery, useSubscription, useApolloClient } from '@apollo/client';
+import {
+  useQuery,
+  useSubscription,
+  useApolloClient,
+  useLazyQuery,
+} from '@apollo/client';
 import React, { useContext, useEffect } from 'react';
 import { Grid, Loader } from 'semantic-ui-react';
 import { cloneDeep } from '@apollo/client/utilities';
 
-import { GET_FRIENDS, GET_MESSAGES, NEW_MESSAGE } from '../../../graphql';
+import {
+  GET_FRIENDS,
+  GET_MESSAGES,
+  GET_USER_MESSAGES,
+  NEW_MESSAGE,
+} from '../../../graphql';
 import { NavigationContext } from '../../../context/NavigationProvider';
 import InboxUserCard from './InboxUserCard';
 import InboxFeed from './InboxFeed';
@@ -17,75 +27,66 @@ const Inbox = () => {
   const { selectedUser, setSelectedUser, friends, setUsers } =
     useContext(InboxContext);
 
-  const {
-    data: friendsData,
-    loading: friendsLoading,
-    error: friendsError,
-  } = useQuery(GET_FRIENDS, {
-    onCompleted: () => {
-      // TODO: maybe compare the latest messages and sort by the latest message sent
-      // if there are friends set the selected one to the first one
-      if (friendsData.getFriends.length > 0) {
-        setSelectedUser(friendsData.getFriends[0].id);
-        setUsers(friendsData.getFriends);
-        // Object.entries(friends).forEach((friend) => {
-        //   console.log(friend);
-        // });
-      }
-    },
-    onError: () => {
-      console.log(friendsError);
-    },
-  });
+  const [loadUserMessages, { data: userMessageData, loading: friendsLoading }] =
+    useLazyQuery(GET_USER_MESSAGES, {
+      onCompleted: () => {
+        console.log(userMessageData);
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+
+  // const {
+  //   data: friendsData,
+  //   loading: friendsLoading,
+  //   error: friendsError,
+  // } = useQuery(GET_FRIENDS, {
+  //   onCompleted: () => {
+  //     // TODO: maybe compare the latest messages and sort by the latest message sent
+  //     // if there are friends set the selected one to the first one
+  //     if (friendsData.getFriends.length > 0) {
+  //       setSelectedUser(friendsData.getFriends[0].id);
+  //       setUsers(friendsData.getFriends);
+  //     }
+  //   },
+  //   onError: () => {
+  //     console.log(friendsError);
+  //   },
+  // });
 
   const { data: subData } = useSubscription(NEW_MESSAGE, {
     onSubscriptionData: (data) => {
-      console.log(data);
       const friendID = data.subscriptionData.data.newMessage.fromUser.id;
-      console.log(friendID);
 
       const cacheData = cache.readQuery({
-        query: GET_MESSAGES,
-        variables: {
-          toUserID: friendID,
-        },
+        query: GET_USER_MESSAGES,
       });
       const cacheClone = cloneDeep(cacheData);
 
-      // if there were no messages just return the new message
-      if (cacheClone.getMessages === null) {
-        cache.writeQuery({
-          query: GET_MESSAGES,
-          variables: { toUserID: friendID },
-          data: {
-            getMessages: [...data.subscriptionData.data.newMessage],
-          },
-        });
-      } else {
-        cacheClone.getMessages = [
-          ...cacheClone.getMessages,
-          data.subscriptionData.data.newMessage,
-        ];
+      Object.entries(cacheClone.getUserMessages).forEach((entry) => {
+        if (entry[1].user.id === friendID) {
+          entry[1].messages.push(data.subscriptionData.data.newMessage);
+        }
+      });
 
-        cache.writeQuery({
-          query: GET_MESSAGES,
-          variables: { toUserID: friendID },
-          data: {
-            getMessages: cacheClone.getMessages,
-          },
-        });
-      }
+      cache.writeQuery({
+        query: GET_USER_MESSAGES,
+        variables: { toUserID: friendID },
+        data: cacheClone.getUserMessages,
+      });
     },
   });
 
   const { setTemporaryTab } = useContext(NavigationContext);
 
   useEffect(() => {
+    loadUserMessages();
     setTemporaryTab({
       name: 'Inbox',
       link: `/inbox`,
     });
-  }, [selectedUser]);
+  }, []);
 
   return (
     <div className="inboxComponent" style={{ textAlign: 'center' }}>
@@ -97,7 +98,17 @@ const Inbox = () => {
             {/* if messages are being loader display the loader */}
             {selectedUser ? (
               <div className="inboxComponent__chat">
-                <InboxFeed />
+                {selectedUser ? (
+                  userMessageData &&
+                  userMessageData.getUserMessages.map((userMObj) => {
+                    if (userMObj.user.id === selectedUser) {
+                      return <InboxFeed feed={userMObj.messages} />;
+                    }
+                    return null;
+                  })
+                ) : (
+                  <InboxFeed feed={[]} />
+                )}
                 <InboxForm />
               </div>
             ) : (
@@ -114,15 +125,25 @@ const Inbox = () => {
           ) : (
             <Grid.Row centered>
               <div className="inboxComponent__friendList">
-                {friendsData &&
-                  friendsData.getFriends &&
-                  friendsData.getFriends.map((friend) => (
+                {userMessageData &&
+                  userMessageData.getUserMessages &&
+                  userMessageData.getUserMessages.map((userMObj) => (
                     <InboxUserCard
-                      key={friend.id}
-                      active={selectedUser === friend.id}
-                      username={friend.username}
-                      imageURL={friend.imageURL}
-                      onClick={() => setSelectedUser(friend.id)}
+                      key={userMObj.user.id}
+                      active={selectedUser === userMObj.user.id}
+                      username={userMObj.user.username}
+                      imageURL={userMObj.user.imageURL}
+                      latestMessageContent={
+                        userMObj.latestMessage
+                          ? userMObj.latestMessage.content
+                          : null
+                      }
+                      latestMessageFromID={
+                        userMObj.latestMessage
+                          ? userMObj.latestMessage.fromUser.id
+                          : null
+                      }
+                      onClick={() => setSelectedUser(userMObj.user.id)}
                     />
                   ))}
               </div>
