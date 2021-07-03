@@ -1,10 +1,11 @@
+/* eslint-disable no-param-reassign */
 import { useMutation } from '@apollo/client';
 import { cloneDeep } from 'lodash';
 import React, { useContext, useState } from 'react';
 import { Form, Icon, Button } from 'semantic-ui-react';
 
 import { InboxContext } from '../../../context/InboxProvider';
-import { GET_MESSAGES, SEND_MESSAGE } from '../../../graphql';
+import { GET_USER_MESSAGES, SEND_MESSAGE } from '../../../graphql';
 
 const InboxForm = () => {
   const { selectedUser } = useContext(InboxContext);
@@ -26,27 +27,23 @@ const InboxForm = () => {
       console.log(error);
     },
     update: (cache, result) => {
+      const userID = result.data.sendMessage.toUser.id;
       const cacheData = cache.readQuery({
-        query: GET_MESSAGES,
-        variables: {
-          toUserID: selectedUser,
-        },
+        query: GET_USER_MESSAGES,
       });
 
-      const cacheDataClone = cloneDeep(cacheData);
-      cacheDataClone.getMessages = [
-        ...cacheDataClone.getMessages,
-        result.data.sendMessage,
-      ];
+      const cacheClone = cloneDeep(cacheData);
+
+      Object.entries(cacheClone.getUserMessages).forEach((entry) => {
+        if (entry[1].user.id === userID) {
+          entry[1].messages.push(result.data.sendMessage);
+          entry[1].latestMessage = result.data.sendMessage;
+        }
+      });
 
       cache.writeQuery({
-        query: GET_MESSAGES,
-        variables: {
-          toUserID: selectedUser,
-        },
-        data: {
-          getMessages: cacheDataClone.getMessages,
-        },
+        query: GET_USER_MESSAGES,
+        data: cacheClone,
       });
     },
   });

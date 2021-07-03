@@ -1,21 +1,11 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-nested-ternary */
-import {
-  useQuery,
-  useSubscription,
-  useApolloClient,
-  useLazyQuery,
-} from '@apollo/client';
+import { useSubscription, useApolloClient, useLazyQuery } from '@apollo/client';
 import React, { useContext, useEffect } from 'react';
 import { Grid, Loader } from 'semantic-ui-react';
-import { cloneDeep } from '@apollo/client/utilities';
+import { cloneDeep } from 'lodash';
 
-import {
-  GET_FRIENDS,
-  GET_MESSAGES,
-  GET_USER_MESSAGES,
-  NEW_MESSAGE,
-} from '../../../graphql';
+import { GET_USER_MESSAGES, NEW_MESSAGE } from '../../../graphql';
 import { NavigationContext } from '../../../context/NavigationProvider';
 import InboxUserCard from './InboxUserCard';
 import InboxFeed from './InboxFeed';
@@ -24,13 +14,15 @@ import { InboxContext } from '../../../context/InboxProvider';
 
 const Inbox = () => {
   const { cache } = useApolloClient();
-  const { selectedUser, setSelectedUser, friends, setUsers } =
-    useContext(InboxContext);
+  const { selectedUser, setSelectedUser } = useContext(InboxContext);
 
   const [loadUserMessages, { data: userMessageData, loading: friendsLoading }] =
     useLazyQuery(GET_USER_MESSAGES, {
       onCompleted: () => {
-        console.log(userMessageData);
+        console.log(userMessageData.getUserMessages);
+        if (userMessageData.getUserMessages.length > 0) {
+          setSelectedUser(userMessageData.getUserMessages[0].user.id);
+        }
       },
       onError: (error) => {
         console.log(error);
@@ -55,8 +47,13 @@ const Inbox = () => {
   //   },
   // });
 
+  // eslint-disable-next-line no-unused-vars
   const { data: subData } = useSubscription(NEW_MESSAGE, {
     onSubscriptionData: (data) => {
+      if (data.subscriptionData.error) {
+        console.log(data.subscriptionData.error);
+      }
+
       const friendID = data.subscriptionData.data.newMessage.fromUser.id;
 
       const cacheData = cache.readQuery({
@@ -67,13 +64,15 @@ const Inbox = () => {
       Object.entries(cacheClone.getUserMessages).forEach((entry) => {
         if (entry[1].user.id === friendID) {
           entry[1].messages.push(data.subscriptionData.data.newMessage);
+          entry[1].latestMessage = data.subscriptionData.data.newMessage;
         }
       });
 
       cache.writeQuery({
         query: GET_USER_MESSAGES,
-        variables: { toUserID: friendID },
-        data: cacheClone.getUserMessages,
+        data: {
+          getUserMessages: cacheClone.getUserMessages,
+        },
       });
     },
   });
@@ -100,12 +99,47 @@ const Inbox = () => {
               <div className="inboxComponent__chat">
                 {selectedUser ? (
                   userMessageData &&
-                  userMessageData.getUserMessages.map((userMObj) => {
-                    if (userMObj.user.id === selectedUser) {
-                      return <InboxFeed feed={userMObj.messages} />;
-                    }
-                    return null;
-                  })
+                  userMessageData.getUserMessages
+                    // TODO: I'll get you to work I swear
+                    // .sort((a, b) => {
+                    //   if (
+                    //     a.latestMessage &&
+                    //     b.latestMessage &&
+                    //     Object.prototype.hasOwnProperty.call(
+                    //       a.latestMessage,
+                    //       'createdAt'
+                    //     ) &&
+                    //     Object.prototype.hasOwnProperty.call(
+                    //       b.latestMessage,
+                    //       'createdAt'
+                    //     ) &&
+                    //     a.latestMessage.createdAt > b.latestMessage.createdAt
+                    //   ) {
+                    //     console.log('called');
+                    //     return -1;
+                    //   }
+
+                    //   if (
+                    //     a.latestMessage &&
+                    //     b.latestMessage &&
+                    //     Object.prototype.hasOwnProperty.call(
+                    //       a.latestMessage,
+                    //       'createdAt'
+                    //     ) &&
+                    //     !Object.prototype.hasOwnProperty.call(
+                    //       b.latestMessage,
+                    //       'createdAt'
+                    //     )
+                    //   )
+                    //     return -1;
+                    //   return 1;
+                    // })
+                    .map((userMObj) => {
+                      if (userMObj.user.id === selectedUser) {
+                        return <InboxFeed feed={userMObj.messages} />;
+                      }
+                      return null;
+                    })
                 ) : (
                   <InboxFeed feed={[]} />
                 )}
@@ -130,6 +164,7 @@ const Inbox = () => {
                   userMessageData.getUserMessages.map((userMObj) => (
                     <InboxUserCard
                       key={userMObj.user.id}
+                      userID={userMObj.user.id}
                       active={selectedUser === userMObj.user.id}
                       username={userMObj.user.username}
                       imageURL={userMObj.user.imageURL}

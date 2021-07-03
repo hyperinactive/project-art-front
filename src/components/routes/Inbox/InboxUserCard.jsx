@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Image } from 'semantic-ui-react';
+import { Image, Icon } from 'semantic-ui-react';
 import { baseURL, defaultAvatar } from '../../../appConfig';
 import { UserContext } from '../../../context/UserProvider';
+import { InboxContext } from '../../../context/InboxProvider';
 
 const InboxUserCard = ({
+  userID,
   active,
   imageURL,
   username,
@@ -13,6 +15,7 @@ const InboxUserCard = ({
   onClick,
 }) => {
   const { user } = useContext(UserContext);
+  const { selectedUser } = useContext(InboxContext);
 
   const prettyString = (str) => {
     if (str.length > 30) {
@@ -34,28 +37,48 @@ const InboxUserCard = ({
         src={imageURL ? `${baseURL}/files/${imageURL}` : defaultAvatar}
       />
       <div className="inboxComponent__friendList__friendCard__info">
-        <h2
-          className={`inboxComponent__friendList__friendCard__info__name ${
-            active ? 'active' : 'headline'
-          }`}
-        >
-          {username}
-        </h2>
-        <h4
-          className={`inboxComponent__friendList__friendCard__info__message ${
-            latestMessageFromID !== user.id ? 'senderLatest' : 'receiverLatest'
-          }`}
-        >
-          {latestMessageContent
-            ? prettyString(latestMessageContent)
-            : 'no message'}
-        </h4>
+        <div className="inboxComponent__friendList__friendCard__info__header">
+          <h2
+            className={`inboxComponent__friendList__friendCard__info__header__name ${
+              active ? 'active' : 'headline'
+            }`}
+          >
+            {username}
+          </h2>
+          <div
+            className={`${selectedUser === userID ? 'selectedUser' : ''}`}
+            style={{ display: 'none' }}
+          >
+            <Icon name="angle left" size="big" />
+          </div>
+        </div>
+
+        {latestMessageFromID ? (
+          <div
+            className={`inboxComponent__friendList__friendCard__info__message ${
+              latestMessageFromID === user.id
+                ? 'senderLatest'
+                : 'receiverLatest'
+            }`}
+          >
+            <h4>
+              {latestMessageContent
+                ? prettyString(latestMessageContent)
+                : 'no message'}
+            </h4>
+          </div>
+        ) : (
+          <div className="inboxComponent__friendList__friendCard__info__message">
+            <h4>--no message--</h4>
+          </div>
+        )}
       </div>
     </button>
   );
 };
 
 InboxUserCard.defaultProps = {
+  userID: '',
   imageURL: defaultAvatar,
   active: false,
   latestMessageContent: null,
@@ -64,6 +87,7 @@ InboxUserCard.defaultProps = {
 };
 
 InboxUserCard.propTypes = {
+  userID: PropTypes.string,
   active: PropTypes.bool,
   username: PropTypes.string.isRequired,
   imageURL: PropTypes.string,
