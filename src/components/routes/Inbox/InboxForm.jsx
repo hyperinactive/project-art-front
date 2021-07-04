@@ -36,7 +36,7 @@ const InboxForm = () => {
 
       Object.entries(cacheClone.getUserMessages).forEach((entry) => {
         if (entry[1].user.id === userID) {
-          entry[1].messages.push(result.data.sendMessage);
+          entry[1].messages.unshift(result.data.sendMessage);
           entry[1].latestMessage = result.data.sendMessage;
         }
       });

@@ -60,10 +60,11 @@ const Inbox = () => {
         query: GET_USER_MESSAGES,
       });
       const cacheClone = cloneDeep(cacheData);
+      console.log(cacheClone.getUserMessages);
 
       Object.entries(cacheClone.getUserMessages).forEach((entry) => {
         if (entry[1].user.id === friendID) {
-          entry[1].messages.push(data.subscriptionData.data.newMessage);
+          entry[1].messages.unshift(data.subscriptionData.data.newMessage);
           entry[1].latestMessage = data.subscriptionData.data.newMessage;
         }
       });
@@ -99,8 +100,7 @@ const Inbox = () => {
               <div className="inboxComponent__chat">
                 {selectedUser ? (
                   userMessageData &&
-                  []
-                    .concat(userMessageData.getUserMessages)
+                  userMessageData.getUserMessages
                     // TODO: I'll get you to work I swear
                     // .sort((a, b) => {
                     //   if (
@@ -137,7 +137,12 @@ const Inbox = () => {
                     // })
                     .map((userMObj) => {
                       if (userMObj.user.id === selectedUser) {
-                        return <InboxFeed feed={userMObj.messages} />;
+                        return (
+                          <InboxFeed
+                            key={userMObj.user.id}
+                            feed={userMObj.messages.slice(0).reverse()}
+                          />
+                        );
                       }
                       return null;
                     })
