@@ -99,7 +99,8 @@ const Inbox = () => {
               <div className="inboxComponent__chat">
                 {selectedUser ? (
                   userMessageData &&
-                  userMessageData.getUserMessages
+                  []
+                    .concat(userMessageData.getUserMessages)
                     // TODO: I'll get you to work I swear
                     // .sort((a, b) => {
                     //   if (

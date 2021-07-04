@@ -1,12 +1,11 @@
 export const initialState = {
   selectedUser: null,
-  friends: [],
+  cursor: null,
 };
 
 export const actionTypes = {
   SET_SELECTED_USER: 'SET_SELECTED_USER',
-  SET_USERS: 'SET_USERS',
-  SET_MESSAGES: 'SET_MESSAGES',
+  SET_CURSOR: 'SET_CURSOR',
 };
 
 export const inboxReducer = (state, action) => {
@@ -17,19 +16,12 @@ export const inboxReducer = (state, action) => {
         selectedUser: action.payload,
       };
 
-    case actionTypes.SET_USERS: {
-      const friendsIDs = [];
-      Object.entries(action.payload).forEach((e) =>
-        friendsIDs.push({
-          friendID: e[1].id,
-          messages: [],
-        })
-      );
+    case actionTypes.SET_CURSOR:
       return {
         ...state,
-        friends: friendsIDs,
+        cursor: action.payload,
       };
-    }
+
     default:
       throw new Error(`Unknows action type: ${action.type}`);
   }

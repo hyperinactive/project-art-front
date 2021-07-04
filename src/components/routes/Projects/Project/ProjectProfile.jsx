@@ -109,8 +109,10 @@ const ProjectProfile = ({ project }) => {
       }}
     >
       <Header as="h2" icon textAlign="center">
-        <Header.Content>{project.name}</Header.Content>
-        <Header.Subheader>{project.description}</Header.Subheader>
+        <Header.Content className="headline">{project.name}</Header.Content>
+        <Header.Subheader className="headline">
+          {project.description}
+        </Header.Subheader>
       </Header>
       <Image circular src={defaultAvatar} size="tiny" />
       {user ? (

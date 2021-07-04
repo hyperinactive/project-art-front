@@ -1,0 +1,9 @@
+.elementList {
+  &__innerContainer {
+    @include hidden-scrollbar;
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+    overflow: scroll;
+  }
+}

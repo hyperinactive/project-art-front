@@ -5,7 +5,7 @@ import { inboxReducer, initialState, actionTypes } from './inboxReducer';
 export const InboxContext = createContext({
   ...initialState,
   setSelectedUser: () => {},
-  setUsers: () => {},
+  setCursor: () => {},
 });
 
 export const InboxProvider = (props) => {
@@ -18,16 +18,21 @@ export const InboxProvider = (props) => {
     });
   };
 
-  const setUsers = (data) => {
+  const setCursor = (data) => {
     dispatch({
-      type: actionTypes.SET_USERS,
+      type: actionTypes.SET_CURSOR,
       payload: data,
     });
   };
 
   return (
     <InboxContext.Provider
-      value={{ selectedUser: state.selectedUser, setSelectedUser, setUsers }}
+      value={{
+        selectedUser: state.selectedUser,
+        setSelectedUser,
+        cursor: state.cursor,
+        setUsers: setCursor,
+      }}
       {...props}
     />
   );

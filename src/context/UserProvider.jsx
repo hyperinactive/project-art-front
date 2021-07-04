@@ -58,6 +58,7 @@ export const UserProvider = (props) => {
     // to store the tokens of the logged users
     // we're making a field called ueserToken and setting the user.token to it
     localStorage.setItem('userToken', data.token);
+
     dispatch({
       type: actionTypes.LOGIN,
       payload: jwtDecode(data.token),
@@ -70,6 +71,7 @@ export const UserProvider = (props) => {
     // clear the cache of prev user data
     client.clearStore();
     client.cache.reset();
+
     dispatch({ type: actionTypes.LOGOUT });
   };
 

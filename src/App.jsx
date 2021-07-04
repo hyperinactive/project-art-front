@@ -28,37 +28,34 @@ const App = () => (
     <BrowserRouter>
       {/* bootstrap container basically */}
       <Container className="appContainer">
-        {/* regardless of the page we're on, the Menu bar will be shown */}
-        {/* TODO: maybe make it so the navigation isn't shown on 404 page */}
         <NavigationProvider>
           <NavBar />
-          <Container className="appContainer__innerContainer">
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <UserRoute exact path="/register" component={Register} />
-              <UserRoute exact path="/login" component={Login} />
-              <Route exact path="/posts/:postID" component={SinglePost} />
-              <Route exact path="/projects" component={Projects} />
-              <Route exact path="/connect" component={Friends} />
-              <Route
-                exact
-                path="/projects/createProject"
-                component={ProjectForm}
-              />
-              <Route exact path="/projects/:projectID" component={Project} />
-              {/* TODO: user settings and user profile */}
-              <Route exact path="/settings/:userID" component={Settings} />
+          <InboxProvider>
+            <Container className="appContainer__innerContainer">
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <UserRoute exact path="/register" component={Register} />
+                <UserRoute exact path="/login" component={Login} />
+                <Route exact path="/posts/:postID" component={SinglePost} />
+                <Route exact path="/projects" component={Projects} />
+                <Route exact path="/connect" component={Friends} />
+                <Route
+                  exact
+                  path="/projects/createProject"
+                  component={ProjectForm}
+                />
+                <Route exact path="/projects/:projectID" component={Project} />
+                {/* TODO: user settings and user profile */}
+                <Route exact path="/settings/:userID" component={Settings} />
 
-              <Route exact path="/user/:userID" component={Profile} />
-              {/* TODO: sub zero, north pole, no chance of any sun, winds holwing, freezing todo */}
-              <InboxProvider>
+                <Route exact path="/user/:userID" component={Profile} />
                 <Route exact path="/inbox" component={Inbox} />
-              </InboxProvider>
 
-              <Route exact path="/404" component={NotFoundPage} />
-              <Route component={NotFoundPage} />
-            </Switch>
-          </Container>
+                <Route exact path="/404" component={NotFoundPage} />
+                <Route component={NotFoundPage} />
+              </Switch>
+            </Container>
+          </InboxProvider>
         </NavigationProvider>
       </Container>
     </BrowserRouter>
