@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { Grid, Loader, Input, Image, Header } from 'semantic-ui-react';
+import { Grid, Input, Image, Header } from 'semantic-ui-react';
+
+import LoaderComponent from '../shared/LoaderComponent';
 import ElementList from '../shared/ElementList';
 import { UserContext } from '../../context/UserProvider';
 import { GET_FRIENDS } from '../../graphql';
@@ -35,12 +37,7 @@ const Friends = () => {
     },
   });
 
-  if (loading)
-    return (
-      <Loader size="huge" active>
-        Computing, things, beep bop
-      </Loader>
-    );
+  if (loading) return <LoaderComponent />;
   if (error) return <h1>Error</h1>;
 
   return (
@@ -59,9 +56,7 @@ const Friends = () => {
 
           <Grid.Row>
             {userLoading ? (
-              <Loader size="huge" active>
-                Computing, things, beep bop
-              </Loader>
+              <LoaderComponent />
             ) : (
               <Grid doubling columns={5}>
                 {userData &&

@@ -18,7 +18,9 @@ const GET_POST = gql`
       user {
         ...UserFields
       }
-      ...CommentFields
+      comments {
+        ...CommentFields
+      }
       commentCount
       project {
         id

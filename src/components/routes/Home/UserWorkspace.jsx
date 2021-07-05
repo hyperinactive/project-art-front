@@ -1,6 +1,8 @@
 import { useQuery } from '@apollo/client';
 import React, { useContext } from 'react';
-import { Grid, Loader, Header, Card } from 'semantic-ui-react';
+import { Grid, Header, Card } from 'semantic-ui-react';
+
+import LoaderComponent from '../../shared/LoaderComponent';
 import { UserContext } from '../../../context/UserProvider';
 import { GET_FRIENDS, GET_USER_PROJECTS } from '../../../graphql';
 import ElementList from '../../shared/ElementList';
@@ -40,9 +42,7 @@ const UserWorkspace = () => {
 
         <Grid.Row>
           {loading ? (
-            <Loader size="huge" active>
-              Computing, things, beep bop
-            </Loader>
+            <LoaderComponent />
           ) : (
             <Grid.Column width={2}>
               <Header className="headline">Friends</Header>
@@ -83,9 +83,7 @@ const UserWorkspace = () => {
           <Grid.Column width={2}>
             <Header className="headline">Projects</Header>
             {projectLoading ? (
-              <Loader size="huge" active>
-                Computing, things, beep bop
-              </Loader>
+              <LoaderComponent />
             ) : (
               projectData && (
                 <ElementList

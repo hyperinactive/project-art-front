@@ -34,17 +34,7 @@ const PostCard = ({
   const { user } = useContext(UserContext);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: 10,
-        width: '100%',
-        margin: 'auto',
-      }}
-      className="postCard"
-    >
+    <div className="postCard">
       <Transition.Group>
         <Card fluid>
           <Card.Content>

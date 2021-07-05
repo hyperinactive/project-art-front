@@ -1,0 +1,11 @@
+.postCard {
+  display: 'flex';
+  flex-direction: 'column';
+  align-items: 'center';
+  padding: 1rem;
+  width: 100%;
+
+  .card {
+    @include form;
+  }
+}

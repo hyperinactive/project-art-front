@@ -2,8 +2,9 @@
 /* eslint-disable react/destructuring-assignment */
 import { useLazyQuery } from '@apollo/client';
 import React, { useContext, useEffect } from 'react';
-import { Loader } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
+
+import LoaderComponent from '../../../shared/LoaderComponent';
 import { UserContext } from '../../../../context/UserProvider';
 import { GET_MEMBERS, GET_PROJECT } from '../../../../graphql';
 import ProjectWorkspace from './Workspace/ProjectWorkspace';
@@ -40,9 +41,7 @@ const Project = () => {
       {/* show join us page to whomever, but if the user isn't signed in */}
       {/* redirect them to the login page */}
       {loading || mLoading ? (
-        <Loader size="huge" active>
-          Computing, things, beep bop
-        </Loader>
+        <LoaderComponent />
       ) : user ? (
         data &&
         data.getProject &&

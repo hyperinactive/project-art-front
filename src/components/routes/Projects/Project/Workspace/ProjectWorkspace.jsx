@@ -137,40 +137,9 @@ const ProjectWorkspace = ({ project, elements }) => {
     setActiveItem(project.name);
   }, [loadFeed, project.id]);
 
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll);
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  // }, []);
-
-  // useEffect(() => {
-  //   if (isBottom && canLoadMore) {
-  //     console.log('I hit rock bottom -.-');
-  //     feedME();
-  //   }
-  // }, [isBottom]);
-
-  // const { data } = useQuery(GET_PROJECT_POSTS, {
-  //   variables: {
-  //     projectID: project.id,
-  //   },
-  //   pollInterval: 3000,
-  //   onCompleted: () => {
-  //     console.log(data);
-  //   },
-  //   onError: (error) => {
-  //     console.log(error);
-  //   },
-  // });
-
-  // const handleClick = () => {
-  //   if (canLoadMore) {
-  //     feedMe();
-  //   }
-  // };
-
   return (
     <div className="projectWorkspace">
-      <Grid container columns={3} style={{ marginTop: 40 }}>
+      <Grid container columns={2} style={{ marginTop: 40 }}>
         <Grid.Row columns={1}>
           <h2
             style={{
@@ -188,7 +157,7 @@ const ProjectWorkspace = ({ project, elements }) => {
             <ElementList elements={elements} type="user" />
           </Grid.Row>
         </Grid.Column>
-        <Grid.Column width={11}>
+        <Grid.Column width={12}>
           <Grid.Row textAlign="center">
             <Grid.Column>
               {loading && (
@@ -218,8 +187,8 @@ const ProjectWorkspace = ({ project, elements }) => {
                       {i === 0 && (
                         <Waypoint
                           onEnter={() => {
-                            console.log('called');
-                            console.log('10th element');
+                            // console.log('called');
+                            // console.log('10th element');
                             if (canLoadMore) {
                               feedMe();
                             }
@@ -249,7 +218,6 @@ const ProjectWorkspace = ({ project, elements }) => {
             </Grid.Column>
           </Grid.Row>
         </Grid.Column>
-        <Grid.Column width={3}>I am a --to be named-- column</Grid.Column>
       </Grid>
     </div>
   );

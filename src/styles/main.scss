@@ -1,13 +1,17 @@
-@import 'variables';
-@import 'config';
-@import 'routeStyles/navbar';
-@import 'routeStyles/home';
-@import 'routeStyles/project';
-@import 'routeStyles/settings';
-@import 'routeStyles/profile';
-@import 'routeStyles/inbox';
-@import 'sharedStyles/imageController';
-@import 'sharedStyles/elementList';
+@import './variables';
+@import './config';
+
+@import './routeStyles/navbar';
+@import './routeStyles/home';
+@import './routeStyles/settings';
+@import './routeStyles/profile';
+@import './routeStyles/inbox';
+@import './routeStyles/projects';
+
+@import './sharedStyles/imageController';
+@import './sharedStyles/elementList';
+@import './sharedStyles/postCard';
+@import './sharedStyles/projectCard';
 
 // TODO: structure this dude...
 body {
@@ -15,12 +19,7 @@ body {
   color: map-get($mainPallete, 'regularText');
 
   // app
-  #root {
-    @include maxHeight();
-  }
   .appContainer {
-    @include maxHeight();
-
     &__innerContainer {
       position: absolute;
       min-height: 87vh;

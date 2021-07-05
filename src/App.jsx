@@ -12,7 +12,7 @@ import Home from './components/routes/Home/Home';
 import Register from './components/routes/Register';
 import Login from './components/routes/Login';
 import UserRoute from './components/routes/UserRoute';
-import SinglePost from './components/routes/SinglePost/SinglePost';
+import SinglePost from './components/routes/Post/Post';
 import NotFoundPage from './components/routes/NotFoundPage';
 import Projects from './components/routes/Projects/Projects';
 import Settings from './components/routes/Settings';

@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable react/destructuring-assignment */
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { cloneDeep } from '@apollo/client/utilities';
 import React, { useContext, useState, useEffect } from 'react';
@@ -233,80 +230,6 @@ const UserProfile = () => {
           </div>
         </>
       )}
-
-      {/* {loading ? (
-        <Loader size="huge" active>
-          Computing, things, beep bop
-        </Loader>
-      ) : (
-        data &&
-        data.getUser && (
-          <>
-            <Card className="userProfile__profile__info">
-              <Header as="h2" icon textAlign="center">
-                <Image
-                  style={{ width: 80 }}
-                  src={
-                    data && data.getUser && data.getUser.imageURL
-                      ? `${baseURL}/files/${data.getUser.imageURL}`
-                      : defaultAvatar
-                  }
-                  rounded
-                />
-
-                <Header.Content style={{ margin: 10, marginTop: 20 }}>
-                  {data.getUser.username}
-                </Header.Content>
-                <Header.Subheader>{data.getUser.status}</Header.Subheader>
-              </Header>
-              <Header as="h2" icon textAlign="center">
-                <Header.Content style={{ margin: 10, marginTop: 20 }}>
-                  skills
-                </Header.Content>
-                <Header.Subheader>status</Header.Subheader>
-              </Header>
-              <Header as="h2" icon textAlign="center">
-                <Header.Content style={{ margin: 10, marginTop: 20 }}>
-                  projects
-                </Header.Content>
-                <Header.Subheader>status</Header.Subheader>
-              </Header>
-              {user && fUserID !== user.id ? (
-                isFriend ? (
-                  <Button
-                    as="div"
-                    type="button"
-                    color="orange"
-                    style={{ margin: 10 }}
-                    disabled
-                  >
-                    Friends!
-                  </Button>
-                ) : (
-                  <Button
-                    as="div"
-                    type="button"
-                    color="orange"
-                    style={{ margin: 10 }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      addFriend({
-                        variables: {
-                          userID: fUserID,
-                        },
-                      });
-                    }}
-                  >
-                    Add friend
-                  </Button>
-                )
-              ) : (
-                <></>
-              )}
-            </Card>
-          </>
-        )
-      )} */}
     </div>
   );
 };

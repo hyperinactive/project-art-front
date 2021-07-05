@@ -2,9 +2,10 @@
 /* eslint-disable no-nested-ternary */
 import { useSubscription, useApolloClient, useLazyQuery } from '@apollo/client';
 import React, { useContext, useEffect } from 'react';
-import { Grid, Loader } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
 
+import LoaderComponent from '../../shared/LoaderComponent';
 import { GET_USER_MESSAGES, NEW_MESSAGE } from '../../../graphql';
 import { NavigationContext } from '../../../context/NavigationProvider';
 import InboxUserCard from './InboxUserCard';
@@ -159,9 +160,7 @@ const Inbox = () => {
 
         <Grid.Column width={6}>
           {friendsLoading ? (
-            <Loader size="huge" active>
-              Computing, things, beep bop
-            </Loader>
+            <LoaderComponent />
           ) : (
             <Grid.Row centered>
               <div className="inboxComponent__friendList">
