@@ -46,8 +46,8 @@ const ADD_MEMBER = gql`
 `;
 
 const GET_USER_PROJECTS = gql`
-  query getUserProjects {
-    getUserProjects {
+  query getUserProjects($userID: ID) {
+    getUserProjects(userID: $userID) {
       id
       name
     }

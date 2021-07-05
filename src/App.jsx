@@ -16,7 +16,7 @@ import SinglePost from './components/routes/SinglePost/SinglePost';
 import NotFoundPage from './components/routes/NotFoundPage';
 import Projects from './components/routes/Projects/Projects';
 import Settings from './components/routes/Settings';
-import Profile from './components/routes/Profile';
+import UserProfile from './components/routes/UserProfile';
 import Inbox from './components/routes/Inbox/Inbox';
 import Project from './components/routes/Projects/Project/Project';
 import ProjectForm from './components/routes/Projects/ProjectForm';
@@ -48,7 +48,7 @@ const App = () => (
                 {/* TODO: user settings and user profile */}
                 <Route exact path="/settings/:userID" component={Settings} />
 
-                <Route exact path="/user/:userID" component={Profile} />
+                <Route exact path="/user/:userID" component={UserProfile} />
                 <Route exact path="/inbox" component={Inbox} />
 
                 <Route exact path="/404" component={NotFoundPage} />

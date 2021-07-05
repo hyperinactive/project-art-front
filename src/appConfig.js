@@ -8,6 +8,8 @@ const config = {
   example2: `${process.env.PUBLIC_URL}/defaults/example2.jpeg`,
   example3: `${process.env.PUBLIC_URL}/defaults/example3.gif`,
   example4: `${process.env.PUBLIC_URL}/defaults/example4.gif`,
+  backgroundGradient: `${process.env.PUBLIC_URL}/defaults/projectArtBackground.jpg`,
+  backgroundGradientInverted: `${process.env.PUBLIC_URL}/defaults/projectArtBackgroundInverted.jpg`,
 };
 
 module.exports = config;

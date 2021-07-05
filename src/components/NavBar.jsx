@@ -42,7 +42,7 @@ const NavBar = () => {
 
   // if we got a logged-in user display the personalized component with the logout item
   const navBar = user ? (
-    <Menu stackable size="massive" color="orange" className="navbar__menu">
+    <Menu size="massive" color="orange" className="navbar__menu">
       <Menu.Item
         className="navbar__menu__item"
         name="home"
@@ -179,7 +179,7 @@ const NavBar = () => {
       </Menu.Item> */}
     </Menu>
   ) : (
-    <Menu stackable size="massive" color="orange" className="navbar__menu">
+    <Menu size="massive" color="orange" className="navbar__menu">
       <Menu.Item
         className="navbar__menu__item"
         name="home"

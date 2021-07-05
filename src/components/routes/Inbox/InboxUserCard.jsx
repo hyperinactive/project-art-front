@@ -4,6 +4,7 @@ import { Image, Icon } from 'semantic-ui-react';
 import { baseURL, defaultAvatar } from '../../../appConfig';
 import { UserContext } from '../../../context/UserProvider';
 import { InboxContext } from '../../../context/InboxProvider';
+import prettyString from '../../../utils';
 
 const InboxUserCard = ({
   userID,
@@ -16,13 +17,6 @@ const InboxUserCard = ({
 }) => {
   const { user } = useContext(UserContext);
   const { selectedUser } = useContext(InboxContext);
-
-  const prettyString = (str) => {
-    if (str.length > 30) {
-      return `${str.substring(0, 30).trim()}...`;
-    }
-    return str;
-  };
 
   return (
     <button
@@ -63,7 +57,7 @@ const InboxUserCard = ({
           >
             <h4>
               {latestMessageContent
-                ? prettyString(latestMessageContent)
+                ? prettyString(latestMessageContent, 30)
                 : 'no message'}
             </h4>
           </div>
