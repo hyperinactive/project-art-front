@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Icon, Menu, Sticky, Dropdown } from 'semantic-ui-react';
+import { Icon, Menu, Sticky, Dropdown, Image } from 'semantic-ui-react';
+import { baseURL, defaultAvatar } from '../appConfig';
+
 import { NavigationContext } from '../context/NavigationProvider';
 
 import { UserContext } from '../context/UserProvider';
@@ -23,6 +25,16 @@ const NavBar = () => {
   // if item's active property is true, it will be active (highlighted)
   // { name } deconstruct the current component calling the handleItemClick and take the name of it
   const handleItemClick = (e, { name }) => setActiveItem(name);
+
+  const dropDownTrigger = (
+    <span>
+      <Image
+        rounded
+        size="mini"
+        src={user ? `${baseURL}/files/${user.imageURL}` : defaultAvatar}
+      />
+    </span>
+  );
 
   // NOTE: as -> lets us use the component as some other component
   // useful for making links out of components
@@ -98,7 +110,7 @@ const NavBar = () => {
 
       <Menu.Menu position="right">
         <Menu.Item className="navbar__menu__item">
-          <Dropdown icon="caret down">
+          <Dropdown icon={null} trigger={dropDownTrigger}>
             <Dropdown.Menu>
               <Dropdown.Item
                 name="inbox"

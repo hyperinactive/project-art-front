@@ -64,6 +64,16 @@ const GET_FRIENDS = gql`
   }
 `;
 
+const GET_USER_FRIENDS = gql`
+  query getUserFriends($userID: ID!) {
+    getUserFriends(userID: $userID) {
+      id
+      username
+      imageURL
+    }
+  }
+`;
+
 const UPDATE_USER = gql`
   ${USER_FIELDS}
   mutation updateUser(
@@ -94,11 +104,10 @@ const ADD_FRIEND = gql`
 `;
 
 const GET_USERS = gql`
+  ${USER_FIELDS}
   query getUsers {
     getUsers {
-      id
-      username
-      imageURL
+      ...UserFields
     }
   }
 `;
@@ -111,4 +120,5 @@ export {
   UPDATE_USER,
   ADD_FRIEND,
   GET_USERS,
+  GET_USER_FRIENDS,
 };

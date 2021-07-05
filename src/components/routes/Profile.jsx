@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/destructuring-assignment */
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { cloneDeep } from '@apollo/client/utilities';
 import React, { useContext, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
@@ -9,7 +9,12 @@ import { baseURL, defaultAvatar } from '../../appConfig';
 import { NavigationContext } from '../../context/NavigationProvider';
 import { UserContext } from '../../context/UserProvider';
 
-import { ADD_FRIEND, GET_FRIENDS, GET_USER } from '../../graphql';
+import {
+  ADD_FRIEND,
+  GET_FRIENDS,
+  GET_USER,
+  GET_USER_FRIENDS,
+} from '../../graphql';
 
 const isFriendsWith = (friends, userID) =>
   friends.find((friend) => friend.id.toString() === userID.toString());
@@ -17,10 +22,12 @@ const isFriendsWith = (friends, userID) =>
 const Profile = () => {
   const { user } = useContext(UserContext);
   const params = useParams();
+  const history = useHistory();
+
   const { userID: fUserID } = params;
   const [isFriend, setIsFriend] = useState(false);
-  const history = useHistory();
   const { setTemporaryTab, setActiveItem } = useContext(NavigationContext);
+
   // load user data to display
   const { data, loading } = useQuery(GET_USER, {
     variables: {
@@ -52,6 +59,20 @@ const Profile = () => {
   //     },
   //   }
   // );
+
+  // eslint-disable-next-line no-unused-vars
+  const [loadFriends, { data: friendsData, loading: friendsLoading }] =
+    useLazyQuery(GET_USER_FRIENDS, {
+      variables: {
+        userID: fUserID,
+      },
+      onCompleted: () => {
+        console.log(friendsData);
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
 
   const [addFriend] = useMutation(ADD_FRIEND, {
     update: (cache, result) => {

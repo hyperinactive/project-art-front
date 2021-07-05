@@ -1,7 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import { Grid, Image } from 'semantic-ui-react';
-import ScrollableFeed from 'react-scrollable-feed';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -11,26 +10,24 @@ const ElementList = ({ elements, type }) => (
   <div className="elementList">
     {elements.length > 0 ? (
       <div className="elementList__innerContainer">
-        <ScrollableFeed>
-          {elements.map((element) => (
-            <Grid.Row key={element.id} style={{ margin: 10 }} centered>
-              <Image
-                rounded
-                size="tiny"
-                src={
-                  element.imageURL
-                    ? `${baseURL}/files/${element.imageURL}`
-                    : defaultAvatar
-                }
-                as={Link}
-                to={`/${type}/${element.id}`}
-              />
-              <div style={{ textAlign: 'center' }}>
-                <p>{type === 'projects' ? element.name : element.username}</p>
-              </div>
-            </Grid.Row>
-          ))}
-        </ScrollableFeed>
+        {elements.map((element) => (
+          <Grid.Row key={element.id} style={{ margin: 10 }} centered>
+            <Image
+              rounded
+              size="tiny"
+              src={
+                element.imageURL
+                  ? `${baseURL}/files/${element.imageURL}`
+                  : defaultAvatar
+              }
+              as={Link}
+              to={`/${type}/${element.id}`}
+            />
+            <div style={{ textAlign: 'center' }}>
+              <p>{type === 'projects' ? element.name : element.username}</p>
+            </div>
+          </Grid.Row>
+        ))}
       </div>
     ) : type === 'projects' ? (
       <Grid.Row>

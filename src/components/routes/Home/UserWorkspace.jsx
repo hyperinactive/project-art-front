@@ -10,25 +10,24 @@ import Notifications from './Notifications';
 const UserWorkspace = () => {
   const { user } = useContext(UserContext);
 
-  const { data, loading, error } = useQuery(GET_FRIENDS, {
+  const { data, loading } = useQuery(GET_FRIENDS, {
     onCompleted: () => {
       console.log(data.getFriends);
     },
   });
-  const {
-    data: projectData,
-    loading: projectLoading,
-    error: projectError,
-  } = useQuery(GET_USER_PROJECTS, {
-    onCompleted: () => {
-      console.log(projectData);
-    },
-    onError(err) {
-      console.log(err);
-    },
-  });
+  const { data: projectData, loading: projectLoading } = useQuery(
+    GET_USER_PROJECTS,
+    {
+      onCompleted: () => {
+        console.log(projectData);
+      },
+      onError(err) {
+        console.log(err);
+      },
+    }
+  );
 
-  if (error || projectError) return <h1>Error</h1>;
+  // if (error || projectError) return <h1>Error</h1>;
 
   return (
     <div className="userWorkspace">
