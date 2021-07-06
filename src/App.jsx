@@ -20,7 +20,7 @@ import UserProfile from './components/routes/UserProfile';
 import Inbox from './components/routes/Inbox/Inbox';
 import Project from './components/routes/Projects/Project/Project';
 import ProjectForm from './components/routes/Projects/ProjectForm';
-import Friends from './components/routes/Friends';
+import Connect from './components/routes/Connect';
 import { InboxProvider } from './context/InboxProvider';
 
 const App = () => (
@@ -38,7 +38,7 @@ const App = () => (
                 <UserRoute exact path="/login" component={Login} />
                 <Route exact path="/posts/:postID" component={SinglePost} />
                 <Route exact path="/projects" component={Projects} />
-                <Route exact path="/connect" component={Friends} />
+                <Route exact path="/connect" component={Connect} />
                 <Route
                   exact
                   path="/projects/createProject"

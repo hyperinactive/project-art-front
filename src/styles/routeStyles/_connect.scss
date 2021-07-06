@@ -1,0 +1,23 @@
+.connect {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+  max-height: 90%;
+
+  &__search {
+    padding: 3rem;
+  }
+
+  &__usersGrid {
+    @include hidden-scrollbar;
+    height: 100%;
+    padding: 1rem;
+    overflow: scroll;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+}

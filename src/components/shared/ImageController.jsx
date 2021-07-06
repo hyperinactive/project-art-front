@@ -73,13 +73,15 @@ const ImageController = ({
 };
 
 ImageController.defaultProps = {
-  errors: [],
+  errors: {},
+  previewImage: '',
   before: null,
 };
 
 ImageController.propTypes = {
-  previewImage: PropTypes.string.isRequired,
-  errors: PropTypes.arrayOf(PropTypes.String),
+  previewImage: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
+  errors: PropTypes.object,
   setImageFile: PropTypes.func.isRequired,
   setPreviewImage: PropTypes.func.isRequired,
   before: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),

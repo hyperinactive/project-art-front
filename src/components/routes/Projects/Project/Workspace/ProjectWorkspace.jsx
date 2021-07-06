@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-param-reassign */
 import React, { useContext, useEffect, useState } from 'react';
@@ -7,26 +8,25 @@ import PropType from 'prop-types';
 import { useLazyQuery } from '@apollo/client';
 import { cloneDeep } from 'lodash';
 
-import PostProjectForm from './PostProjectForm';
+import LoaderComponent from '../../../../shared/LoaderComponent';
+import PostFormModal from './PostFormModal';
 import { GET_POSTS_FEED } from '../../../../../graphql';
 import PostCard from '../../../../PostCard';
 import ElementList from '../../../../shared/ElementList';
 import { NavigationContext } from '../../../../../context/NavigationProvider';
 
 const ProjectWorkspace = ({ project, elements }) => {
-  // const [isBottom, setIsBottom] = useState(false);
   const [cursor, setCursor] = useState(null);
   const [canLoadMore, setCanLoadMore] = useState(true);
   const { setTemporaryTab, setActiveItem } = useContext(NavigationContext);
 
-  // TODO: pollInterval calls this and messes up the cache
-  // NOTE: may have to do with the cursor being "sent back"
   const [loadFeed, { data, loading, fetchMore }] = useLazyQuery(
     GET_POSTS_FEED,
     {
       // pollInterval: 5000,
       // fetchPolicy: 'network-only', // prevents cache being read initially and showing posts from other projects
       onCompleted: () => {
+        console.log(data.getPostsFeed);
         if (!data.getPostsFeed.hasMoreItems) setCanLoadMore(false);
         setCursor(data.getPostsFeed.nextCursor);
         // setIsBottom(true);
@@ -90,67 +90,71 @@ const ProjectWorkspace = ({ project, elements }) => {
         setCursor(fetchMoreResult.getPostsFeed.nextCursor);
         return prevClone;
       },
-      // updateQuery: (prevResult, { fetchMoreResult }) => {
-      //   if (!fetchMoreResult) {
-      //     return prevResult;
-      //   }
-      //   fetchMoreResult.getPostsFeed.posts = [
-      //     ...fetchMoreResult.getPostsFeed.posts,
-      //     ...prevResult.getPostsFeed.posts,
-      //   ];
-
-      //   // --------------------------------------------------------------------
-      //   setCursor(fetchMoreResult.getPostsFeed.nextCursor);
-      //   setCanLoadMore(fetchMoreResult.getPostsFeed.hasMoreItems);
-
-      //   // if (fetchMoreResult.getPostsFeed.hasMoreItems) setIsBottom(false);
-      //   // --------------------------------------------------------------------
-      //   return { ...fetchMoreResult };
-      // },
     });
   };
 
-  // ----------------------------------------------------------------------------------------
-  // INFINITE SCROLL
-  // const handleScroll = () => {
-  //   const scrollTop =
-  //     (document.documentElement && document.documentElement.scrollTop) ||
-  //     document.body.scrollTop;
-  //   const scrollHeight =
-  //     (document.documentElement && document.documentElement.scrollHeight) ||
-  //     document.body.scrollHeight;
-  //   if (scrollTop + window.innerHeight + 50 >= scrollHeight) {
-  //     setIsBottom(true);
-  //   }
-  // };
-
   useEffect(() => {
+    let ignore = false;
     loadFeed({
       variables: {
         projectID: project.id,
       },
     });
-    setTemporaryTab({
-      name: project.name,
-      link: `/projects/${project.id}`,
-    });
-    setActiveItem(project.name);
-  }, [loadFeed, project.id]);
+    if (!ignore) {
+      setTemporaryTab({
+        name: project.name,
+        link: `/projects/${project.id}`,
+      });
+      setActiveItem(project.name);
+    }
+    return () => {
+      ignore = true;
+    };
+  }, [project.id]);
 
   return (
     <div className="projectWorkspace">
-      <Grid container columns={2} style={{ marginTop: 40 }}>
-        <Grid.Row columns={1}>
-          <h2
-            style={{
-              margin: 25,
-              marginTop: 10,
-              marginBottom: 10,
-              float: 'left',
-            }}
-          >
-            {project.name}
-          </h2>
+      <div className="projectWorkspace__heading headline">project name</div>
+
+      <div className="projectWorkspace__wrapper">
+        <div className="projectWorkspace__wrapper__members">
+          <ElementList elements={elements} type="user" />
+        </div>
+        <div className="projectWorkspace__wrapper__posts">
+          <div className="projectWorkspace__wrapper__posts__feed">
+            {loading ? (
+              <LoaderComponent />
+            ) : (
+              <>
+                {/* TODO: feed needs fixing */}
+                {data &&
+                  data.getPostsFeed &&
+                  data.getPostsFeed.posts &&
+                  data.getPostsFeed.posts.map((post, i) => (
+                    <React.Fragment key={post.id}>
+                      <PostCard post={post} />
+                      {i === 10 && (
+                        <Waypoint
+                          onEnter={() => {
+                            if (canLoadMore) {
+                              feedMe();
+                            }
+                          }}
+                        />
+                      )}
+                    </React.Fragment>
+                  ))}
+              </>
+            )}
+          </div>
+          {/* TODO: modal here */}
+          <div className="projectWorkspace__wrapper__posts__modal">modal</div>
+        </div>
+      </div>
+
+      {/* <Grid container columns={2}>
+        <Grid.Row columns={1} centered>
+          <h2>{project.name}</h2>
         </Grid.Row>
         <Grid.Column width={2}>
           <Grid.Row centered>
@@ -166,50 +170,29 @@ const ProjectWorkspace = ({ project, elements }) => {
                 </Loader>
               )}
               <PostProjectForm project={project} />
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column-reverse',
-                  alignItems: 'center',
-                  width: '100%',
-                }}
-              >
-                {/* {data &&
-                  data.getProjectPosts &&
-                  data.getProjectPosts.map((post) => (
-                    <PostCard key={post.id} post={post} />
-                  ))} */}
-                {data &&
-                  data.getPostsFeed.posts &&
-                  data.getPostsFeed.posts.map((post, i) => (
-                    <React.Fragment key={post.id}>
-                      <PostCard post={post} />
-                      {i === 0 && (
-                        <Waypoint
-                          onEnter={() => {
-                            // console.log('called');
-                            // console.log('10th element');
-                            if (canLoadMore) {
-                              feedMe();
-                            }
-                          }}
-                        />
-                      )}
-                    </React.Fragment>
-                  ))}
+              <div>
+                <div className="projectWorkspace__feed">
+                  {data &&
+                    data.getPostsFeed.posts &&
+                    data.getPostsFeed.posts.map((post, i) => (
+                      <React.Fragment key={post.id}>
+                        <PostCard post={post} />
+                        {i === 0 && (
+                          <Waypoint
+                            onEnter={() => {
+                              if (canLoadMore) {
+                                feedMe();
+                              }
+                            }}
+                          />
+                        )}
+                      </React.Fragment>
+                    ))}
+                </div>
+
                 {loading && <Loader>Loading more posts</Loader>}
               </div>
-              {/* Button variant */}
-              {/* {canLoadMore &&
-                (feedLoading ? (
-                  <Loader size="huge" active>
-                    Computing, things, beep bop
-                  </Loader>
-                ) : (
-                  <Button type="button" color="orange" onClick={handleClick}>
-                    Load more!
-                  </Button>
-                ))} */}
+
               {loading && (
                 <Loader size="huge" active>
                   Computing, things, beep bop
@@ -218,7 +201,7 @@ const ProjectWorkspace = ({ project, elements }) => {
             </Grid.Column>
           </Grid.Row>
         </Grid.Column>
-      </Grid>
+      </Grid> */}
     </div>
   );
 };

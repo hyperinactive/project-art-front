@@ -11,7 +11,12 @@ const ElementList = ({ elements, type }) => (
     {elements.length > 0 ? (
       <div className="elementList__innerContainer">
         {elements.map((element) => (
-          <Grid.Row key={element.id} style={{ margin: 10 }} centered>
+          <Grid.Row
+            className="elementList__innerContainer__element"
+            key={element.id}
+            style={{ margin: 10 }}
+            centered
+          >
             <Image
               rounded
               size="tiny"

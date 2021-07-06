@@ -37,7 +37,7 @@ const Project = () => {
   }, [loadProject, loadMembers]);
 
   return (
-    <div className="project" style={{ textAlign: 'center' }}>
+    <div className="project">
       {/* show join us page to whomever, but if the user isn't signed in */}
       {/* redirect them to the login page */}
       {loading || mLoading ? (

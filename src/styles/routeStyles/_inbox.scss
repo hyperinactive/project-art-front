@@ -3,13 +3,13 @@
 
   &__chat {
     @include form;
-    min-height: 79vh !important;
+    min-height: 100%;
 
     &__inboxFeed {
       // overflow: scroll;
       @include hidden-scrollbar;
       width: 100%;
-      height: 71vh;
+      height: 74vh;
       padding: 1rem;
       font-size: 1.1rem;
       display: flex;

@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import { useMutation } from '@apollo/client';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { cloneDeep } from 'lodash';
 import { Button, Header, Image } from 'semantic-ui-react';
-import { backgroundGradient, defaultAvatar } from '../../../../appConfig';
+import PropTypes from 'prop-types';
+
 import { UserContext } from '../../../../context/UserProvider';
 import {
   ADD_MEMBER,
@@ -130,6 +129,14 @@ const ProjectProfile = ({ project }) => {
       )}
     </div>
   );
+};
+
+ProjectProfile.propTypes = {
+  project: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default ProjectProfile;

@@ -6,5 +6,9 @@
     flex-direction: column;
     height: 70vh;
     overflow: scroll;
+
+    &__element:hover {
+      color: map-get($map: $mainPallete, $key: 'accent') !important;
+    }
   }
 }

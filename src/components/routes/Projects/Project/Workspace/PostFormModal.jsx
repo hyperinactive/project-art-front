@@ -1,6 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import { Button, Form } from 'semantic-ui-react';
 import { useMutation } from '@apollo/client';
@@ -10,7 +7,7 @@ import { cloneDeep } from '@apollo/client/utilities';
 import { CREATE_PROJECT_POST } from '../../../../../graphql';
 import ImageController from '../../../../shared/ImageController';
 
-const PostProjectForm = ({ project }) => {
+const PostFormModal = ({ project }) => {
   // STATES
   const [body, setBody] = useState('');
   const [errors, setErrors] = useState({});
@@ -27,27 +24,6 @@ const PostProjectForm = ({ project }) => {
 
   const [createPost] = useMutation(CREATE_PROJECT_POST, {
     update: (cache, { data: { createProjectPost } }) => {
-      // const cacheData = cache.readQuery({
-      //   query: GET_POSTS_FEED,
-
-      //   variables: {
-      //     projectID: project.id,
-      //   },
-      // });
-
-      // const cacheDataClone = cloneDeep(cacheData);
-      // cacheDataClone.getPostsFeed.posts = [
-      //   ...cacheDataClone.getPostsFeed.posts,
-      //   createProjectPost,
-      // ];
-
-      // cache.writeQuery({
-      //   query: GET_POSTS_FEED,
-      //   variables: {
-      //     projectID: project.id,
-      //   },
-      //   data: cacheDataClone.getPostsFeed.posts,
-      // });
       cache.modify({
         fields: {
           getPostsFeed: (previous) => {
@@ -127,7 +103,7 @@ const PostProjectForm = ({ project }) => {
   );
 };
 
-PostProjectForm.propTypes = {
+PostFormModal.propTypes = {
   project: PropType.shape({
     id: PropType.string.isRequired,
     name: PropType.string.isRequired,
@@ -135,4 +111,4 @@ PostProjectForm.propTypes = {
   }).isRequired,
 };
 
-export default PostProjectForm;
+export default PostFormModal;

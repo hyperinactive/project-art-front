@@ -46,7 +46,7 @@ const Projects = () => {
         <div className="projectSearch__top__searchInput">
           <Input
             className="themeForm"
-            placeholder="search and destory"
+            placeholder="search"
             onChange={(e) => {
               setSearchTerm(e.target.value);
             }}
