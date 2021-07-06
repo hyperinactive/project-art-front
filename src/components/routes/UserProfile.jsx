@@ -1,9 +1,10 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { cloneDeep } from '@apollo/client/utilities';
 import React, { useContext, useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import { Image, Loader, Button } from 'semantic-ui-react';
+import { Link, useHistory, useParams } from 'react-router-dom';
+import { Image, Button } from 'semantic-ui-react';
 
+import LoaderComponent from '../shared/LoaderComponent';
 import {
   backgroundGradientInverted,
   baseURL,
@@ -41,7 +42,10 @@ const UserProfile = () => {
     onCompleted: () => {
       console.log(data);
       if (isFriendsWith(data.getUser.friends, user.id) !== undefined) {
+        console.log('were friends');
         setIsFriend(true);
+      } else {
+        setIsFriend(false);
       }
       // controll the temp tab info
       setTemporaryTab({
@@ -114,14 +118,10 @@ const UserProfile = () => {
     } else {
       history.push('/');
     }
-  }, [user]);
+  }, []);
 
   if (projectsLoading || friendsLoading || loading) {
-    return (
-      <Loader size="huge" active>
-        Computing, things, beep bop
-      </Loader>
-    );
+    return <LoaderComponent />;
   }
 
   return (
@@ -131,6 +131,7 @@ const UserProfile = () => {
           <div className="userProfile__background">
             <Image
               className="userProfile__background__image"
+              rounded
               src={backgroundGradientInverted}
             />
           </div>
@@ -153,7 +154,8 @@ const UserProfile = () => {
               {projectsData &&
                 projectsData.getUserProjects &&
                 projectsData.getUserProjects.map((project) => (
-                  <div
+                  <Link
+                    to={`/projects/${project.id}`}
                     key={project.id}
                     className="userProfile__secondaryInfo__projects__project"
                   >
@@ -163,7 +165,7 @@ const UserProfile = () => {
                       src={backgroundGradientInverted}
                     />
                     <p>{prettyString(project.name, 9)}</p>
-                  </div>
+                  </Link>
                 ))}
             </div>
             <div className="userProfile__secondaryInfo__personal">
@@ -176,8 +178,7 @@ const UserProfile = () => {
               <p className="userProfile__secondaryInfo__personal__info">
                 {data.getUser.skills}
               </p>
-              {isFriend ||
-              (user && fUserID.toString() === user.id.toString()) ? (
+              {isFriend || fUserID.toString() === user.id.toString() ? (
                 <Button
                   as="div"
                   type="button"
@@ -210,7 +211,8 @@ const UserProfile = () => {
               {friendsData &&
                 friendsData.getUserFriends &&
                 friendsData.getUserFriends.map((friend) => (
-                  <div
+                  <Link
+                    to={`/user/${friend.id}`}
                     key={friend.id}
                     className="userProfile__secondaryInfo__friends__friend"
                   >
@@ -224,7 +226,7 @@ const UserProfile = () => {
                       }
                     />
                     <p>{prettyString(friend.username, 9)}</p>
-                  </div>
+                  </Link>
                 ))}
             </div>
           </div>

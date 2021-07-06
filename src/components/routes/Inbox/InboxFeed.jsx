@@ -62,8 +62,7 @@ const InboxFeed = ({ feed }) => {
   };
 
   useEffect(() => {
-    console.log(feed[0]);
-    setCursorTimestamp(feed[0].createdAt);
+    if (feed !== null && feed.length > 0) setCursorTimestamp(feed[0].createdAt);
   }, []);
 
   return (

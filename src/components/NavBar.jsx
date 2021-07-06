@@ -31,7 +31,11 @@ const NavBar = () => {
       <Image
         rounded
         size="mini"
-        src={user ? `${baseURL}/files/${user.imageURL}` : defaultAvatar}
+        src={
+          user && user.imageURL !== null
+            ? `${baseURL}/files/${user.imageURL}`
+            : defaultAvatar
+        }
       />
     </span>
   );

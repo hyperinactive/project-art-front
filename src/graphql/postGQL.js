@@ -46,22 +46,6 @@ const GET_POSTS = gql`
   }
 `;
 
-const CREATE_POST = gql`
-  ${POST_FIELDS}
-  ${LIKE_FIELDS}
-  ${COMMENT_FIELDS}
-  mutation createPost($body: String!) {
-    createPost(body: $body) {
-      ...PostFields
-      ...LikeFields
-      comments {
-        ...CommentFields
-      }
-      commentCount
-    }
-  }
-`;
-
 const DELETE_POST = gql`
   ${POST_FIELDS}
   ${LIKE_FIELDS}
@@ -173,7 +157,6 @@ const GET_POSTS_FEED = gql`
 export {
   GET_POST,
   GET_POSTS,
-  CREATE_POST,
   DELETE_POST,
   LIKE_POST,
   GET_POSTS_CHUNK,

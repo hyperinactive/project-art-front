@@ -5,7 +5,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { cloneDeep } from 'lodash';
 import { Button, Header, Image } from 'semantic-ui-react';
-import { defaultAvatar } from '../../../../appConfig';
+import { backgroundGradient, defaultAvatar } from '../../../../appConfig';
 import { UserContext } from '../../../../context/UserProvider';
 import {
   ADD_MEMBER,
@@ -114,7 +114,11 @@ const ProjectProfile = ({ project }) => {
           {project.description}
         </Header.Subheader>
       </Header>
-      <Image circular src={defaultAvatar} size="tiny" />
+      <Image
+        rounded
+        src={`${process.env.PUBLIC_URL}/projectArt-IconTransparent.png`}
+        size="tiny"
+      />
       {user ? (
         <Button color="orange" onClick={handleClick} style={{ margin: 20 }}>
           Join the project!
