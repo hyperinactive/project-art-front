@@ -7,11 +7,11 @@ import { cloneDeep } from 'lodash';
 
 import LoaderComponent from '../../shared/LoaderComponent';
 import { GET_USER_MESSAGES, NEW_MESSAGE } from '../../../graphql';
-import { NavigationContext } from '../../../context/NavigationProvider';
 import InboxUserCard from './InboxUserCard';
 import InboxFeed from './InboxFeed';
 import InboxForm from './InboxForm';
-import { InboxContext } from '../../../context/InboxProvider';
+import { InboxContext } from '../../../context/inboxContext/InboxProvider';
+import { NavigationContext } from '../../../context/navigationContext/NavigationProvider';
 
 const Inbox = () => {
   const { cache } = useApolloClient();

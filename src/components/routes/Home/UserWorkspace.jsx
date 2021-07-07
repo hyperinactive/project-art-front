@@ -3,10 +3,10 @@ import React, { useContext } from 'react';
 import { Grid, Header, Card } from 'semantic-ui-react';
 
 import LoaderComponent from '../../shared/LoaderComponent';
-import { UserContext } from '../../../context/UserProvider';
 import { GET_FRIENDS, GET_USER_PROJECTS } from '../../../graphql';
 import ElementList from '../../shared/ElementList';
 import Notifications from './Notifications';
+import { UserContext } from '../../../context/userContext/UserProvider';
 
 // TODO: UserWorkspace needs to be cleaned up after another user logs
 const UserWorkspace = () => {

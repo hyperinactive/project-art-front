@@ -4,8 +4,9 @@ import { Container } from 'semantic-ui-react';
 
 import 'semantic-ui-css/semantic.min.css';
 
-import { UserProvider } from './context/UserProvider';
-import { NavigationProvider } from './context/NavigationProvider';
+import { UserProvider } from './context/userContext/UserProvider';
+import { NavigationProvider } from './context/navigationContext/NavigationProvider';
+import { InboxProvider } from './context/inboxContext/InboxProvider';
 
 import NavBar from './components/NavBar';
 import Home from './components/routes/Home/Home';
@@ -21,7 +22,6 @@ import Inbox from './components/routes/Inbox/Inbox';
 import Project from './components/routes/Projects/Project/Project';
 import ProjectForm from './components/routes/Projects/ProjectForm';
 import Connect from './components/routes/Connect';
-import { InboxProvider } from './context/InboxProvider';
 
 const App = () => (
   <UserProvider>

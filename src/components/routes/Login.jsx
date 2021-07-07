@@ -3,9 +3,9 @@ import { useMutation } from '@apollo/client';
 import { Button, Form, Grid, Header, Icon } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
 
-import { UserContext } from '../../context/UserProvider';
+import { UserContext } from '../../context/userContext/UserProvider';
 import { LOGIN_USER } from '../../graphql';
-import { NavigationContext } from '../../context/NavigationProvider';
+import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
 
 const LoginForm = () => {
   const { setActiveItem } = useContext(NavigationContext);

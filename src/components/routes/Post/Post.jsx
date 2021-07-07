@@ -7,7 +7,7 @@ import { useHistory, useParams, Redirect, Link } from 'react-router-dom';
 import LoaderComponent from '../../shared/LoaderComponent';
 import { GET_POST } from '../../../graphql';
 import { baseURL, defaultAvatar } from '../../../appConfig';
-import { UserContext } from '../../../context/UserProvider';
+import { UserContext } from '../../../context/userContext/UserProvider';
 import Comments from './Comments';
 import LikeButton from '../../shared/LikeButton';
 import DeleteButton from '../../shared/DeleteButton';

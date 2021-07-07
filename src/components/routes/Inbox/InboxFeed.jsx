@@ -8,8 +8,8 @@ import { Waypoint } from 'react-waypoint';
 import { useLazyQuery, useApolloClient } from '@apollo/client';
 import { cloneDeep } from '@apollo/client/utilities';
 
-import { UserContext } from '../../../context/UserProvider';
-import { InboxContext } from '../../../context/InboxProvider';
+import { UserContext } from '../../../context/userContext/UserProvider';
+import { InboxContext } from '../../../context/inboxContext/InboxProvider';
 import {
   GET_MORE_MESSAGES,
   GET_USER_MESSAGES,

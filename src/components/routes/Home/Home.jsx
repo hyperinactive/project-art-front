@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { UserContext } from '../../../context/UserProvider';
+import { UserContext } from '../../../context/userContext/UserProvider';
 import UserWorkspace from './UserWorkspace';
 import Welcome from './Welcome';
 

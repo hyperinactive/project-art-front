@@ -10,8 +10,8 @@ import {
   baseURL,
   defaultAvatar,
 } from '../../appConfig';
-import { NavigationContext } from '../../context/NavigationProvider';
-import { UserContext } from '../../context/UserProvider';
+import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
+import { UserContext } from '../../context/userContext/UserProvider';
 
 import {
   ADD_FRIEND,

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { NavigationContext } from '../../context/NavigationProvider';
+import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
 
 const NotFoundPage = () => {
   const { setActiveItem } = useContext(NavigationContext);

@@ -1,12 +1,12 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useLazyQuery } from '@apollo/client';
 import React, { useContext, useState, useEffect } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
 import { Grid, Header, Loader, Form, Button, Message } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
 
-import { NavigationContext } from '../../context/NavigationProvider';
+import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
 import { baseURL, defaultAvatar } from '../../appConfig';
-import { UserContext } from '../../context/UserProvider';
+import { UserContext } from '../../context/userContext/UserProvider';
 import { GET_USER, UPDATE_USER } from '../../graphql';
 import { GET_USERS } from '../../graphql/userGQL';
 import ImageController from '../shared/ImageController';
@@ -17,44 +17,44 @@ const Settings = () => {
   const { userID } = useParams();
   const { setTemporaryTab } = useContext(NavigationContext);
 
-  const [errors, setErrors] = useState({});
   const [state, setState] = useState({
+    errors: {},
     username: '',
     skills: '',
     status: '',
+    successMessage: false,
+    previewImage: defaultAvatar,
+    imageFile: null,
   });
-  // const [preview, setPreview] = useState(defaultAvatar);
-  // const [image, setImage] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(false);
 
-  const [previewImage, setPreviewImage] = useState(defaultAvatar);
-  const [imageFile, setImageFile] = useState(null);
-
-  useEffect(() => {
-    setTemporaryTab({
-      name: 'Settings',
-      link: `/settings/${userID}`,
-    });
-  }, []);
-
-  const { data, loading } = useQuery(GET_USER, {
+  const [loadUser, { data, loading }] = useLazyQuery(GET_USER, {
     variables: {
       userID,
     },
     onCompleted: () => {
       setState({
+        ...state,
         username: data.getUser.username,
         skills: data.getUser.skills,
         status: data.getUser.status,
       });
       if (data.getUser.imageURL) {
-        setPreviewImage(`${baseURL}/files/${data.getUser.imageURL}`);
+        setState({
+          ...state,
+          previewImage: `${baseURL}/files/${data.getUser.imageURL}`,
+        });
       }
-      setImageFile(`${baseURL}/files/${data.getUser.imageURL}`);
+      setState({
+        ...state,
+        imageFile: `${baseURL}/files/${data.getUser.imageURL}`,
+      });
     },
     onError: (err) => {
       console.log(err);
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      setState({
+        ...state,
+        errors: err.graphQLErrors[0].extensions.exception.errors,
+      });
     },
   });
 
@@ -89,32 +89,20 @@ const Settings = () => {
           },
         });
       }
-      // cache.modify({
-      //   fields: {
-      //     getUsers: (previous) => {
-      //       const prevClone = cloneDeep(previous);
-      //       console.log(prevClone);
-      //       const filteredUsers = prevClone.map((e) => {
-      //         console.log(e);
-      //         if (e.id.toString() === user.id) {
-      //           console.log('found it');
-      //           console.log(e);
-      //           return result.data.updateUser;
-      //         }
-      //         return e;
-      //       });
-      //       return filteredUsers;
-      //     },
-      //   },
-      // });
     },
     onCompleted: (res) => {
       login(res.updateUser);
-      setSuccessMessage(true);
+      setState({
+        ...state,
+        successMessage: true,
+      });
     },
     onError: (err) => {
       console.log(err);
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      setState({
+        ...state,
+        errors: err.graphQLErrors[0].extensions.exception.errors,
+      });
     },
   });
 
@@ -130,9 +118,9 @@ const Settings = () => {
     setState((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
+      successMessage: false,
+      errors: {},
     }));
-    setSuccessMessage(false);
-    setErrors({});
   };
 
   const handleSubmit = (e) => {
@@ -141,13 +129,24 @@ const Settings = () => {
       username: state.username,
       status: state.status,
       skills: state.skills,
-      image: typeof image === 'string' ? null : imageFile,
+      image: typeof image === 'string' ? null : state.imageFile,
     };
     updateUser({
       variables,
     });
-    setImageFile(null);
+    setState({
+      ...state,
+      imageFile: null,
+    });
   };
+
+  useEffect(() => {
+    loadUser();
+    setTemporaryTab({
+      name: 'Settings',
+      link: `/settings/${userID}`,
+    });
+  }, []);
 
   if (!user || userID !== user.id) {
     return <Redirect to="/404" />;
@@ -167,7 +166,7 @@ const Settings = () => {
             verticalAlign="middle"
           >
             <Grid.Column style={{ maxWidth: 450 }}>
-              {successMessage && (
+              {state.successMessage && (
                 <Message positive>
                   <Message.Header>User info updated</Message.Header>
                   <p>everything went smoothly!</p>
@@ -182,12 +181,7 @@ const Settings = () => {
                       src={preview}
                       rounded
                     /> */}
-                    <ImageController
-                      errors={errors}
-                      previewImage={previewImage}
-                      setImageFile={setImageFile}
-                      setPreviewImage={setPreviewImage}
-                    />
+                    <ImageController state={state} setState={setState} />
 
                     {/* <Form.Input
                       type="file"
@@ -202,7 +196,10 @@ const Settings = () => {
                       value={state.username}
                       name="username"
                       onChange={handleChange}
-                      error={errors.usernameCheck || errors.usernameLength}
+                      error={
+                        state.errors.usernameCheck ||
+                        state.errors.usernameLength
+                      }
                     />
                     <Form.Input
                       label="status"
@@ -211,7 +208,7 @@ const Settings = () => {
                       value={state.status}
                       name="status"
                       onChange={handleChange}
-                      error={errors.statusLength}
+                      error={state.errors.statusLength}
                     />
                     <Form.TextArea
                       style={{ textAlign: 'center' }}
@@ -221,7 +218,7 @@ const Settings = () => {
                       value={state.skills}
                       name="skills"
                       onChange={handleChange}
-                      error={errors.skillsLength}
+                      error={state.errors.skillsLength}
                     />
                   </Header>
                 </Form.Group>

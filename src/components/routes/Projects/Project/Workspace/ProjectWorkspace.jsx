@@ -13,7 +13,7 @@ import PostFormModal from './PostFormModal';
 import { GET_FEED, GET_POSTS_FEED } from '../../../../../graphql';
 import PostCard from '../../../../PostCard';
 import ElementList from '../../../../shared/ElementList';
-import { NavigationContext } from '../../../../../context/NavigationProvider';
+import { NavigationContext } from '../../../../../context/navigationContext/NavigationProvider';
 
 const ProjectWorkspace = ({ project, elements }) => {
   const [cursor, setCursor] = useState(null);

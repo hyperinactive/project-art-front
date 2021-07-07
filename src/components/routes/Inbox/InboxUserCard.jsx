@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Image, Icon } from 'semantic-ui-react';
 import { baseURL, defaultAvatar } from '../../../appConfig';
-import { UserContext } from '../../../context/UserProvider';
-import { InboxContext } from '../../../context/InboxProvider';
+import { UserContext } from '../../../context/userContext/UserProvider';
+import { InboxContext } from '../../../context/inboxContext/InboxProvider';
 import prettyString from '../../../utils';
 
 const InboxUserCard = ({

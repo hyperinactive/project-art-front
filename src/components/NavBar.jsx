@@ -3,9 +3,9 @@ import { Link, useHistory } from 'react-router-dom';
 import { Icon, Menu, Sticky, Dropdown, Image } from 'semantic-ui-react';
 import { baseURL, defaultAvatar } from '../appConfig';
 
-import { NavigationContext } from '../context/NavigationProvider';
+import { NavigationContext } from '../context/navigationContext/NavigationProvider';
 
-import { UserContext } from '../context/UserProvider';
+import { UserContext } from '../context/userContext/UserProvider';
 
 const NavBar = () => {
   // const context = useContext(UserContext);

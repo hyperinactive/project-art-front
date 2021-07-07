@@ -3,10 +3,10 @@ import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/client';
 import { Button, Form, Grid, Icon, Header } from 'semantic-ui-react';
 
-import { UserContext } from '../../context/UserProvider';
+import { UserContext } from '../../context/userContext/UserProvider';
 
 import { REGISTER_USER } from '../../graphql/index';
-import { NavigationContext } from '../../context/NavigationProvider';
+import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
 
 const Register = (props) => {
   const { setActiveItem } = useContext(NavigationContext);

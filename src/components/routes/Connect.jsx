@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 import { Input, Image } from 'semantic-ui-react';
 
 import LoaderComponent from '../shared/LoaderComponent';
-import { UserContext } from '../../context/UserProvider';
+import { UserContext } from '../../context/userContext/UserProvider';
 import { GET_USERS } from '../../graphql/userGQL';
 import { baseURL, defaultAvatar } from '../../appConfig';
 

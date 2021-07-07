@@ -5,7 +5,7 @@ import React, { useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import LoaderComponent from '../../../shared/LoaderComponent';
-import { UserContext } from '../../../../context/UserProvider';
+import { UserContext } from '../../../../context/userContext/UserProvider';
 import { GET_MEMBERS, GET_PROJECT } from '../../../../graphql';
 import ProjectWorkspace from './Workspace/ProjectWorkspace';
 import ProjectProfile from './ProjectProfile';

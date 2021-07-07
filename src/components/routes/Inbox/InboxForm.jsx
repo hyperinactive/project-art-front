@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash';
 import React, { useContext, useState } from 'react';
 import { Form, Icon, Button } from 'semantic-ui-react';
 
-import { InboxContext } from '../../../context/InboxProvider';
+import { InboxContext } from '../../../context/inboxContext/InboxProvider';
 import { GET_USER_MESSAGES, SEND_MESSAGE } from '../../../graphql';
 
 const InboxForm = () => {

@@ -11,7 +11,7 @@ import {
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-import { UserContext } from '../context/UserProvider';
+import { UserContext } from '../context/userContext/UserProvider';
 import LikeButton from './shared/LikeButton';
 import DeleteButton from './shared/DeleteButton';
 import { baseURL, defaultAvatar } from '../appConfig';
@@ -89,13 +89,14 @@ const PostCard = ({ post }) => {
           </Card.Content>
           {post.imageURL && (
             <Card.Content>
-              <Image
-                size="medium"
+              <img
+                className="postCard__image"
                 src={
                   post.imageURL
                     ? `${baseURL}/files/${post.imageURL}`
                     : defaultAvatar
                 }
+                alt="post"
               />
             </Card.Content>
           )}

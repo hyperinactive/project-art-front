@@ -5,7 +5,7 @@ import { Button, Input } from 'semantic-ui-react';
 
 import ProjectCard from './ProjectCard';
 import LoaderComponent from '../../shared/LoaderComponent';
-import { UserContext } from '../../../context/UserProvider';
+import { UserContext } from '../../../context/userContext/UserProvider';
 import { GET_PROJECTS } from '../../../graphql';
 
 const Projects = () => {

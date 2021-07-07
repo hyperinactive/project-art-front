@@ -5,7 +5,7 @@ import { cloneDeep } from 'lodash';
 import { Button, Header, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-import { UserContext } from '../../../../context/UserProvider';
+import { UserContext } from '../../../../context/userContext/UserProvider';
 import {
   ADD_MEMBER,
   GET_MEMBERS,
