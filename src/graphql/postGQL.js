@@ -72,25 +72,6 @@ const LIKE_POST = gql`
   }
 `;
 
-const GET_POSTS_CHUNK = gql`
-  ${POST_FIELDS}
-  ${LIKE_FIELDS}
-  ${COMMENT_FIELDS}
-  query getPostsChunk($skip: Int, $limit: Int!) {
-    getPostsChunk(skip: $skip, limit: $limit) {
-      posts {
-        ...PostFields
-        ...LikeFields
-        comments {
-          ...CommentFields
-        }
-        commentCount
-      }
-      hasMoreItems
-    }
-  }
-`;
-
 const CREATE_PROJECT_POST = gql`
   ${POST_FIELDS}
   ${LIKE_FIELDS}
@@ -154,14 +135,35 @@ const GET_POSTS_FEED = gql`
   }
 `;
 
+const GET_FEED = gql`
+  ${POST_FIELDS}
+  ${LIKE_FIELDS}
+  ${USER_FIELDS}
+  query getFeed($projectID: ID!, $cursor: String) {
+    getFeed(projectID: $projectID, cursor: $cursor) {
+      posts {
+        ...PostFields
+        ...LikeFields
+        commentCount
+        imageURL
+        user {
+          ...UserFields
+        }
+      }
+      nextCursor
+      hasMoreItems
+    }
+  }
+`;
+
 export {
   GET_POST,
   GET_POSTS,
   DELETE_POST,
   LIKE_POST,
-  GET_POSTS_CHUNK,
   CREATE_PROJECT_POST,
   UPLOAD_FILE,
   GET_PROJECT_POSTS,
   GET_POSTS_FEED,
+  GET_FEED,
 };

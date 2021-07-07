@@ -1,4 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -17,20 +16,7 @@ import LikeButton from './shared/LikeButton';
 import DeleteButton from './shared/DeleteButton';
 import { baseURL, defaultAvatar } from '../appConfig';
 
-// destructuring directly from the props
-const PostCard = ({
-  post: {
-    id,
-    createdAt,
-    username,
-    body,
-    likeCount,
-    likes,
-    commentCount,
-    imageURL,
-    user: postUser,
-  },
-}) => {
+const PostCard = ({ post }) => {
   const { user } = useContext(UserContext);
 
   return (
@@ -43,8 +29,8 @@ const PostCard = ({
               circular
               size="mini"
               src={
-                postUser.imageURL
-                  ? `${baseURL}/files/${postUser.imageURL}`
+                post.user.imageURL
+                  ? `${baseURL}/files/${post.user.imageURL}`
                   : defaultAvatar
               }
             />
@@ -56,11 +42,13 @@ const PostCard = ({
                 textAlign: 'left',
               }}
             >
-              <h3 style={{ margin: 0 }}>{postUser.username}</h3>
-              <p style={{ color: '#6f6f6f' }}>{moment(createdAt).fromNow()}</p>
-              <p>{body}</p>
+              <h3 style={{ margin: 0 }}>{post.user.username}</h3>
+              <p style={{ color: '#6f6f6f' }}>
+                {moment(post.createdAt).fromNow()}
+              </p>
+              <p>{post.body}</p>
             </div>
-            {user && user.username === username ? (
+            {user && user.username === post.username ? (
               <div style={{ float: 'right' }}>
                 <Dropdown
                   icon="ellipsis vertical"
@@ -73,7 +61,7 @@ const PostCard = ({
                     <Dropdown.Item text="Edit" />
                     <Dropdown.Item text="Share" />
                     <Dropdown.Item>
-                      <DeleteButton postID={id} type="post" />
+                      <DeleteButton postID={post.id} type="post" />
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
@@ -91,7 +79,7 @@ const PostCard = ({
                     <Dropdown.Item text="Share" />
                     <Dropdown.Item text="Report" />
                     <Dropdown.Item>
-                      <DeleteButton postID={id} type="post" />
+                      <DeleteButton postID={post.id} type="post" />
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
@@ -99,14 +87,14 @@ const PostCard = ({
               </div>
             )}
           </Card.Content>
-          {imageURL && (
+          {post.imageURL && (
             <Card.Content>
               <Image
                 size="medium"
                 src={
-                  imageURL
-                    ? `${baseURL}/files/${imageURL}`
-                    : 'https://react.semantic-ui.com/images/avatar/large/steve.jpg'
+                  post.imageURL
+                    ? `${baseURL}/files/${post.imageURL}`
+                    : defaultAvatar
                 }
               />
             </Card.Content>
@@ -114,10 +102,10 @@ const PostCard = ({
 
           <Card.Content extra>
             <div className="ui two buttons">
-              <LikeButton post={{ id, likes, likeCount }} user={user} />
-              <Button color="red" basic as={Link} to={`/posts/${id}`}>
+              <LikeButton post={post} user={user} />
+              <Button color="red" basic as={Link} to={`/posts/${post.id}`}>
                 <Icon name="comments" />
-                {commentCount}
+                {post.commentCount}
               </Button>
             </div>
           </Card.Content>
@@ -129,25 +117,41 @@ const PostCard = ({
 
 // prop types
 PostCard.defaultProps = {
-  post: {},
-  id: '',
-  username: '',
-  createdAt: '',
-  body: '',
-  likeCount: 0,
-  commentCount: 0,
-  likes: [],
+  post: {
+    id: '',
+    username: '',
+    createdAt: '',
+    body: '',
+    imageURL: '',
+    likeCount: 0,
+    commentCount: 0,
+    likes: [],
+    user: {},
+  },
 };
 
 PostCard.propTypes = {
-  post: PropTypes.object,
-  id: PropTypes.string,
-  username: PropTypes.string,
-  createdAt: PropTypes.string,
-  body: PropTypes.string,
-  likeCount: PropTypes.number,
-  commentCount: PropTypes.number,
-  likes: PropTypes.array,
+  post: PropTypes.shape({
+    id: PropTypes.string,
+    username: PropTypes.string,
+    createdAt: PropTypes.string,
+    body: PropTypes.string,
+    imageURL: PropTypes.string,
+    likeCount: PropTypes.number,
+    commentCount: PropTypes.number,
+    likes: PropTypes.arrayOf(
+      PropTypes.shape({
+        username: PropTypes.string,
+        createdAt: PropTypes.string,
+      })
+    ),
+    user: PropTypes.shape({
+      id: PropTypes.string,
+      username: PropTypes.string,
+      imageURL: PropTypes.string,
+      status: PropTypes.string,
+    }),
+  }),
 };
 
 export default PostCard;

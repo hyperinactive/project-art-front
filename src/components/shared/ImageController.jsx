@@ -15,6 +15,9 @@ const ImageController = ({
   // DROPZONE
   // useCallback will return a memoized version of the callback that only changes if one of the inputs has changed
   // createObjectURL will create a temp url we can use to preview the image
+
+  console.log(previewImage);
+
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
     const url = URL.createObjectURL(file);
@@ -80,8 +83,7 @@ ImageController.defaultProps = {
 
 ImageController.propTypes = {
   previewImage: PropTypes.string,
-  // eslint-disable-next-line react/forbid-prop-types
-  errors: PropTypes.object,
+  errors: PropTypes.objectOf(PropTypes.object),
   setImageFile: PropTypes.func.isRequired,
   setPreviewImage: PropTypes.func.isRequired,
   before: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),

@@ -99,6 +99,7 @@ const cache = new InMemoryCache({
             return incoming;
           },
         },
+
         // getPostsFeed: relayStylePagination(),
         // getPostsFeed: {
         //   keyArgs: ['id'],
