@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Form, Icon, Modal } from 'semantic-ui-react';
-import { useMutation } from '@apollo/client';
 import PropType from 'prop-types';
-import { cloneDeep } from '@apollo/client/utilities';
 
-import { CREATE_PROJECT_POST } from '../../../../../graphql';
 import ImageController from '../../../../shared/ImageController';
+import useCreatePost from '../../../../../utils/hooks/createPost';
 
 const PostFormModal = ({ project }) => {
   const [state, setState] = useState({
@@ -16,51 +14,7 @@ const PostFormModal = ({ project }) => {
     imageFile: null,
   });
 
-  // ----------------------------------------------------------------------------------------
-
-  // DROPZONE
-  // useCallback will return a memoized version of the callback that only changes if one of the inputs has changed
-  // createObjectURL will create a temp url we can use to preview the image
-
-  // ----------------------------------------------------------------------------------------
-
-  const [createPost] = useMutation(CREATE_PROJECT_POST, {
-    update: (cache, { data: { createProjectPost } }) => {
-      cache.modify({
-        fields: {
-          getFeed: (previous) => {
-            const previousClone = cloneDeep(previous);
-            // cannot apppend new posts to a null, so check for it
-            if (previousClone.posts === null) {
-              previousClone.posts = [];
-            }
-            previousClone.posts = [
-              cloneDeep(createProjectPost),
-              ...previousClone.posts,
-            ];
-            return previousClone;
-          },
-        },
-      });
-    },
-    onError: (err) => {
-      console.log({ err });
-      setState({
-        ...state,
-        errors: err.graphQLErrors[0].extensions.exception.errors,
-      });
-    },
-    onCompleted: () => {
-      setState({
-        ...state,
-        body: '',
-        imageFile: null,
-        previewImage: null,
-      });
-    },
-  });
-
-  // ----------------------------------------------------------------------------------------
+  const [createPost] = useCreatePost(state, setState);
 
   const handleSubmit = () => {
     createPost({

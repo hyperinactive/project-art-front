@@ -1,17 +1,10 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useContext } from 'react';
-import { useMutation } from '@apollo/client';
+import React, { useState } from 'react';
 import { Button, Form, Grid, Icon, Header } from 'semantic-ui-react';
 
-import { UserContext } from '../../context/userContext/UserProvider';
+import useRegister from '../../utils/hooks/register';
 
-import { REGISTER_USER } from '../../graphql/index';
-import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
-
-const Register = (props) => {
-  const { setActiveItem } = useContext(NavigationContext);
-
-  // gets the job done but too repetative
+const Register = () => {
   const [state, setState] = useState({
     username: '',
     email: '',
@@ -19,11 +12,9 @@ const Register = (props) => {
     confirmPassword: '',
   });
 
+  // don't really have much to do with the registration info
+  // so I guess it makes sense to be separate from the state
   const [isPassVisible, setIsPassVisible] = useState(false);
-
-  const context = useContext(UserContext);
-
-  // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -33,27 +24,13 @@ const Register = (props) => {
     }));
   };
 
-  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
-    // update will trigger if everything's went smoothly
-    // returns proxy result
-    update: (_, result) => {
-      context.login(result.data.register);
-      // take us to the home page if register succeeded
-      props.history.push('/');
-      setActiveItem('home');
-    },
-    // it expects some variables to be sent for mutations
-    variables: {
-      username: state.username,
-      email: state.email,
-      password: state.password,
-      confirmPassword: state.confirmPassword,
-    },
-    // handle errors
-    onError: (err) => {
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
-    },
-  });
+  const [registerUser, { loading }] = useRegister(
+    state.username,
+    state.email,
+    state.password,
+    state.confirmPassword,
+    setErrors
+  );
 
   // prevent the reload and invoke addUser()
   const handleSubmit = (e) => {

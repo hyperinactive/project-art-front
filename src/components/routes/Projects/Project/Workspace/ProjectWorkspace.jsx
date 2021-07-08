@@ -1,35 +1,27 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-param-reassign */
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Waypoint } from 'react-waypoint';
-import { Grid, Loader } from 'semantic-ui-react';
 import PropType from 'prop-types';
-import { useLazyQuery } from '@apollo/client';
 import { cloneDeep } from 'lodash';
 
 import LoaderComponent from '../../../../shared/LoaderComponent';
 import PostFormModal from './PostFormModal';
-import { GET_FEED, GET_POSTS_FEED } from '../../../../../graphql';
 import PostCard from '../../../../PostCard';
 import ElementList from '../../../../shared/ElementList';
 import { NavigationContext } from '../../../../../context/navigationContext/NavigationProvider';
+import useLoadPostFeed from '../../../../../utils/hooks/loadPostFeed';
 
 const ProjectWorkspace = ({ project, elements }) => {
   const [cursor, setCursor] = useState(null);
   const [canLoadMore, setCanLoadMore] = useState(true);
   const { setTemporaryTab, setActiveItem } = useContext(NavigationContext);
 
-  const [loadFeed, { data, loading, fetchMore }] = useLazyQuery(GET_FEED, {
-    onCompleted: () => {
-      console.log(data.getFeed);
-      if (!data.getFeed.hasMoreItems) setCanLoadMore(false);
-      setCursor(data.getFeed.nextCursor);
-    },
-    onError: (err) => {
-      console.log({ err });
-    },
-  });
+  const [loadFeed, { data, loading, fetchMore }] = useLoadPostFeed(
+    setCanLoadMore,
+    setCursor
+  );
 
   const feedMe = () => {
     fetchMore({
@@ -56,6 +48,7 @@ const ProjectWorkspace = ({ project, elements }) => {
     });
   };
 
+  // TODO: cleanup isn't right
   useEffect(() => {
     let ignore = false;
     loadFeed({
@@ -95,7 +88,9 @@ const ProjectWorkspace = ({ project, elements }) => {
                   data.getFeed.posts &&
                   data.getFeed.posts.map((post, i) => (
                     <React.Fragment key={post.id}>
-                      <PostCard post={post} />
+                      <Link to={`/posts/${post.id}`}>
+                        <PostCard post={post} projectID={project.id} />
+                      </Link>
                       {i === data.getFeed.posts.length - 1 && (
                         <Waypoint
                           onEnter={() => {
@@ -110,10 +105,10 @@ const ProjectWorkspace = ({ project, elements }) => {
               </>
             )}
           </div>
-          <div className="projectWorkspace__wrapper__posts__modal">
-            <PostFormModal project={project} />
-          </div>
         </div>
+      </div>
+      <div className="projectWorkspace__wrapper__posts__modal">
+        <PostFormModal project={project} />
       </div>
 
       {/* <Grid container columns={2}>

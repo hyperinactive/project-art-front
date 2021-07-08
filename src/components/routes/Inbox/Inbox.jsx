@@ -1,86 +1,24 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-nested-ternary */
-import { useSubscription, useApolloClient, useLazyQuery } from '@apollo/client';
 import React, { useContext, useEffect } from 'react';
 import { Grid } from 'semantic-ui-react';
-import { cloneDeep } from 'lodash';
 
 import LoaderComponent from '../../shared/LoaderComponent';
-import { GET_USER_MESSAGES, NEW_MESSAGE } from '../../../graphql';
 import InboxUserCard from './InboxUserCard';
 import InboxFeed from './InboxFeed';
 import InboxForm from './InboxForm';
 import { InboxContext } from '../../../context/inboxContext/InboxProvider';
 import { NavigationContext } from '../../../context/navigationContext/NavigationProvider';
+import useLoadMessages from '../../../utils/hooks/loadMessages';
+import useSubToMessages from '../../../utils/hooks/subToMessages';
 
 const Inbox = () => {
-  const { cache } = useApolloClient();
   const { selectedUser, setSelectedUser } = useContext(InboxContext);
-
-  const [loadUserMessages, { data: userMessageData, loading: friendsLoading }] =
-    useLazyQuery(GET_USER_MESSAGES, {
-      onCompleted: () => {
-        console.log(userMessageData.getUserMessages);
-        if (userMessageData.getUserMessages.length > 0) {
-          setSelectedUser(userMessageData.getUserMessages[0].user.id);
-        }
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    });
-
-  // const {
-  //   data: friendsData,
-  //   loading: friendsLoading,
-  //   error: friendsError,
-  // } = useQuery(GET_FRIENDS, {
-  //   onCompleted: () => {
-  //     // TODO: maybe compare the latest messages and sort by the latest message sent
-  //     // if there are friends set the selected one to the first one
-  //     if (friendsData.getFriends.length > 0) {
-  //       setSelectedUser(friendsData.getFriends[0].id);
-  //       setUsers(friendsData.getFriends);
-  //     }
-  //   },
-  //   onError: () => {
-  //     console.log(friendsError);
-  //   },
-  // });
-
-  // eslint-disable-next-line no-unused-vars
-  const { data: subData } = useSubscription(NEW_MESSAGE, {
-    onSubscriptionData: (data) => {
-      if (data.subscriptionData.error) {
-        console.log(data.subscriptionData.error);
-      }
-
-      const friendID = data.subscriptionData.data.newMessage.fromUser.id;
-
-      const cacheData = cache.readQuery({
-        query: GET_USER_MESSAGES,
-      });
-      const cacheClone = cloneDeep(cacheData);
-      console.log(cacheClone.getUserMessages);
-
-      Object.entries(cacheClone.getUserMessages).forEach((entry) => {
-        if (entry[1].user.id === friendID) {
-          entry[1].messages.unshift(data.subscriptionData.data.newMessage);
-          entry[1].latestMessage = data.subscriptionData.data.newMessage;
-        }
-      });
-
-      cache.writeQuery({
-        query: GET_USER_MESSAGES,
-        data: {
-          getUserMessages: cacheClone.getUserMessages,
-        },
-      });
-    },
-  });
-
   const { setTemporaryTab } = useContext(NavigationContext);
 
+  const [loadUserMessages, { data: friendsData, loading: friendsLoading }] =
+    useLoadMessages(setSelectedUser);
+  useSubToMessages();
+
+  // TODO: some nice cleanup function for async
   useEffect(() => {
     loadUserMessages();
     setTemporaryTab({
@@ -100,8 +38,8 @@ const Inbox = () => {
             {selectedUser ? (
               <div className="inboxComponent__chat">
                 {selectedUser ? (
-                  userMessageData &&
-                  userMessageData.getUserMessages
+                  friendsData &&
+                  friendsData.getUserMessages
                     // TODO: I'll get you to work I swear
                     // .sort((a, b) => {
                     //   if (
@@ -164,9 +102,9 @@ const Inbox = () => {
           ) : (
             <Grid.Row centered>
               <div className="inboxComponent__friendList">
-                {userMessageData &&
-                  userMessageData.getUserMessages &&
-                  userMessageData.getUserMessages.map((userMObj) => (
+                {friendsData &&
+                  friendsData.getUserMessages &&
+                  friendsData.getUserMessages.map((userMObj) => (
                     <InboxUserCard
                       key={userMObj.user.id}
                       userID={userMObj.user.id}

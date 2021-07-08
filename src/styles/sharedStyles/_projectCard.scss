@@ -1,5 +1,5 @@
 .projectCard {
-  text-align: center;
+  color: map-get($map: $mainPallete, $key: 'regularText') !important;
 
   &__projectForm {
     color: map-get($map: $mainPallete, $key: 'regularText') !important;

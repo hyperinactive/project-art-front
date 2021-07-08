@@ -1,27 +1,14 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
-import { useLazyQuery } from '@apollo/client';
 import { Loader } from 'semantic-ui-react';
 import PlainComment from '../../PlainComment';
 import CommentForm from '../../CommentForm';
-import { GET_COMMENTS } from '../../../graphql';
+import useLoadComments from '../../../utils/hooks/loadComments';
 
 const Comments = ({ user, postID }) => {
-  const placeholder = 'placeholder';
-  const [loadComments, { loading, data }] = useLazyQuery(GET_COMMENTS, {
-    variables: {
-      postID,
-    },
-    pollInterval: 1500,
-    onCompleted: () => {
-      console.log(data);
-    },
-    onError: (error) => {
-      console.log({ error });
-    },
-  });
+  const [loadComments, { data, loading }] = useLoadComments(postID);
 
+  // TODO: cleanup
   useEffect(() => {
     loadComments();
   }, [loadComments]);

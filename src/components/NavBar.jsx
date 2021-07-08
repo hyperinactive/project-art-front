@@ -4,7 +4,6 @@ import { Icon, Menu, Sticky, Dropdown, Image } from 'semantic-ui-react';
 import { baseURL, defaultAvatar } from '../appConfig';
 
 import { NavigationContext } from '../context/navigationContext/NavigationProvider';
-
 import { UserContext } from '../context/userContext/UserProvider';
 
 const NavBar = () => {
@@ -131,8 +130,16 @@ const NavBar = () => {
                 to={`/settings/${user.id}`}
                 onClick={handleItemClick}
               >
-                <Icon name="setting" />
+                <Icon name="setting" style={{ margin: 0 }} />
                 Settings
+              </Dropdown.Item>
+              <Dropdown.Item name="theme" onClick={() => {}}>
+                <Icon name="sun" style={{ margin: 0 }} />
+                Theme
+              </Dropdown.Item>
+              <Dropdown.Item name="help" onClick={() => {}}>
+                <Icon name="question circle outline" style={{ margin: 0 }} />
+                Help
               </Dropdown.Item>
               <Dropdown.Item
                 onClick={() => {

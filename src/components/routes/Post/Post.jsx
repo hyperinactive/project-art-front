@@ -1,16 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Grid, Image, Card, Icon, Dropdown, Menu } from 'semantic-ui-react';
-import { useQuery } from '@apollo/client';
 import moment from 'moment';
 import { useHistory, useParams, Redirect, Link } from 'react-router-dom';
 
 import LoaderComponent from '../../shared/LoaderComponent';
-import { GET_POST } from '../../../graphql';
 import { baseURL, defaultAvatar } from '../../../appConfig';
 import { UserContext } from '../../../context/userContext/UserProvider';
 import Comments from './Comments';
 import LikeButton from '../../shared/LikeButton';
 import DeleteButton from '../../shared/DeleteButton';
+import useLoadPost from '../../../utils/hooks/loadPost';
 
 const isMemeber = (members, fUser) =>
   members.find((member) => member.id === fUser.id) !== undefined;
@@ -22,20 +21,12 @@ const Post = () => {
   const { user } = useContext(UserContext);
 
   // TODO: continue with polling?
-  const { loading, data } = useQuery(GET_POST, {
-    variables: {
-      postID,
-    },
-    pollInterval: 1500,
-    onCompleted: () => {
-      console.log(data);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
+  const [pollPost, { data, loading }] = useLoadPost(postID);
   const redirect = () => history.push('/');
+
+  useEffect(() => {
+    pollPost();
+  }, []);
 
   let postMarkup;
   if (loading) {

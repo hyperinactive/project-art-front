@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import React, { useContext, useEffect, useState } from 'react';
 import { Popup } from 'semantic-ui-react';
@@ -5,49 +6,22 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import ScrollableFeed from 'react-scrollable-feed';
 import { Waypoint } from 'react-waypoint';
-import { useLazyQuery, useApolloClient } from '@apollo/client';
-import { cloneDeep } from '@apollo/client/utilities';
 
+import useFetchMessagesFeed from '../../../utils/hooks/fetchMessagesFeed';
 import { UserContext } from '../../../context/userContext/UserProvider';
 import { InboxContext } from '../../../context/inboxContext/InboxProvider';
-import {
-  GET_MORE_MESSAGES,
-  GET_USER_MESSAGES,
-} from '../../../graphql/messageGQL';
 
 const InboxFeed = ({ feed }) => {
-  const { cache } = useApolloClient();
   const { user } = useContext(UserContext);
   const { selectedUser } = useContext(InboxContext);
   const [cursorTimestamp, setCursorTimestamp] = useState(null);
   const [canLoadMore, setCanLoadMore] = useState(true);
 
-  const [fetchMore, { data }] = useLazyQuery(GET_MORE_MESSAGES, {
-    onCompleted: () => {
-      console.log(data);
-      setCanLoadMore(data.getUserMessagesFeed.hasMoreItems);
-      setCursorTimestamp(data.getUserMessagesFeed.nextCursor);
-
-      const cacheData = cache.readQuery({ query: GET_USER_MESSAGES });
-      const cacheClone = cloneDeep(cacheData);
-      Object.entries(cacheClone.getUserMessages).forEach((entry) => {
-        if (entry[1].user.id.toString() === selectedUser.toString()) {
-          entry[1].messages = [
-            ...entry[1].messages,
-            ...data.getUserMessagesFeed.messages,
-          ];
-        }
-      });
-
-      cache.writeQuery({
-        query: GET_USER_MESSAGES,
-        data: cacheClone,
-      });
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
+  const [fetchMore] = useFetchMessagesFeed(
+    selectedUser,
+    setCanLoadMore,
+    setCursorTimestamp
+  );
 
   const handleLoadMore = (userID) => {
     console.log(userID);
@@ -97,7 +71,7 @@ const InboxFeed = ({ feed }) => {
 };
 
 InboxFeed.defaultProps = {
-  feed: {},
+  feed: [],
 };
 
 InboxFeed.propTypes = {

@@ -1,52 +1,21 @@
 /* eslint-disable no-param-reassign */
-import { useMutation } from '@apollo/client';
-import { cloneDeep } from 'lodash';
 import React, { useContext, useState } from 'react';
 import { Form, Icon, Button } from 'semantic-ui-react';
 
 import { InboxContext } from '../../../context/inboxContext/InboxProvider';
-import { GET_USER_MESSAGES, SEND_MESSAGE } from '../../../graphql';
+import useSendMessage from '../../../utils/hooks/sendMessage';
 
 const InboxForm = () => {
   const { selectedUser } = useContext(InboxContext);
 
+  // TODO: have the custom hook manage the state as well
+  // does that make sense?
   const [message, setMessage] = useState({
     content: '',
     length: 0,
   });
 
-  const [sendMessage] = useMutation(SEND_MESSAGE, {
-    variables: {
-      toUserID: selectedUser,
-      content: message.content,
-    },
-    onCompleted: (data) => {
-      console.log(data);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-    update: (cache, result) => {
-      const userID = result.data.sendMessage.toUser.id;
-      const cacheData = cache.readQuery({
-        query: GET_USER_MESSAGES,
-      });
-
-      const cacheClone = cloneDeep(cacheData);
-
-      Object.entries(cacheClone.getUserMessages).forEach((entry) => {
-        if (entry[1].user.id === userID) {
-          entry[1].messages.unshift(result.data.sendMessage);
-          entry[1].latestMessage = result.data.sendMessage;
-        }
-      });
-
-      cache.writeQuery({
-        query: GET_USER_MESSAGES,
-        data: cacheClone,
-      });
-    },
-  });
+  const [sendMessage] = useSendMessage(selectedUser, message);
 
   const handleSubmit = (e) => {
     e.preventDefault();

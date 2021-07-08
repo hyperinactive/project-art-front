@@ -1,35 +1,27 @@
-import { useQuery } from '@apollo/client';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Grid, Header, Card } from 'semantic-ui-react';
 
 import LoaderComponent from '../../shared/LoaderComponent';
-import { GET_FRIENDS, GET_USER_PROJECTS } from '../../../graphql';
 import ElementList from '../../shared/ElementList';
 import Notifications from './Notifications';
 import { UserContext } from '../../../context/userContext/UserProvider';
+import useLoadFriends from '../../../utils/hooks/loadFriends';
+import useLoadProjects from '../../../utils/hooks/loadProjects';
 
 // TODO: UserWorkspace needs to be cleaned up after another user logs
 const UserWorkspace = () => {
   const { user } = useContext(UserContext);
 
-  const { data, loading } = useQuery(GET_FRIENDS, {
-    onCompleted: () => {
-      console.log(data.getFriends);
-    },
-  });
-  const { data: projectData, loading: projectLoading } = useQuery(
-    GET_USER_PROJECTS,
-    {
-      onCompleted: () => {
-        console.log(projectData);
-      },
-      onError(err) {
-        console.log(err);
-      },
-    }
-  );
+  const [loadFriends, { data: friendsData, loading: friendsLoading }] =
+    useLoadFriends();
+  const [loadProjects, { data: projectData, loading: projectLoading }] =
+    useLoadProjects();
 
-  // if (error || projectError) return <h1>Error</h1>;
+  // TODO: cleanup
+  useEffect(() => {
+    loadFriends();
+    loadProjects();
+  }, []);
 
   return (
     <div className="userWorkspace">
@@ -41,20 +33,23 @@ const UserWorkspace = () => {
         </div>
 
         <Grid.Row>
-          {loading ? (
+          {friendsLoading ? (
             <LoaderComponent />
           ) : (
-            <Grid.Column width={2}>
-              <Header className="headline">Friends</Header>
-              <Grid.Row>
-                <div
-                  style={{
-                    textAlign: 'center',
-                  }}
-                />
-                <ElementList elements={data.getFriends} type="user" />
-              </Grid.Row>
-            </Grid.Column>
+            friendsData &&
+            friendsData && (
+              <Grid.Column width={2}>
+                <Header className="headline">Friends</Header>
+                <Grid.Row>
+                  <div
+                    style={{
+                      textAlign: 'center',
+                    }}
+                  />
+                  <ElementList elements={friendsData.getFriends} type="user" />
+                </Grid.Row>
+              </Grid.Column>
+            )
           )}
 
           <Grid.Column width={11}>

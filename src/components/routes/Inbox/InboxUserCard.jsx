@@ -4,7 +4,7 @@ import { Image, Icon } from 'semantic-ui-react';
 import { baseURL, defaultAvatar } from '../../../appConfig';
 import { UserContext } from '../../../context/userContext/UserProvider';
 import { InboxContext } from '../../../context/inboxContext/InboxProvider';
-import prettyString from '../../../utils';
+import prettyString from '../../../utils/prettyString';
 
 const InboxUserCard = ({
   userID,

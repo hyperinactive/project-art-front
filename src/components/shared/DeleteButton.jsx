@@ -19,6 +19,7 @@ const DeleteButton = (props) => {
   // need a dynamic variable based on the type of stuff it deletes
   const dynamicMutation = type === 'post' ? DELETE_POST : DELETE_COMMENT;
 
+  // TODO: possibly obsolite?
   const [dynamicDelete] = useMutation(dynamicMutation, {
     variables: {
       postID,

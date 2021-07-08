@@ -4,6 +4,7 @@
   align-items: 'center';
   padding: 1rem;
   width: 100%;
+  color: map-get($map: $mainPallete, $key: 'regularText');
 
   &__image {
     max-width: 100%;
@@ -12,5 +13,9 @@
   }
   .card {
     @include form;
+  }
+
+  &:hover {
+    color: map-get($map: $mainPallete, $key: 'regularText');
   }
 }

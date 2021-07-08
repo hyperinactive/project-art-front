@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import {
   Image,
@@ -13,11 +12,12 @@ import PropTypes from 'prop-types';
 
 import { UserContext } from '../context/userContext/UserProvider';
 import LikeButton from './shared/LikeButton';
-import DeleteButton from './shared/DeleteButton';
 import { baseURL, defaultAvatar } from '../appConfig';
+import useDeletePost from '../utils/hooks/deletePost';
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, projectID }) => {
   const { user } = useContext(UserContext);
+  const [deletePost] = useDeletePost(projectID, post.id);
 
   return (
     <div className="postCard">
@@ -51,18 +51,22 @@ const PostCard = ({ post }) => {
             {user && user.username === post.username ? (
               <div style={{ float: 'right' }}>
                 <Dropdown
+                  pointing="right"
                   icon="ellipsis vertical"
                   onClick={(e) => {
                     e.preventDefault();
                   }}
                 >
                   <Dropdown.Menu>
-                    <Dropdown.Item text="Delete" />
+                    <Dropdown.Item
+                      text="Delete"
+                      onClick={() => deletePost(projectID, post.id)}
+                    />
                     <Dropdown.Item text="Edit" />
                     <Dropdown.Item text="Share" />
-                    <Dropdown.Item>
+                    {/* <Dropdown.Item>
                       <DeleteButton postID={post.id} type="post" />
-                    </Dropdown.Item>
+                    </Dropdown.Item> */}
                   </Dropdown.Menu>
                 </Dropdown>
                 {/* <DeleteButton postID={id} type="post" /> */}
@@ -70,6 +74,7 @@ const PostCard = ({ post }) => {
             ) : (
               <div style={{ float: 'right' }}>
                 <Dropdown
+                  pointing="right"
                   icon="ellipsis vertical"
                   onClick={(e) => {
                     e.preventDefault();
@@ -78,9 +83,9 @@ const PostCard = ({ post }) => {
                   <Dropdown.Menu>
                     <Dropdown.Item text="Share" />
                     <Dropdown.Item text="Report" />
-                    <Dropdown.Item>
+                    {/* <Dropdown.Item>
                       <DeleteButton postID={post.id} type="post" />
-                    </Dropdown.Item>
+                    </Dropdown.Item> */}
                   </Dropdown.Menu>
                 </Dropdown>
                 {/* <DeleteButton postID={id} type="post" /> */}
@@ -104,7 +109,7 @@ const PostCard = ({ post }) => {
           <Card.Content extra>
             <div className="ui two buttons">
               <LikeButton post={post} user={user} />
-              <Button color="red" basic as={Link} to={`/posts/${post.id}`}>
+              <Button color="red" basic>
                 <Icon name="comments" />
                 {post.commentCount}
               </Button>
@@ -153,6 +158,7 @@ PostCard.propTypes = {
       status: PropTypes.string,
     }),
   }),
+  projectID: PropTypes.string.isRequired,
 };
 
 export default PostCard;

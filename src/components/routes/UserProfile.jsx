@@ -20,7 +20,7 @@ import {
   GET_USER_FRIENDS,
   GET_USER_PROJECTS,
 } from '../../graphql';
-import prettyString from '../../utils';
+import prettyString from '../../utils/prettyString';
 
 const isFriendsWith = (friends, userID) =>
   friends.find((friend) => friend.id.toString() === userID.toString());
