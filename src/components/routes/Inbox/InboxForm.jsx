@@ -30,7 +30,7 @@ const InboxForm = () => {
   };
 
   return (
-    <div className="inboxComponent__chat__inboxForm">
+    <div className="inboxForm">
       <Form size="large" onSubmit={handleSubmit} noValidate>
         {/* <Segment stacked> */}
         <Form.Input
@@ -46,9 +46,9 @@ const InboxForm = () => {
             });
           }}
         >
-          <input className="inboxComponent__chat__inboxForm__input" />
+          <input className="inboxForm__input" />
           <p
-            className={`inboxComponent__chat__inboxForm__messageLength ${
+            className={`inboxForm__messageLength ${
               message.length > 128 ? 'error' : ''
             }`}
           >{`${message.length}/128`}</p>

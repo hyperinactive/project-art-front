@@ -1,51 +1,56 @@
+/* eslint-disable no-nested-ternary */
 import React, { useContext, useEffect } from 'react';
 import { Grid, Image, Card, Icon, Dropdown, Menu } from 'semantic-ui-react';
 import moment from 'moment';
-import { useHistory, useParams, Redirect, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 import LoaderComponent from '../../shared/LoaderComponent';
 import { baseURL, defaultAvatar } from '../../../appConfig';
 import { UserContext } from '../../../context/userContext/UserProvider';
 import Comments from './Comments';
 import LikeButton from '../../shared/LikeButton';
-import DeleteButton from '../../shared/DeleteButton';
 import useLoadPost from '../../../utils/hooks/loadPost';
 
 const isMemeber = (members, fUser) =>
   members.find((member) => member.id === fUser.id) !== undefined;
 
 const Post = () => {
-  const history = useHistory();
   const params = useParams();
   const { postID } = params;
   const { user } = useContext(UserContext);
 
   // TODO: continue with polling?
-  const [pollPost, { data, loading }] = useLoadPost(postID);
-  const redirect = () => history.push('/');
+  // very useful
+  // data is undefined till it's fetched, so to destructure it, provide the default value of an empty object
+  const [
+    pollPost,
+    {
+      data: {
+        getPost: {
+          id,
+          project,
+          imageURL,
+          username,
+          createdAt,
+          body,
+          likes,
+          likeCount,
+          commentCount,
+        } = {},
+      } = {},
+      loading,
+    },
+  ] = useLoadPost(postID);
 
   useEffect(() => {
     pollPost();
   }, []);
 
-  let postMarkup;
-  if (loading) {
-    postMarkup = <LoaderComponent />;
-  } else {
-    const {
-      id,
-      body,
-      createdAt,
-      username,
-      likes,
-      likeCount,
-      imageURL,
-      commentCount,
-      user: postUser,
-    } = data.getPost;
-
-    postMarkup =
-      data && data.getPost && isMemeber(data.getPost.project.members, user) ? (
+  return (
+    <div className="post">
+      {loading ? (
+        <LoaderComponent />
+      ) : project && isMemeber(project.members, user) ? (
         <div className="post">
           <Grid style={{ marginTop: 20 }}>
             <Grid.Row centered>
@@ -73,13 +78,6 @@ const Post = () => {
                             <Dropdown.Item text="Delete" />
                             <Dropdown.Item text="Edit" />
                             <Dropdown.Item text="Share" />
-                            {user && user.username === username && (
-                              <DeleteButton
-                                postID={id}
-                                type="post"
-                                callback={redirect}
-                              />
-                            )}
                           </Dropdown.Menu>
                         </Dropdown>
                       </div>
@@ -89,7 +87,14 @@ const Post = () => {
                     </Card.Content>
                     <hr />
                     <Card.Content extra>
-                      <LikeButton user={user} post={{ id, likeCount, likes }} />
+                      <LikeButton
+                        user={user}
+                        post={{
+                          id,
+                          likeCount,
+                          likes,
+                        }}
+                      />
                     </Card.Content>
                   </Card>
                 </Grid.Row>
@@ -102,22 +107,22 @@ const Post = () => {
                   <Menu.Item>
                     <Image
                       src={
-                        postUser.imageURL
-                          ? `${baseURL}/files/${postUser.imageURL}`
+                        user.imageURL
+                          ? `${baseURL}/files/${user.imageURL}`
                           : defaultAvatar
                       }
                       rounded
                       as={Link}
-                      to={`/user/${postUser.id}`}
+                      to={`/user/${user.id}`}
                       size="medium"
                       float="right"
                     />
                   </Menu.Item>
                   <Menu.Item>
-                    <h5>{postUser.username}</h5>
+                    <h5>{user.username}</h5>
                   </Menu.Item>
                   <Menu.Item>
-                    <p>{postUser.status}</p>
+                    <p>{user.status}</p>
                   </Menu.Item>
                   <Menu.Item>
                     <p>
@@ -137,16 +142,10 @@ const Post = () => {
           </Grid>
         </div>
       ) : (
-        <Redirect to="/" />
-      );
-  }
-
-  return (
-    <div className="singlePost">{user ? postMarkup : <Redirect to="/" />}</div>
+        <div>not a member</div>
+      )}
+    </div>
   );
 };
-
-// TODO: PropTypes
-// TODO: tbh this whole component needs help...
 
 export default Post;

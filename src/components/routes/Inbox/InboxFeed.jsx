@@ -40,7 +40,7 @@ const InboxFeed = ({ feed }) => {
   }, []);
 
   return (
-    <ScrollableFeed className="inboxComponent__chat__inboxFeed">
+    <ScrollableFeed className="inboxFeed">
       {feed.map((message, i) => (
         <React.Fragment key={message.id}>
           {i === 0 && (
@@ -54,7 +54,7 @@ const InboxFeed = ({ feed }) => {
             style={{ opacity: 0.9 }}
             trigger={
               <div
-                className={`inboxComponent__chat__inboxFeed__message ${
+                className={`inboxFeed__message ${
                   message.fromUser.id === user.id ? 'sender' : 'receiver'
                 }`}
               >

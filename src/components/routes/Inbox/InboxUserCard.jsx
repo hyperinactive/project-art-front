@@ -19,21 +19,17 @@ const InboxUserCard = ({
   const { selectedUser } = useContext(InboxContext);
 
   return (
-    <button
-      type="button"
-      className="inboxComponent__friendList__friendCard"
-      onClick={onClick}
-    >
+    <button type="button" className="friendList__friendCard" onClick={onClick}>
       <Image
-        className="inboxComponent__friendList__friendCard__avatar"
+        className="friendList__friendCard__avatar"
         rounded
         size="tiny"
         src={imageURL ? `${baseURL}/files/${imageURL}` : defaultAvatar}
       />
-      <div className="inboxComponent__friendList__friendCard__info">
-        <div className="inboxComponent__friendList__friendCard__info__header">
+      <div className="friendList__friendCard__info">
+        <div className="friendList__friendCard__info__header">
           <h2
-            className={`inboxComponent__friendList__friendCard__info__header__name ${
+            className={`friendList__friendCard__info__header__name ${
               active ? 'active' : 'headline'
             }`}
           >
@@ -49,7 +45,7 @@ const InboxUserCard = ({
 
         {latestMessageFromID ? (
           <div
-            className={`inboxComponent__friendList__friendCard__info__message ${
+            className={`friendList__friendCard__info__message ${
               latestMessageFromID === user.id
                 ? 'senderLatest'
                 : 'receiverLatest'
@@ -62,7 +58,7 @@ const InboxUserCard = ({
             </h4>
           </div>
         ) : (
-          <div className="inboxComponent__friendList__friendCard__info__message">
+          <div className="friendList__friendCard__info__message">
             <h4>--no message--</h4>
           </div>
         )}

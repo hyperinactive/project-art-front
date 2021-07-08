@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { createContext, useReducer } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useApolloClient } from '@apollo/client';
 import jwtDecode from 'jwt-decode';
 
@@ -19,10 +20,10 @@ const checkTokenExpiration = (dispatch) => {
     // }
 
     if (decodedToken.exp * 1000 < Date.now()) {
-      // localStorage.removeItem('userToken');
-      // initialState.user = null;
+      const history = useHistory();
       localStorage.removeItem('userToken');
       dispatch({ type: actionTypes.LOGOUT });
+      history.push('/login');
     } else {
       initialState.user = decodedToken;
     }
@@ -37,17 +38,14 @@ const checkTokenExpiration = (dispatch) => {
 // Note:
 // passing undefined as a Provider value does not cause consuming components to use defaultValue.
 
-// note: initial state just has a field of user, nothing else...
-// this context creates a nul user and functions that don't do shit
+// actionCreator more or less
 export const UserContext = createContext({
   ...initialState,
   login: () => {},
   logout: () => {},
 });
 
-// creating a provider
 export const UserProvider = (props) => {
-  // useReducer is the same as useState LUL
   const [state, dispatch] = useReducer(userReducer, initialState);
   const client = useApolloClient();
 
