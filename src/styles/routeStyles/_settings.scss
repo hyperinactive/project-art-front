@@ -1,13 +1,18 @@
-.settings__avatar:hover {
-  filter: brightness(0.5);
-}
+.settings {
+  &__avatar:hover {
+    filter: brightness(0.5);
+  }
+  &__input {
+    margin-top: 30px !important;
+    text-align: center !important;
+  }
+  &__input input {
+    text-align: center !important;
+    margin: 0 !important;
+  }
 
-.settings__input {
-  margin-top: 30px !important;
-  text-align: center !important;
-}
-
-.settings__input input {
-  text-align: center !important;
-  margin: 0 !important;
+  &__preview {
+    width: 150px !important;
+    height: auto;
+  }
 }

@@ -2,16 +2,22 @@ import { useMutation } from '@apollo/client';
 import { cloneDeep } from 'lodash';
 import { CREATE_PROJECT_POST } from '../../graphql';
 
-const useCreatePost = (state, setState) =>
+const useCreatePost = (setState) =>
   useMutation(CREATE_PROJECT_POST, {
     update: (cache, { data: { createProjectPost } }) => {
       cache.modify({
         fields: {
           getFeed: (previous) => {
+            console.log(previous);
+            console.log(createProjectPost);
             const previousClone = cloneDeep(previous);
             // cannot apppend new posts to a null, so check for it
-            if (previousClone.posts === null) {
-              previousClone.posts = [];
+            if (
+              previousClone.posts === null ||
+              previousClone.posts.length === 0
+            ) {
+              previousClone.posts = [cloneDeep(createProjectPost)];
+              return previousClone;
             }
             previousClone.posts = [
               cloneDeep(createProjectPost),
@@ -24,18 +30,18 @@ const useCreatePost = (state, setState) =>
     },
     onError: (err) => {
       console.log({ err });
-      setState({
+      setState((state) => ({
         ...state,
         errors: err.graphQLErrors[0].extensions.exception.errors,
-      });
+      }));
     },
     onCompleted: () => {
-      setState({
+      setState((state) => ({
         ...state,
         body: '',
         imageFile: null,
         previewImage: null,
-      });
+      }));
     },
   });
 

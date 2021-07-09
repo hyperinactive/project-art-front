@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
-import { Grid, Header, Card } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { Grid, Header, Card, Button } from 'semantic-ui-react';
 
 import LoaderComponent from '../../shared/LoaderComponent';
 import ElementList from '../../shared/ElementList';
@@ -61,7 +62,18 @@ const UserWorkspace = () => {
               }}
             >
               <Header className="headline">User feed</Header>
+              <div style={{ margin: 10 }}>
+                <Button
+                  as={Link}
+                  to="/projects"
+                  icon="cube"
+                  content="projects"
+                />
+                <Button as={Link} to="/inbox" icon="inbox" content="inbox" />
+                <Button content="connect" icon="user" as={Link} to="/connect" />
+              </div>
               <Notifications />
+
               <div style={{ textAlign: 'center' }}>
                 <Card centered>
                   <Card.Content>

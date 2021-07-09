@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { createContext, useReducer } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useApolloClient } from '@apollo/client';
 import jwtDecode from 'jwt-decode';
 
@@ -20,10 +19,8 @@ const checkTokenExpiration = (dispatch) => {
     // }
 
     if (decodedToken.exp * 1000 < Date.now()) {
-      const history = useHistory();
       localStorage.removeItem('userToken');
       dispatch({ type: actionTypes.LOGOUT });
-      history.push('/login');
     } else {
       initialState.user = decodedToken;
     }

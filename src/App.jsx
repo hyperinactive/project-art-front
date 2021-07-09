@@ -22,6 +22,7 @@ import Inbox from './components/routes/Inbox/Inbox';
 import Project from './components/routes/Projects/Project/Project';
 import ProjectForm from './components/routes/Projects/ProjectForm';
 import Connect from './components/routes/Connect';
+import CropComponent from './components/shared/CropComponent';
 
 const App = () => (
   <UserProvider>
@@ -52,6 +53,8 @@ const App = () => (
                 <Route exact path="/inbox" component={Inbox} />
 
                 <Route exact path="/404" component={NotFoundPage} />
+                <Route exact path="/testCrop" component={CropComponent} />
+
                 <Route component={NotFoundPage} />
               </Switch>
             </Container>

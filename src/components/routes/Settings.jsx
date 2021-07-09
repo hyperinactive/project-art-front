@@ -1,20 +1,26 @@
-import { useMutation, useLazyQuery } from '@apollo/client';
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
-import { Grid, Header, Loader, Form, Button, Message } from 'semantic-ui-react';
-import { cloneDeep } from 'lodash';
+import {
+  Grid,
+  Header,
+  Loader,
+  Form,
+  Button,
+  Message,
+  Image,
+} from 'semantic-ui-react';
 
 import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
-import { baseURL, defaultAvatar } from '../../appConfig';
 import { UserContext } from '../../context/userContext/UserProvider';
-import { GET_USER, UPDATE_USER } from '../../graphql';
-import { GET_USERS } from '../../graphql/userGQL';
-import ImageController from '../shared/ImageController';
+import { defaultAvatar } from '../../appConfig';
+import useLoadUser from '../../utils/hooks/loadUser';
+import useUpdateUser from '../../utils/hooks/updateUser';
 
 // TODO: cache update when the imageURL changes
 const Settings = () => {
-  const { user, login } = useContext(UserContext);
   const { userID } = useParams();
+  const { user } = useContext(UserContext);
   const { setTemporaryTab } = useContext(NavigationContext);
 
   const [state, setState] = useState({
@@ -23,96 +29,21 @@ const Settings = () => {
     skills: '',
     status: '',
     successMessage: false,
-    previewImage: defaultAvatar,
+    previewImage: null,
     imageFile: null,
+    initialImage: null,
   });
 
-  const [loadUser, { data, loading }] = useLazyQuery(GET_USER, {
-    variables: {
-      userID,
-    },
-    onCompleted: () => {
-      setState({
-        ...state,
-        username: data.getUser.username,
-        skills: data.getUser.skills,
-        status: data.getUser.status,
-      });
-      if (data.getUser.imageURL) {
-        setState({
-          ...state,
-          previewImage: `${baseURL}/files/${data.getUser.imageURL}`,
-        });
-      }
-      setState({
-        ...state,
-        imageFile: `${baseURL}/files/${data.getUser.imageURL}`,
-      });
-    },
-    onError: (err) => {
-      console.log(err);
-      setState({
-        ...state,
-        errors: err.graphQLErrors[0].extensions.exception.errors,
-      });
-    },
-  });
+  const [loadUser, { loading }] = useLoadUser(setState);
+  const [updateUser] = useUpdateUser(setState);
 
-  const [updateUser] = useMutation(UPDATE_USER, {
-    update: (cache, result) => {
-      cache.writeQuery({
-        query: GET_USER,
-        variables: {
-          userID: user.id,
-        },
-        data: result.data.updateUser,
-      });
-
-      const users = cache.readQuery({
-        query: GET_USERS,
-      });
-
-      const usersClone = cloneDeep(users);
-
-      if (usersClone !== null) {
-        const filtered = usersClone.getUsers.map((e) => {
-          if (e.id.toString() === user.id) {
-            return result.data.updateUser;
-          }
-          return e;
-        });
-
-        cache.writeQuery({
-          query: GET_USERS,
-          data: {
-            getUsers: filtered,
-          },
-        });
-      }
-    },
-    onCompleted: (res) => {
-      login(res.updateUser);
-      setState({
-        ...state,
-        successMessage: true,
-      });
-    },
-    onError: (err) => {
-      console.log(err);
-      setState({
-        ...state,
-        errors: err.graphQLErrors[0].extensions.exception.errors,
-      });
-    },
-  });
-
-  // const inputOnChange = (e) => {
-  //   if (e.target.files[0]) {
-  //     setPreviewI(URL.createObjectURL(e.target.files[0]));
-  //     setImage(e.target.files[0]);
-  //     setSuccessMessage(false);
-  //   }
-  // };
+  // croppper
+  const [crop, setCrop] = useState({ aspect: 1 / 1 });
+  const handleFileChange = (e) =>
+    setState((prevState) => ({
+      ...prevState,
+      previewImage: URL.createObjectURL(e.target.files[0]),
+    }));
 
   const handleChange = (e) => {
     setState((prevState) => ({
@@ -125,6 +56,7 @@ const Settings = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const variables = {
       username: state.username,
       status: state.status,
@@ -134,14 +66,20 @@ const Settings = () => {
     updateUser({
       variables,
     });
+
     setState({
       ...state,
       imageFile: null,
     });
   };
 
+  // TODO: cleanup
   useEffect(() => {
-    loadUser();
+    loadUser({
+      variables: {
+        userID,
+      },
+    });
     setTemporaryTab({
       name: 'Settings',
       link: `/settings/${userID}`,
@@ -181,7 +119,22 @@ const Settings = () => {
                       src={preview}
                       rounded
                     /> */}
-                    <ImageController state={state} setState={setState} />
+
+                    {/* TODO: URGENT FIX */}
+                    {/* broken... */}
+                    {/* <ImageController state={state} setState={setState} /> */}
+                    <img
+                      className="settings__preview"
+                      src={
+                        state.previewImage ? state.previewImage : defaultAvatar
+                      }
+                      alt="profile"
+                    />
+                    <Form.Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                    />
 
                     {/* <Form.Input
                       type="file"

@@ -14,7 +14,7 @@ const PostFormModal = ({ project }) => {
     imageFile: null,
   });
 
-  const [createPost] = useCreatePost(state, setState);
+  const [createPost] = useCreatePost(setState);
 
   const handleSubmit = () => {
     createPost({
@@ -82,7 +82,7 @@ const PostFormModal = ({ project }) => {
                     name="body"
                     value={state.body}
                     type="text"
-                    error={state.errors.body}
+                    // error={state.errors.body}
                     onChange={(e) => {
                       setState({
                         ...state,
