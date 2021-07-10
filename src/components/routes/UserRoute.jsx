@@ -4,7 +4,7 @@ import { Redirect, Route } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
-import { UserContext } from '../../context/UserProvider';
+import { UserContext } from '../../context/userContext/UserProvider';
 
 const UserRoute = ({ component: Component, ...rest }) => {
   const { user } = useContext(UserContext);

@@ -3,29 +3,37 @@ import React from 'react';
 import { Grid, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+
 import { baseURL, defaultAvatar } from '../../appConfig';
 
 const ElementList = ({ elements, type }) => (
   <div className="elementList">
     {elements.length > 0 ? (
-      elements.map((element) => (
-        <Grid.Row key={element.id} style={{ margin: 10 }} centered>
-          <Image
-            rounded
-            size="tiny"
-            src={
-              element.imageURL
-                ? `${baseURL}/files/${element.imageURL}`
-                : defaultAvatar
-            }
-            as={Link}
-            to={`/${type}/${element.id}`}
-          />
-          <div style={{ textAlign: 'center' }}>
-            <p>{type === 'projects' ? element.name : element.username}</p>
-          </div>
-        </Grid.Row>
-      ))
+      <div className="elementList__innerContainer">
+        {elements.map((element) => (
+          <Grid.Row
+            className="elementList__innerContainer__element"
+            key={element.id}
+            style={{ margin: 10 }}
+            centered
+          >
+            <Image
+              rounded
+              size="tiny"
+              src={
+                element.imageURL
+                  ? `${baseURL}/files/${element.imageURL}`
+                  : defaultAvatar
+              }
+              as={Link}
+              to={`/${type}/${element.id}`}
+            />
+            <div style={{ textAlign: 'center' }}>
+              <p>{type === 'projects' ? element.name : element.username}</p>
+            </div>
+          </Grid.Row>
+        ))}
+      </div>
     ) : type === 'projects' ? (
       <Grid.Row>
         <p>Joined no projects... (yet)</p>

@@ -1,0 +1,25 @@
+.share {
+  &__url {
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    &__profile {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+
+      &__info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+
+    &__button {
+      width: max-content;
+    }
+  }
+}

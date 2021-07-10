@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Icon, Menu, Sticky, Dropdown } from 'semantic-ui-react';
-import { NavigationContext } from '../context/NavigationProvider';
+import { Icon, Menu, Sticky, Dropdown, Image } from 'semantic-ui-react';
+import { baseURL, defaultAvatar } from '../appConfig';
 
-import { UserContext } from '../context/UserProvider';
+import { NavigationContext } from '../context/navigationContext/NavigationProvider';
+import { UserContext } from '../context/userContext/UserProvider';
 
 const NavBar = () => {
   // const context = useContext(UserContext);
@@ -24,13 +25,27 @@ const NavBar = () => {
   // { name } deconstruct the current component calling the handleItemClick and take the name of it
   const handleItemClick = (e, { name }) => setActiveItem(name);
 
+  const dropDownTrigger = (
+    <span>
+      <Image
+        rounded
+        size="mini"
+        src={
+          user && user.imageURL !== null
+            ? `${baseURL}/files/${user.imageURL}`
+            : defaultAvatar
+        }
+      />
+    </span>
+  );
+
   // NOTE: as -> lets us use the component as some other component
   // useful for making links out of components
   // to -> basically href
 
   // if we got a logged-in user display the personalized component with the logout item
   const navBar = user ? (
-    <Menu stackable size="massive" color="orange" className="navbar__menu">
+    <Menu size="massive" color="orange" className="navbar__menu">
       <Menu.Item
         className="navbar__menu__item"
         name="home"
@@ -73,8 +88,8 @@ const NavBar = () => {
               ? 'tempTab--active'
               : 'tempTab--inactive'
           }`}
-          name={temporaryTab.name}
-          active={activeItem === temporaryTab.name}
+          name={temporaryTab.name.toLowerCase()}
+          active={activeItem.toLowerCase() === temporaryTab.name.toLowerCase()}
           onClick={handleItemClick}
           as={Link}
           to={temporaryTab.link}
@@ -98,12 +113,12 @@ const NavBar = () => {
 
       <Menu.Menu position="right">
         <Menu.Item className="navbar__menu__item">
-          <Dropdown icon="caret down">
+          <Dropdown icon={null} trigger={dropDownTrigger}>
             <Dropdown.Menu>
               <Dropdown.Item
                 name="inbox"
                 as={Link}
-                to="/chat"
+                to="/inbox"
                 onClick={handleItemClick}
               >
                 <Icon name="inbox" style={{ margin: 0 }} />
@@ -115,8 +130,16 @@ const NavBar = () => {
                 to={`/settings/${user.id}`}
                 onClick={handleItemClick}
               >
-                <Icon name="setting" />
+                <Icon name="setting" style={{ margin: 0 }} />
                 Settings
+              </Dropdown.Item>
+              <Dropdown.Item name="theme" onClick={() => {}}>
+                <Icon name="sun" style={{ margin: 0 }} />
+                Theme
+              </Dropdown.Item>
+              <Dropdown.Item name="help" onClick={() => {}}>
+                <Icon name="question circle outline" style={{ margin: 0 }} />
+                Help
               </Dropdown.Item>
               <Dropdown.Item
                 onClick={() => {
@@ -167,7 +190,7 @@ const NavBar = () => {
       </Menu.Item> */}
     </Menu>
   ) : (
-    <Menu stackable size="massive" color="orange" className="navbar__menu">
+    <Menu size="massive" color="orange" className="navbar__menu">
       <Menu.Item
         className="navbar__menu__item"
         name="home"

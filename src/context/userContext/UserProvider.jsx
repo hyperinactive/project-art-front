@@ -19,8 +19,6 @@ const checkTokenExpiration = (dispatch) => {
     // }
 
     if (decodedToken.exp * 1000 < Date.now()) {
-      // localStorage.removeItem('userToken');
-      // initialState.user = null;
       localStorage.removeItem('userToken');
       dispatch({ type: actionTypes.LOGOUT });
     } else {
@@ -37,17 +35,14 @@ const checkTokenExpiration = (dispatch) => {
 // Note:
 // passing undefined as a Provider value does not cause consuming components to use defaultValue.
 
-// note: initial state just has a field of user, nothing else...
-// this context creates a nul user and functions that don't do shit
+// actionCreator more or less
 export const UserContext = createContext({
   ...initialState,
   login: () => {},
   logout: () => {},
 });
 
-// creating a provider
 export const UserProvider = (props) => {
-  // useReducer is the same as useState LUL
   const [state, dispatch] = useReducer(userReducer, initialState);
   const client = useApolloClient();
 
@@ -58,6 +53,7 @@ export const UserProvider = (props) => {
     // to store the tokens of the logged users
     // we're making a field called ueserToken and setting the user.token to it
     localStorage.setItem('userToken', data.token);
+
     dispatch({
       type: actionTypes.LOGIN,
       payload: jwtDecode(data.token),
@@ -70,6 +66,7 @@ export const UserProvider = (props) => {
     // clear the cache of prev user data
     client.clearStore();
     client.cache.reset();
+
     dispatch({ type: actionTypes.LOGOUT });
   };
 

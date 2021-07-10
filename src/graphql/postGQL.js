@@ -1,179 +1,87 @@
 import { gql } from '@apollo/client';
+import {
+  COMMENT_FIELDS,
+  LIKE_FIELDS,
+  POST_FIELDS,
+  USER_FIELDS,
+} from './fragments';
 
 const GET_POST = gql`
+  ${USER_FIELDS}
+  ${POST_FIELDS}
+  ${LIKE_FIELDS}
+  ${COMMENT_FIELDS}
   query getPost($postID: ID!) {
     getPost(postID: $postID) {
-      id
-      body
-      createdAt
-      username
-      imageURL
-      likes {
-        id
-        username
-        createdAt
-      }
+      ...PostFields
+      ...LikeFields
       user {
-        id
-        status
-        imageURL
-        username
+        ...UserFields
       }
+      comments {
+        ...CommentFields
+      }
+      commentCount
       project {
         id
         members {
           id
         }
       }
-      likeCount
-      comments {
-        id
-        username
-        body
-        createdAt
-      }
-      commentCount
     }
   }
 `;
 
 const GET_POSTS = gql`
-  query {
+  ${POST_FIELDS}
+  ${LIKE_FIELDS}
+  ${COMMENT_FIELDS}
+  query getPosts {
     getPosts {
-      id
-      body
-      createdAt
-      username
-      likes {
-        id
-        username
-        createdAt
-      }
-      likeCount
-      comments {
-        id
-        username
-        body
-        createdAt
-      }
+      ...PostFields
+      ...LikeFields
+      ...CommentFields
       commentCount
     }
   }
 `;
 
-const CREATE_POST = gql`
-  mutation createPost($body: String!) {
-    createPost(body: $body) {
-      id
-      body
-      createdAt
-      username
-      likes {
-        id
-        username
-        createdAt
-      }
-      likeCount
-      comments {
-        id
-        username
-        body
-        createdAt
-      }
-      commentCount
-    }
-  }
-`;
-
-// no need for returning values
 const DELETE_POST = gql`
+  ${POST_FIELDS}
+  ${LIKE_FIELDS}
+  ${COMMENT_FIELDS}
   mutation deletePost($postID: ID!) {
     deletePost(postID: $postID) {
-      id
-      body
-      createdAt
-      username
-      likes {
-        id
-        username
-        createdAt
-      }
-      likeCount
+      ...PostFields
+      ...LikeFields
       comments {
-        id
-        username
-        createdAt
-        body
+        ...CommentFields
       }
       commentCount
     }
   }
 `;
 
-// NOTE: don't forget to first declare $variables before calling the mutation
-// because of id being passed to us we can tell which post is mutated
-// apollo cache is smart enough to cache it immediately and I don't have to do it manually
 const LIKE_POST = gql`
+  ${LIKE_FIELDS}
   mutation likeTogglePost($postID: ID!) {
     likeTogglePost(postID: $postID) {
       id
-      likes {
-        id
-        username
-        createdAt
-      }
-      likeCount
+      ...LikeFields
     }
   }
 `;
 
-const GET_POSTS_CHUNK = gql`
-  query getPostsChunk($skip: Int, $limit: Int!) {
-    getPostsChunk(skip: $skip, limit: $limit) {
-      posts {
-        id
-        body
-        createdAt
-        username
-        likes {
-          id
-          username
-          createdAt
-        }
-        likeCount
-        comments {
-          id
-          username
-          body
-          createdAt
-        }
-        commentCount
-      }
-      hasMoreItems
-    }
-  }
-`;
-
-// TODO: to be the default way of creating posts
-// TODO: maybe don't just send a post type but also the project, at least id
 const CREATE_PROJECT_POST = gql`
+  ${POST_FIELDS}
+  ${LIKE_FIELDS}
+  ${COMMENT_FIELDS}
   mutation createProjectPost($projectID: ID!, $body: String!, $image: Upload) {
     createProjectPost(projectID: $projectID, body: $body, image: $image) {
-      id
-      body
-      createdAt
-      username
-      likes {
-        id
-        username
-        createdAt
-      }
-      likeCount
+      ...PostFields
+      ...LikeFields
       comments {
-        id
-        username
-        body
-        createdAt
+        ...CommentFields
       }
       commentCount
       imageURL
@@ -190,51 +98,35 @@ const UPLOAD_FILE = gql`
 `;
 
 const GET_PROJECT_POSTS = gql`
+  ${POST_FIELDS}
+  ${LIKE_FIELDS}
+  ${USER_FIELDS}
   query getProjectPosts($projectID: ID!) {
     getProjectPosts(projectID: $projectID) {
-      id
-      username
-      createdAt
-      body
-      likes {
-        id
-        username
-        createdAt
-      }
-      likeCount
+      ...PostFields
+      ...LikeFields
       commentCount
       imageURL
       user {
-        id
-        username
-        status
-        imageURL
+        ...UserFields
       }
     }
   }
 `;
 
 const GET_POSTS_FEED = gql`
+  ${POST_FIELDS}
+  ${LIKE_FIELDS}
+  ${USER_FIELDS}
   query getPostsFeed($projectID: ID!, $cursor: ID, $skip: Int) {
     getPostsFeed(projectID: $projectID, cursor: $cursor, skip: $skip) {
       posts {
-        id
-        username
-        createdAt
-        body
-        likes {
-          id
-          username
-          createdAt
-        }
-        likeCount
+        ...PostFields
+        ...LikeFields
         commentCount
         imageURL
         user {
-          id
-          username
-          status
-          imageURL
+          ...UserFields
         }
       }
       nextCursor
@@ -243,15 +135,51 @@ const GET_POSTS_FEED = gql`
   }
 `;
 
+const GET_FEED = gql`
+  ${POST_FIELDS}
+  ${LIKE_FIELDS}
+  ${USER_FIELDS}
+  query getFeed($projectID: ID!, $cursor: String) {
+    getFeed(projectID: $projectID, cursor: $cursor) {
+      posts {
+        ...PostFields
+        ...LikeFields
+        commentCount
+        imageURL
+        user {
+          ...UserFields
+        }
+      }
+      nextCursor
+      hasMoreItems
+    }
+  }
+`;
+
+const NEW_POST = gql`
+  ${POST_FIELDS}
+  ${LIKE_FIELDS}
+  ${USER_FIELDS}
+  subscription newPost {
+    newPost {
+      ...PostFields
+      ...LikeFields
+      user {
+        ...UserFields
+      }
+    }
+  }
+`;
+
 export {
   GET_POST,
   GET_POSTS,
-  CREATE_POST,
   DELETE_POST,
   LIKE_POST,
-  GET_POSTS_CHUNK,
   CREATE_PROJECT_POST,
   UPLOAD_FILE,
   GET_PROJECT_POSTS,
   GET_POSTS_FEED,
+  GET_FEED,
+  NEW_POST,
 };

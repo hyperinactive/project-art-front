@@ -1,12 +1,11 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import { useMutation } from '@apollo/client';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { cloneDeep } from 'lodash';
 import { Button, Header, Image } from 'semantic-ui-react';
-import { defaultAvatar } from '../../../../appConfig';
-import { UserContext } from '../../../../context/UserProvider';
+import PropTypes from 'prop-types';
+
+import { UserContext } from '../../../../context/userContext/UserProvider';
 import {
   ADD_MEMBER,
   GET_MEMBERS,
@@ -109,10 +108,16 @@ const ProjectProfile = ({ project }) => {
       }}
     >
       <Header as="h2" icon textAlign="center">
-        <Header.Content>{project.name}</Header.Content>
-        <Header.Subheader>{project.description}</Header.Subheader>
+        <Header.Content className="headline">{project.name}</Header.Content>
+        <Header.Subheader className="headline">
+          {project.description}
+        </Header.Subheader>
       </Header>
-      <Image circular src={defaultAvatar} size="tiny" />
+      <Image
+        rounded
+        src={`${process.env.PUBLIC_URL}/projectArt-IconTransparent.png`}
+        size="tiny"
+      />
       {user ? (
         <Button color="orange" onClick={handleClick} style={{ margin: 20 }}>
           Join the project!
@@ -124,6 +129,14 @@ const ProjectProfile = ({ project }) => {
       )}
     </div>
   );
+};
+
+ProjectProfile.propTypes = {
+  project: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default ProjectProfile;

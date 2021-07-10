@@ -1,34 +1,28 @@
-import { useQuery } from '@apollo/client';
-import React, { useContext } from 'react';
-import { Grid, Loader, Header, Card } from 'semantic-ui-react';
-import { UserContext } from '../../../context/UserProvider';
-import { GET_FRIENDS, GET_USER_PROJECTS } from '../../../graphql';
+import React, { useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Grid, Header, Card, Button } from 'semantic-ui-react';
+
+import LoaderComponent from '../../shared/LoaderComponent';
 import ElementList from '../../shared/ElementList';
 import Notifications from './Notifications';
+import { UserContext } from '../../../context/userContext/UserProvider';
+import useLoadFriends from '../../../utils/hooks/loadFriends';
+import useLoadProjects from '../../../utils/hooks/loadProjects';
 
 // TODO: UserWorkspace needs to be cleaned up after another user logs
 const UserWorkspace = () => {
   const { user } = useContext(UserContext);
 
-  const { data, loading, error } = useQuery(GET_FRIENDS, {
-    onCompleted: () => {
-      console.log(data.getFriends);
-    },
-  });
-  const {
-    data: projectData,
-    loading: projectLoading,
-    error: projectError,
-  } = useQuery(GET_USER_PROJECTS, {
-    onCompleted: () => {
-      console.log(projectData);
-    },
-    onError(err) {
-      console.log(err);
-    },
-  });
+  const [loadFriends, { data: friendsData, loading: friendsLoading }] =
+    useLoadFriends();
+  const [loadProjects, { data: projectData, loading: projectLoading }] =
+    useLoadProjects();
 
-  if (error || projectError) return <h1>Error</h1>;
+  // TODO: cleanup
+  useEffect(() => {
+    loadFriends();
+    loadProjects();
+  }, []);
 
   return (
     <div className="userWorkspace">
@@ -40,22 +34,23 @@ const UserWorkspace = () => {
         </div>
 
         <Grid.Row>
-          {loading ? (
-            <Loader size="huge" active>
-              Computing, things, beep bop
-            </Loader>
+          {friendsLoading ? (
+            <LoaderComponent />
           ) : (
-            <Grid.Column width={2}>
-              <Header className="headline">Friends</Header>
-              <Grid.Row>
-                <div
-                  style={{
-                    textAlign: 'center',
-                  }}
-                />
-                <ElementList elements={data.getFriends} type="user" />
-              </Grid.Row>
-            </Grid.Column>
+            friendsData &&
+            friendsData && (
+              <Grid.Column width={2}>
+                <Header className="headline">Friends</Header>
+                <Grid.Row>
+                  <div
+                    style={{
+                      textAlign: 'center',
+                    }}
+                  />
+                  <ElementList elements={friendsData.getFriends} type="user" />
+                </Grid.Row>
+              </Grid.Column>
+            )
           )}
 
           <Grid.Column width={11}>
@@ -67,7 +62,18 @@ const UserWorkspace = () => {
               }}
             >
               <Header className="headline">User feed</Header>
+              <div style={{ margin: 10 }}>
+                <Button
+                  as={Link}
+                  to="/projects"
+                  icon="cube"
+                  content="projects"
+                />
+                <Button as={Link} to="/inbox" icon="inbox" content="inbox" />
+                <Button content="connect" icon="user" as={Link} to="/connect" />
+              </div>
               <Notifications />
+
               <div style={{ textAlign: 'center' }}>
                 <Card centered>
                   <Card.Content>
@@ -84,9 +90,7 @@ const UserWorkspace = () => {
           <Grid.Column width={2}>
             <Header className="headline">Projects</Header>
             {projectLoading ? (
-              <Loader size="huge" active>
-                Computing, things, beep bop
-              </Loader>
+              <LoaderComponent />
             ) : (
               projectData && (
                 <ElementList

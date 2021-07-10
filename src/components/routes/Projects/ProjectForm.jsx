@@ -99,7 +99,9 @@ const ProjectForm = () => {
           <Grid.Column style={{ maxWidth: 450 }}>
             {created.isCreated ? (
               <>
-                <Header as="h1">Project created!</Header>
+                <Header as="h1" className="headline">
+                  Project created!
+                </Header>
                 <Button
                   color="orange"
                   as={Link}
@@ -110,7 +112,7 @@ const ProjectForm = () => {
               </>
             ) : (
               <>
-                <Header as="h1" textAlign="center">
+                <Header as="h1" textAlign="center" className="headline">
                   On to a great success
                 </Header>
                 <Form size="large" noValidate onSubmit={handleSubmit}>

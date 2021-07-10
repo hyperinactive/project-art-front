@@ -1,11 +1,8 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable consistent-return */
-import {
-  ApolloClient,
-  InMemoryCache,
-  // createHttpLink,
-  ApolloLink,
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache, split } from '@apollo/client';
+import { WebSocketLink } from '@apollo/client/link/ws';
+import { getMainDefinition } from '@apollo/client/utilities';
 // import { cloneDeep } from 'lodash';
 
 // import { relayStylePagination } from '@apollo/client/utilities';
@@ -30,10 +27,6 @@ import { baseURL } from './appConfig';
 //   uri: 'http://localhost:4000/graphql', // dev uri lmao
 // });
 
-const uploadLink = createUploadLink({
-  uri: `${baseURL}/graphql`,
-});
-
 // need auth headers in our requests
 // get the token from the local storage and pass it in authLink
 const authLink = setContext(() => {
@@ -44,6 +37,36 @@ const authLink = setContext(() => {
     },
   };
 });
+
+const uploadLink = createUploadLink({
+  uri: `${baseURL}/graphql`,
+});
+
+const wsLinkURI = baseURL.split('http')[1];
+const wsLink = new WebSocketLink({
+  uri: `ws${wsLinkURI}/graphql`,
+  options: {
+    reconnect: true,
+    connectionParams: {
+      Authorization: `Bearer ${localStorage.getItem('userToken')}`,
+    },
+  },
+});
+
+// look for operation type and use the appropriate link
+// websocket link for subs
+// http link for http requests
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  authLink.concat(uploadLink)
+);
 
 // merge policy
 // const offsetFromCursor = (items, cursor) => {
@@ -76,6 +99,7 @@ const cache = new InMemoryCache({
             return incoming;
           },
         },
+
         // getPostsFeed: relayStylePagination(),
         // getPostsFeed: {
         //   keyArgs: ['id'],
@@ -145,7 +169,8 @@ const cache = new InMemoryCache({
 const client = new ApolloClient({
   // link: concat(authLink, httpLink),
   // link: ApolloLink.from([authLink, httpLink, uploadLink]),
-  link: ApolloLink.concat(authLink, uploadLink),
+  // link: ApolloLink.concat(authLink, uploadLink),
+  link: splitLink,
   // cache: new InMemoryCache(),
   cache,
 });

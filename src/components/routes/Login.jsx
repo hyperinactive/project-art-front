@@ -1,11 +1,9 @@
-import React, { useState, useContext } from 'react';
-import { useMutation } from '@apollo/client';
-import { Button, Form, Grid, Header, Icon } from 'semantic-ui-react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Button, Form, Grid, Header, Icon } from 'semantic-ui-react';
+import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
 
-import { UserContext } from '../../context/UserProvider';
-import { LOGIN_USER } from '../../graphql';
-import { NavigationContext } from '../../context/NavigationProvider';
+import useLogin from '../../utils/hooks/login';
 
 const LoginForm = () => {
   const { setActiveItem } = useContext(NavigationContext);
@@ -16,38 +14,8 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
 
-  // now we have access to our context data
-  // we get the data from the result and pass it to our login function
-  const context = useContext(UserContext);
+  const [loginUser, { loading }] = useLogin(username, password, setErrors);
 
-  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    // update will trigger if everything's went smoothly
-    // returns proxy result
-    update: (_, result) => {
-      context.login(result.data.login);
-
-      // take us to the home page if register succeeded
-      history.push('/');
-      setActiveItem('home');
-    },
-    // it expects some variables to be sent for mutations
-    variables: {
-      username,
-      password,
-    },
-    // handle errors
-    onError: (err) => {
-      // normally, you'd have lots of errors here
-      // but we've written our serverside to have a single object with errors
-      // it is in the extension
-      // console.log(err.graphQLErrors[0].extensions.exception);
-
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
-      console.log(err.graphQLErrors[0].extensions.exception.errors);
-    },
-  });
-
-  // prevent the reload and invoke addUser()
   const handleSubmit = (e) => {
     e.preventDefault();
     loginUser();

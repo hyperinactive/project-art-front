@@ -1,33 +1,29 @@
 import { gql } from '@apollo/client';
+import { COMMENT_FIELDS } from './fragments';
 
 const DELETE_COMMENT = gql`
+  ${COMMENT_FIELDS}
   mutation deleteComment($postID: ID!, $commentID: ID!) {
     deleteComment(postID: $postID, commentID: $commentID) {
-      id
-      createdAt
-      username
-      body
+      ...CommentFields
     }
   }
 `;
 
 const CREATE_COMMENT = gql`
+  ${COMMENT_FIELDS}
   mutation createComment($postID: ID!, $body: String!) {
     createComment(postID: $postID, body: $body) {
-      id
-      createdAt
-      username
-      body
+      ...CommentFields
     }
   }
 `;
 
 const GET_COMMENTS = gql`
+  ${COMMENT_FIELDS}
   query getComments($postID: ID!) {
     getComments(postID: $postID) {
-      id
-      createdAt
-      body
+      ...CommentFields
       user {
         id
         username

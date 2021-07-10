@@ -2,9 +2,10 @@
 /* eslint-disable react/destructuring-assignment */
 import { useLazyQuery } from '@apollo/client';
 import React, { useContext, useEffect } from 'react';
-import { Loader } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
-import { UserContext } from '../../../../context/UserProvider';
+
+import LoaderComponent from '../../../shared/LoaderComponent';
+import { UserContext } from '../../../../context/userContext/UserProvider';
 import { GET_MEMBERS, GET_PROJECT } from '../../../../graphql';
 import ProjectWorkspace from './Workspace/ProjectWorkspace';
 import ProjectProfile from './ProjectProfile';
@@ -16,19 +17,20 @@ const Project = () => {
   const { user } = useContext(UserContext);
 
   const { projectID } = useParams();
-  console.log(projectID);
 
-  const [loadProject, { data, loading }] = useLazyQuery(GET_PROJECT, {
-    variables: {
-      projectID,
-    },
-  });
+  const [loadProject, { data: projectData, loading: projectLoading }] =
+    useLazyQuery(GET_PROJECT, {
+      variables: {
+        projectID,
+      },
+    });
 
-  const [loadMembers, { data: mData, mLoading }] = useLazyQuery(GET_MEMBERS, {
-    variables: {
-      projectID,
-    },
-  });
+  const [loadMembers, { data: memberData, mLoading: memberLoading }] =
+    useLazyQuery(GET_MEMBERS, {
+      variables: {
+        projectID,
+      },
+    });
 
   useEffect(() => {
     loadProject();
@@ -36,30 +38,33 @@ const Project = () => {
   }, [loadProject, loadMembers]);
 
   return (
-    <div className="project" style={{ textAlign: 'center' }}>
+    <div className="project">
       {/* show join us page to whomever, but if the user isn't signed in */}
       {/* redirect them to the login page */}
-      {loading || mLoading ? (
-        <Loader size="huge" active>
-          Computing, things, beep bop
-        </Loader>
+      {projectLoading || memberLoading ? (
+        <LoaderComponent />
       ) : user ? (
-        data &&
-        data.getProject &&
-        data.getProject.members &&
-        mData &&
-        mData.getProjectMembers &&
-        (isMemeber(data.getProject.members, user) ? (
+        projectData &&
+        projectData.getProject &&
+        projectData.getProject.members &&
+        memberData &&
+        memberData.getProjectMembers &&
+        (isMemeber(projectData.getProject.members, user) ? (
           <ProjectWorkspace
-            project={data.getProject}
-            elements={mData.getProjectMembers}
+            project={projectData.getProject}
+            elements={memberData.getProjectMembers}
           />
         ) : (
-          data &&
-          data.getProject && <ProjectProfile project={data.getProject} />
+          projectData &&
+          projectData.getProject && (
+            <ProjectProfile project={projectData.getProject} />
+          )
         ))
       ) : (
-        data && data.getProject && <ProjectProfile project={data.getProject} />
+        projectData &&
+        projectData.getProject && (
+          <ProjectProfile project={projectData.getProject} />
+        )
       )}
     </div>
   );

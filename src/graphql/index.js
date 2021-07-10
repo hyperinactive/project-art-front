@@ -1,28 +1,5 @@
-export {
-  REGISTER_USER,
-  LOGIN_USER,
-  GET_USER,
-  GET_FRIENDS,
-  UPDATE_USER,
-  ADD_FRIEND,
-} from './userGQL';
-export { DELETE_COMMENT, CREATE_COMMENT, GET_COMMENTS } from './commentGQL';
-export {
-  GET_PROJECT,
-  GET_PROJECTS,
-  CREATE_PROJECT,
-  ADD_MEMBER,
-  GET_USER_PROJECTS,
-  GET_MEMBERS,
-} from './projectGQL';
-export {
-  GET_POST,
-  GET_POSTS,
-  CREATE_POST,
-  DELETE_POST,
-  LIKE_POST,
-  CREATE_PROJECT_POST,
-  UPLOAD_FILE,
-  GET_PROJECT_POSTS,
-  GET_POSTS_FEED,
-} from './postGQL';
+export * from './userGQL';
+export * from './commentGQL';
+export * from './projectGQL';
+export * from './postGQL';
+export * from './messageGQL';

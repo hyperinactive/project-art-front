@@ -6,15 +6,10 @@ import { Link } from 'react-router-dom';
 const ProjectCard = ({
   project: { id, name, description, owner, memberCount },
 }) => (
-  <div style={{ paddingTop: 10, margin: 20 }} className="projectCard">
-    <Card
-      fluid
-      className="project__projectCard__card"
-      as={Link}
-      to={`/projects/${id}`}
-    >
+  <div className="projectCard">
+    <Card className="projectCard__card" as={Link} to={`/projects/${id}`}>
       <Card.Content>
-        <Card.Header className="project__projectCard__card__cardName">
+        <Card.Header className="projectCard__card__cardName">
           {name}
         </Card.Header>
         <Card.Meta>{description}</Card.Meta>

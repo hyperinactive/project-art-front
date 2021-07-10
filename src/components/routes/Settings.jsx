@@ -1,153 +1,78 @@
-import { useMutation, useQuery } from '@apollo/client';
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
-import { Grid, Header, Loader, Form, Button, Message } from 'semantic-ui-react';
-import { cloneDeep } from 'lodash';
+import {
+  Grid,
+  Header,
+  Loader,
+  Form,
+  Button,
+  Message,
+  Image,
+} from 'semantic-ui-react';
 
-import { NavigationContext } from '../../context/NavigationProvider';
-import { baseURL, defaultAvatar } from '../../appConfig';
-import { UserContext } from '../../context/UserProvider';
-import { GET_USER, UPDATE_USER } from '../../graphql';
-import { GET_USERS } from '../../graphql/userGQL';
-import ImageController from '../shared/ImageController';
+import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
+import { UserContext } from '../../context/userContext/UserProvider';
+import { defaultAvatar } from '../../appConfig';
+import useLoadUser from '../../utils/hooks/loadUser';
+import useUpdateUser from '../../utils/hooks/updateUser';
+import CropComponent from '../shared/CropComponent';
 
 // TODO: cache update when the imageURL changes
 const Settings = () => {
-  const { user, login } = useContext(UserContext);
   const { userID } = useParams();
+  const { user } = useContext(UserContext);
   const { setTemporaryTab } = useContext(NavigationContext);
 
-  const [errors, setErrors] = useState({});
   const [state, setState] = useState({
+    errors: {},
     username: '',
     skills: '',
     status: '',
-  });
-  // const [preview, setPreview] = useState(defaultAvatar);
-  // const [image, setImage] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(false);
-
-  const [previewImage, setPreviewImage] = useState(defaultAvatar);
-  const [imageFile, setImageFile] = useState(null);
-
-  useEffect(() => {
-    setTemporaryTab({
-      name: 'settings',
-      link: `/settings/${userID}`,
-    });
-  }, []);
-
-  const { data, loading } = useQuery(GET_USER, {
-    variables: {
-      userID,
-    },
-    onCompleted: () => {
-      setState({
-        username: data.getUser.username,
-        skills: data.getUser.skills,
-        status: data.getUser.status,
-      });
-      if (data.getUser.imageURL) {
-        setPreviewImage(`${baseURL}/files/${data.getUser.imageURL}`);
-      }
-      setImageFile(`${baseURL}/files/${data.getUser.imageURL}`);
-    },
-    onError: (err) => {
-      console.log(err);
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
-    },
+    successMessage: false,
+    previewImage: null,
+    imageFile: null,
+    initialImage: null,
   });
 
-  const [updateUser] = useMutation(UPDATE_USER, {
-    update: (cache, result) => {
-      cache.writeQuery({
-        query: GET_USER,
-        variables: {
-          userID: user.id,
-        },
-        data: result.data.updateUser,
-      });
-
-      const users = cache.readQuery({
-        query: GET_USERS,
-      });
-
-      const usersClone = cloneDeep(users);
-
-      if (usersClone !== null) {
-        const filtered = usersClone.getUsers.map((e) => {
-          if (e.id.toString() === user.id) {
-            return result.data.updateUser;
-          }
-          return e;
-        });
-
-        cache.writeQuery({
-          query: GET_USERS,
-          data: {
-            getUsers: filtered,
-          },
-        });
-      }
-      // cache.modify({
-      //   fields: {
-      //     getUsers: (previous) => {
-      //       const prevClone = cloneDeep(previous);
-      //       console.log(prevClone);
-      //       const filteredUsers = prevClone.map((e) => {
-      //         console.log(e);
-      //         if (e.id.toString() === user.id) {
-      //           console.log('found it');
-      //           console.log(e);
-      //           return result.data.updateUser;
-      //         }
-      //         return e;
-      //       });
-      //       return filteredUsers;
-      //     },
-      //   },
-      // });
-    },
-    onCompleted: (res) => {
-      login(res.updateUser);
-      setSuccessMessage(true);
-    },
-    onError: (err) => {
-      console.log(err);
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
-    },
-  });
-
-  // const inputOnChange = (e) => {
-  //   if (e.target.files[0]) {
-  //     setPreviewI(URL.createObjectURL(e.target.files[0]));
-  //     setImage(e.target.files[0]);
-  //     setSuccessMessage(false);
-  //   }
-  // };
+  const [loadUser, { loading }] = useLoadUser(setState);
+  const [updateUser] = useUpdateUser(setState);
 
   const handleChange = (e) => {
     setState((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
+      successMessage: false,
+      errors: {},
     }));
-    setSuccessMessage(false);
-    setErrors({});
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const variables = {
       username: state.username,
       status: state.status,
       skills: state.skills,
-      image: typeof image === 'string' ? null : imageFile,
+      image: typeof image === 'string' ? null : state.previewImage,
     };
     updateUser({
       variables,
     });
-    setImageFile(null);
   };
+
+  // TODO: cleanup
+  useEffect(() => {
+    loadUser({
+      variables: {
+        userID,
+      },
+    });
+    setTemporaryTab({
+      name: 'Settings',
+      link: `/settings/${userID}`,
+    });
+  }, []);
 
   if (!user || userID !== user.id) {
     return <Redirect to="/404" />;
@@ -161,77 +86,59 @@ const Settings = () => {
         </Loader>
       ) : (
         <>
-          <Grid
-            textAlign="center"
-            style={{ height: '90vh' }}
-            verticalAlign="middle"
-          >
-            <Grid.Column style={{ maxWidth: 450 }}>
-              {successMessage && (
-                <Message positive>
-                  <Message.Header>User info updated</Message.Header>
-                  <p>everything went smoothly!</p>
-                </Message>
-              )}
-              <Form onSubmit={handleSubmit}>
-                <Form.Group>
-                  <Header as="h4" icon textAlign="center">
-                    {/* <Image
-                      className="settings__avatar"
-                      style={{ width: 80 }}
-                      src={preview}
-                      rounded
-                    /> */}
-                    <ImageController
-                      errors={errors}
-                      previewImage={previewImage}
-                      setImageFile={setImageFile}
-                      setPreviewImage={setPreviewImage}
-                    />
+          {state.successMessage && (
+            <Message positive>
+              <Message.Header>User info updated</Message.Header>
+              <p>everything went smoothly!</p>
+            </Message>
+          )}
 
-                    {/* <Form.Input
-                      type="file"
-                      style={{ marginTop: 10 }}
-                      onChange={inputOnChange}
-                    /> */}
+          <div className="settings__top">
+            <img
+              className="settings__preview"
+              src={state.previewImage ? state.previewImage : defaultAvatar}
+              alt="profile"
+            />
 
-                    <Form.Input
-                      label="username"
-                      type="text"
-                      className="settings__input themeForm"
-                      value={state.username}
-                      name="username"
-                      onChange={handleChange}
-                      error={errors.usernameCheck || errors.usernameLength}
-                    />
-                    <Form.Input
-                      label="status"
-                      type="text"
-                      className="settings__input themeForm"
-                      value={state.status}
-                      name="status"
-                      onChange={handleChange}
-                      error={errors.statusLength}
-                    />
-                    <Form.TextArea
-                      style={{ textAlign: 'center' }}
-                      label="skills"
-                      type="text"
-                      className="settings__input themeForm"
-                      value={state.skills}
-                      name="skills"
-                      onChange={handleChange}
-                      error={errors.skillsLength}
-                    />
-                  </Header>
-                </Form.Group>
+            <CropComponent setState={setState} />
+          </div>
+          <Form className="settings__bottom" onSubmit={handleSubmit}>
+            <Form.Group className="settings__bottom__form">
+              <Form.Input
+                label="username"
+                type="text"
+                className="settings__input themeForm"
+                value={state.username}
+                name="username"
+                onChange={handleChange}
+                error={
+                  state.errors.usernameCheck || state.errors.usernameLength
+                }
+              />
+              <Form.Input
+                label="status"
+                type="text"
+                className="settings__input themeForm"
+                value={state.status}
+                name="status"
+                onChange={handleChange}
+                error={state.errors.statusLength}
+              />
+              <Form.TextArea
+                label="skills"
+                type="text"
+                className="settings__input themeForm"
+                value={state.skills}
+                name="skills"
+                onChange={handleChange}
+                error={state.errors.skillsLength}
+              />
+            </Form.Group>
 
-                <Button type="submit" color="orange">
-                  Submit
-                </Button>
-              </Form>
-            </Grid.Column>
-          </Grid>
+            <Button type="submit" color="orange">
+              Submit
+            </Button>
+          </Form>
         </>
       )}
     </div>
