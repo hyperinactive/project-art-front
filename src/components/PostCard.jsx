@@ -14,6 +14,7 @@ import { UserContext } from '../context/userContext/UserProvider';
 import LikeButton from './shared/LikeButton';
 import { baseURL, defaultAvatar } from '../appConfig';
 import useDeletePost from '../utils/hooks/deletePost';
+import Share from './routes/Post/Share';
 
 const PostCard = ({ post, projectID }) => {
   const { user } = useContext(UserContext);
@@ -48,49 +49,37 @@ const PostCard = ({ post, projectID }) => {
               </p>
               <p>{post.body}</p>
             </div>
-            {user && user.username === post.username ? (
-              <div style={{ float: 'right' }}>
-                <Dropdown
-                  pointing="right"
-                  icon="ellipsis vertical"
-                  onClick={(e) => {
-                    e.preventDefault();
-                  }}
-                >
-                  <Dropdown.Menu>
-                    <Dropdown.Item
-                      text="Delete"
-                      onClick={() => deletePost(projectID, post.id)}
+
+            <div style={{ float: 'right' }}>
+              <Dropdown
+                pointing="right"
+                icon="ellipsis vertical"
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+              >
+                <Dropdown.Menu>
+                  {user && user.username === post.username && (
+                    <>
+                      <Dropdown.Item
+                        text="Delete"
+                        onClick={() => deletePost(projectID, post.id)}
+                      />
+                      <Dropdown.Item text="Edit" />
+                    </>
+                  )}
+                  <Dropdown.Item>
+                    <Share
+                      postID={post.id}
+                      imageURL={post.user.imageURL}
+                      commentCount={post.commentCount}
+                      likeCount={post.likeCount}
                     />
-                    <Dropdown.Item text="Edit" />
-                    <Dropdown.Item text="Share" />
-                    {/* <Dropdown.Item>
-                      <DeleteButton postID={post.id} type="post" />
-                    </Dropdown.Item> */}
-                  </Dropdown.Menu>
-                </Dropdown>
-                {/* <DeleteButton postID={id} type="post" /> */}
-              </div>
-            ) : (
-              <div style={{ float: 'right' }}>
-                <Dropdown
-                  pointing="right"
-                  icon="ellipsis vertical"
-                  onClick={(e) => {
-                    e.preventDefault();
-                  }}
-                >
-                  <Dropdown.Menu>
-                    <Dropdown.Item text="Share" />
-                    <Dropdown.Item text="Report" />
-                    {/* <Dropdown.Item>
-                      <DeleteButton postID={post.id} type="post" />
-                    </Dropdown.Item> */}
-                  </Dropdown.Menu>
-                </Dropdown>
-                {/* <DeleteButton postID={id} type="post" /> */}
-              </div>
-            )}
+                  </Dropdown.Item>
+                  <Dropdown.Item text="Report" />
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
           </Card.Content>
           {post.imageURL && (
             <Card.Content>

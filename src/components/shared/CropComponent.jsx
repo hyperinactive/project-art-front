@@ -75,6 +75,7 @@ const CropComponent = ({ setState }) => {
   return (
     <div className="cropComponent">
       <Modal
+        closeIcon
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}
