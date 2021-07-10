@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Modal, Button } from 'semantic-ui-react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
+import PropTypes from 'prop-types';
 import { gql, useMutation } from '@apollo/client';
 
 function getCroppedImg(image, crop) {
@@ -39,7 +40,7 @@ function getCroppedImg(image, crop) {
   // });
 }
 
-const CropComponent = () => {
+const CropComponent = ({ setState }) => {
   // src
   const [previewImage, setPreviewImage] = useState(null);
   // img
@@ -48,14 +49,17 @@ const CropComponent = () => {
 
   // contains canvas info about the image height and width
   const [crop, setCrop] = useState({ aspect: 1 / 1 });
-  const [croppedImage, setCroppedImage] = useState(null);
+  // const [croppedImage, setCroppedImage] = useState(null);
 
   const handleFileChange = (e) =>
     setPreviewImage(URL.createObjectURL(e.target.files[0]));
 
   const handleCrop = async (e) => {
-    setCroppedImage(getCroppedImg(imageFile, crop));
-    console.log(croppedImage);
+    // setCroppedImage(getCroppedImg(imageFile, crop));
+    setState((state) => ({
+      ...state,
+      previewImage: getCroppedImg(imageFile, crop),
+    }));
   };
 
   const [uploadCroppedImage] = useMutation(
@@ -74,7 +78,7 @@ const CropComponent = () => {
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}
-        trigger={<Button>Show Modal</Button>}
+        trigger={<Button icon="add" content="profile" />}
       >
         <Modal.Header>Upload image</Modal.Header>
         <Modal.Content>
@@ -94,11 +98,11 @@ const CropComponent = () => {
                   }}
                 />
               </div>
-              {croppedImage && (
+              {/* {croppedImage && (
                 <div className="cropped" style={{ display: 'inline' }}>
                   <img src={croppedImage} alt="cropped" />
                 </div>
-              )}
+              )} */}
             </>
           )}
         </Modal.Content>
@@ -106,16 +110,16 @@ const CropComponent = () => {
           <Button onClick={() => setOpen(false)}>Cancel</Button>
           <Button
             onClick={async () => {
-              // setOpen(false);
               await handleCrop();
+              setOpen(false);
             }}
-            positive
+            color="orange"
           >
             Ok
           </Button>
         </Modal.Actions>
       </Modal>
-      <button
+      {/* <button
         type="submit"
         onClick={() =>
           uploadCroppedImage({
@@ -130,9 +134,13 @@ const CropComponent = () => {
         }
       >
         Upload
-      </button>
+      </button> */}
     </div>
   );
+};
+
+CropComponent.propTypes = {
+  setState: PropTypes.func.isRequired,
 };
 
 export default CropComponent;

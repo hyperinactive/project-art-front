@@ -57,8 +57,6 @@ const InboxForm = () => {
             <Icon name="paper plane" style={{ margin: 0 }} />
           </Button>
         </Form.Input>
-
-        {/* </Segment> */}
       </Form>
     </div>
   );

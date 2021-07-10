@@ -1,14 +1,12 @@
 import { GET_USER_MESSAGES, NEW_MESSAGE } from '../../graphql';
 
 /* eslint-disable no-param-reassign */
-const { useSubscription, useApolloClient } = require('@apollo/client');
+const { useSubscription } = require('@apollo/client');
 const { cloneDeep } = require('lodash');
 
-const useSubToMessages = () =>
+const useSubToMessages = (cache) =>
   useSubscription(NEW_MESSAGE, {
     onSubscriptionData: (data) => {
-      const { cache } = useApolloClient();
-
       if (data.subscriptionData.error) {
         console.log(data.subscriptionData.error);
       }

@@ -5,7 +5,7 @@ import PropType from 'prop-types';
 import ImageController from '../../../../shared/ImageController';
 import useCreatePost from '../../../../../utils/hooks/createPost';
 
-const PostFormModal = ({ project }) => {
+const PostForm = ({ project }) => {
   const [state, setState] = useState({
     open: false,
     body: '',
@@ -104,7 +104,7 @@ const PostFormModal = ({ project }) => {
   );
 };
 
-PostFormModal.propTypes = {
+PostForm.propTypes = {
   project: PropType.shape({
     id: PropType.string.isRequired,
     name: PropType.string.isRequired,
@@ -112,4 +112,4 @@ PostFormModal.propTypes = {
   }).isRequired,
 };
 
-export default PostFormModal;
+export default PostForm;

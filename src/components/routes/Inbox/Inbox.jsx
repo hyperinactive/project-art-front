@@ -1,4 +1,6 @@
+/* eslint-disable no-param-reassign */
 import React, { useContext, useEffect } from 'react';
+import { useApolloClient } from '@apollo/client';
 
 import LoaderComponent from '../../shared/LoaderComponent';
 import InboxFeed from './InboxFeed';
@@ -12,10 +14,11 @@ import useSubToMessages from '../../../utils/hooks/subToMessages';
 const Inbox = () => {
   const { selectedUser, setSelectedUser } = useContext(InboxContext);
   const { setTemporaryTab } = useContext(NavigationContext);
+  const { cache } = useApolloClient();
 
   const [loadUserMessages, { data: friendsData, loading: friendsLoading }] =
     useLoadMessages(setSelectedUser);
-  useSubToMessages();
+  useSubToMessages(cache);
 
   // TODO: some nice cleanup function for async
   useEffect(() => {

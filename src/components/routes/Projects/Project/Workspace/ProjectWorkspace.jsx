@@ -7,7 +7,7 @@ import PropType from 'prop-types';
 import { cloneDeep } from 'lodash';
 
 import LoaderComponent from '../../../../shared/LoaderComponent';
-import PostFormModal from './PostFormModal';
+import PostForm from './PostForm';
 import PostCard from '../../../../PostCard';
 import ElementList from '../../../../shared/ElementList';
 import { NavigationContext } from '../../../../../context/navigationContext/NavigationProvider';
@@ -108,7 +108,7 @@ const ProjectWorkspace = ({ project, elements }) => {
         </div>
       </div>
       <div className="projectWorkspace__wrapper__posts__modal">
-        <PostFormModal project={project} />
+        <PostForm project={project} />
       </div>
 
       {/* <Grid container columns={2}>
