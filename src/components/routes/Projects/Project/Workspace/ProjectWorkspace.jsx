@@ -1,6 +1,7 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-param-reassign */
 import React, { useContext, useEffect, useState } from 'react';
+import { useApolloClient } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import { Waypoint } from 'react-waypoint';
 import PropType from 'prop-types';
@@ -12,11 +13,14 @@ import PostCard from '../../../../PostCard';
 import ElementList from '../../../../shared/ElementList';
 import { NavigationContext } from '../../../../../context/navigationContext/NavigationProvider';
 import useLoadPostFeed from '../../../../../utils/hooks/loadPostFeed';
+import useSubToPosts from '../../../../../utils/hooks/subToPosts';
 
 const ProjectWorkspace = ({ project, elements }) => {
   const [cursor, setCursor] = useState(null);
   const [canLoadMore, setCanLoadMore] = useState(true);
   const { setTemporaryTab, setActiveItem } = useContext(NavigationContext);
+
+  const { cache } = useApolloClient();
 
   const [loadFeed, { data, loading, fetchMore }] = useLoadPostFeed(
     setCanLoadMore,
@@ -48,6 +52,8 @@ const ProjectWorkspace = ({ project, elements }) => {
     });
   };
 
+  useSubToPosts(project.id, cache);
+
   // TODO: cleanup isn't right
   useEffect(() => {
     let ignore = false;
@@ -66,7 +72,7 @@ const ProjectWorkspace = ({ project, elements }) => {
     return () => {
       ignore = true;
     };
-  }, [project.id]);
+  }, []);
 
   return (
     <div className="projectWorkspace">
@@ -82,7 +88,6 @@ const ProjectWorkspace = ({ project, elements }) => {
               <LoaderComponent />
             ) : (
               <>
-                {/* TODO: feed needs fixing */}
                 {data &&
                   data.getFeed &&
                   data.getFeed.posts &&

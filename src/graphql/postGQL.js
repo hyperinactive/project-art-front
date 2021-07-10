@@ -156,6 +156,21 @@ const GET_FEED = gql`
   }
 `;
 
+const NEW_POST = gql`
+  ${POST_FIELDS}
+  ${LIKE_FIELDS}
+  ${USER_FIELDS}
+  subscription newPost {
+    newPost {
+      ...PostFields
+      ...LikeFields
+      user {
+        ...UserFields
+      }
+    }
+  }
+`;
+
 export {
   GET_POST,
   GET_POSTS,
@@ -166,4 +181,5 @@ export {
   GET_PROJECT_POSTS,
   GET_POSTS_FEED,
   GET_FEED,
+  NEW_POST,
 };
