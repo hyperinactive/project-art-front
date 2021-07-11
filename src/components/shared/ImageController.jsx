@@ -44,7 +44,12 @@ const ImageController = ({ state, setState }) => {
             Drop it here
           </p>
         ) : state.previewImage ? (
-          <Image centered src={state.previewImage} style={{ width: 180 }} />
+          <Image
+            className="imageController__container__image"
+            centered
+            src={state.previewImage}
+            size="big"
+          />
         ) : (
           <div className="imageController__container__placeholder">
             <p

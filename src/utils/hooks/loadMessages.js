@@ -1,4 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
+
 import { GET_USER_MESSAGES } from '../../graphql';
 
 const useLoadMessages = (setSelectedUser) =>

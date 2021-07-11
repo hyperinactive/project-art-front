@@ -3,9 +3,9 @@ import { GET_USER_PROJECTS } from '../../graphql';
 
 const useLoadProjects = () =>
   useLazyQuery(GET_USER_PROJECTS, {
-    onCompleted: (data) => {
-      console.log(data);
-    },
+    // onCompleted: (data) => {
+    //   console.log(data);
+    // },
     onError(err) {
       console.log(err);
     },

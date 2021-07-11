@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import React, { useContext, useEffect, useState } from 'react';
 import { Popup } from 'semantic-ui-react';
@@ -37,7 +36,7 @@ const InboxFeed = ({ feed }) => {
 
   useEffect(() => {
     if (feed !== null && feed.length > 0) setCursorTimestamp(feed[0].createdAt);
-  }, []);
+  }, [feed]);
 
   return (
     <ScrollableFeed className="inboxFeed">

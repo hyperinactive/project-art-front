@@ -53,7 +53,7 @@ const PostCard = ({ post, projectID }) => {
             <div style={{ float: 'right' }}>
               <Dropdown
                 pointing="right"
-                icon="ellipsis vertical"
+                icon="caret square left outline"
                 onClick={(e) => {
                   e.preventDefault();
                 }}

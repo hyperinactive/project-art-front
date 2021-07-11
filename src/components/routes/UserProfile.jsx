@@ -1,5 +1,4 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
-import { cloneDeep } from '@apollo/client/utilities';
+import { useLazyQuery } from '@apollo/client';
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { Image, Button } from 'semantic-ui-react';
@@ -13,14 +12,9 @@ import {
 import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
 import { UserContext } from '../../context/userContext/UserProvider';
 
-import {
-  ADD_FRIEND,
-  GET_FRIENDS,
-  GET_USER,
-  GET_USER_FRIENDS,
-  GET_USER_PROJECTS,
-} from '../../graphql';
+import { GET_USER, GET_USER_FRIENDS, GET_USER_PROJECTS } from '../../graphql';
 import prettyString from '../../utils/prettyString';
+import useAddFriend from '../../utils/hooks/addFriend';
 
 const isFriendsWith = (friends, userID) =>
   friends.find((friend) => friend.id.toString() === userID.toString());
@@ -40,9 +34,7 @@ const UserProfile = () => {
       userID: fUserID,
     },
     onCompleted: () => {
-      console.log(data);
       if (isFriendsWith(data.getUser.friends, user.id) !== undefined) {
-        console.log('were friends');
         setIsFriend(true);
       } else {
         setIsFriend(false);
@@ -64,9 +56,9 @@ const UserProfile = () => {
       variables: {
         userID: fUserID,
       },
-      onCompleted: () => {
-        console.log(friendsData);
-      },
+      // onCompleted: () => {
+      //   console.log(friendsData);
+      // },
       onError: (error) => {
         console.log(error);
       },
@@ -77,38 +69,15 @@ const UserProfile = () => {
       variables: {
         userID: fUserID,
       },
-      onCompleted: () => {
-        console.log(projectsData);
-      },
+      // onCompleted: () => {
+      //   console.log(projectsData);
+      // },
       onError: (error) => {
         console.log(error);
       },
     });
 
-  const [addFriend] = useMutation(ADD_FRIEND, {
-    update: (cache, result) => {
-      const friends = cache.readQuery({
-        query: GET_FRIENDS,
-      });
-
-      const friendsClone = cloneDeep(friends);
-      friendsClone.getFriends = [
-        ...friendsClone.getFriends,
-        result.data.addFriend,
-      ];
-
-      cache.writeQuery({
-        query: GET_FRIENDS,
-        data: {
-          getFriends: friendsClone.getFriends,
-        },
-      });
-    },
-    onCompleted: () => {
-      console.log('we friends now, yay!');
-      setIsFriend(true);
-    },
-  });
+  const [addFriend] = useAddFriend(setIsFriend, fUserID);
 
   useEffect(() => {
     if (user) {
@@ -118,7 +87,7 @@ const UserProfile = () => {
     } else {
       history.push('/');
     }
-  }, []);
+  }, [friendsData]);
 
   if (projectsLoading || friendsLoading || loading) {
     return <LoaderComponent />;
@@ -196,11 +165,7 @@ const UserProfile = () => {
                   style={{ margin: 10 }}
                   onClick={(e) => {
                     e.preventDefault();
-                    addFriend({
-                      variables: {
-                        userID: fUserID,
-                      },
-                    });
+                    addFriend();
                   }}
                 >
                   Add friend

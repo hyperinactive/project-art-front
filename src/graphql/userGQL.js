@@ -97,8 +97,16 @@ const UPDATE_USER = gql`
 const ADD_FRIEND = gql`
   mutation addFriend($userID: ID, $username: String) {
     addFriend(userID: $userID, username: $username) {
-      id
-      username
+      sender {
+        id
+        username
+        imageURL
+      }
+      receiver {
+        id
+        username
+        imageURL
+      }
     }
   }
 `;
