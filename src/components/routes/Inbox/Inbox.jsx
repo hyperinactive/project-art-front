@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import React, { useContext, useEffect } from 'react';
 import { useApolloClient } from '@apollo/client';
 
@@ -18,7 +17,6 @@ const Inbox = () => {
 
   const [loadUserMessages, { data: friendsData, loading: friendsLoading }] =
     useLoadMessages(setSelectedUser);
-  useSubToMessages(cache);
 
   // TODO: some nice cleanup function for async
   useEffect(() => {
@@ -29,11 +27,14 @@ const Inbox = () => {
     });
   }, []);
 
+  useSubToMessages(cache);
+
   return (
     <div className="inboxComponent">
       {/* TODO: switch off the Grid */}
       <div className="inboxComponent__wrapper">
         <div className="inboxComponent__wrapper__left">
+          {/* if data loading show loader, when check if a selected user exists */}
           {selectedUser ? (
             <>
               {selectedUser ? (

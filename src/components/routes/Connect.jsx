@@ -18,9 +18,9 @@ const Connect = () => {
 
   const { data: userData, loading: userLoading } = useQuery(GET_USERS, {
     pollInterval: 5000,
-    onCompleted: () => {
-      console.log(userData.getUsers);
-    },
+    // onCompleted: () => {
+    //   console.log(userData.getUsers);
+    // },
     onError: (err) => {
       console.log(err);
     },
