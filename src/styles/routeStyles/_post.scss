@@ -1,0 +1,20 @@
+.post {
+  padding: 2rem;
+  text-align: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  &__left {
+    width: 70%;
+
+    &__comments {
+      padding: 1rem;
+    }
+  }
+  &__right {
+    padding: 1em;
+  }
+}

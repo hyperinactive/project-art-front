@@ -16,7 +16,10 @@ const PlainComment = ({
   user,
   postID,
 }) => (
-  <div className="plainComment" style={{ marginTop: 15, marginBottom: 15 }}>
+  <div
+    className="plainComment"
+    style={{ marginTop: 15, marginBottom: 15, color: 'black' }}
+  >
     <Card fluid>
       <Card.Content>
         <div style={{ float: 'right' }}>

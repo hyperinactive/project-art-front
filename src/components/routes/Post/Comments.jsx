@@ -11,7 +11,7 @@ const Comments = ({ user, postID }) => {
   // TODO: cleanup
   useEffect(() => {
     loadComments();
-  }, [loadComments]);
+  }, []);
 
   return (
     <div className="comments">

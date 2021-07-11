@@ -123,6 +123,7 @@ PostCard.defaultProps = {
     likes: [],
     user: {},
   },
+  projectID: null,
 };
 
 PostCard.propTypes = {
@@ -147,7 +148,7 @@ PostCard.propTypes = {
       status: PropTypes.string,
     }),
   }),
-  projectID: PropTypes.string.isRequired,
+  projectID: PropTypes.string,
 };
 
 export default PostCard;
