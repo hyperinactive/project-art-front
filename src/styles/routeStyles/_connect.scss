@@ -19,5 +19,9 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 2rem;
+
+    &__item {
+      @extend .accentMe;
+    }
   }
 }

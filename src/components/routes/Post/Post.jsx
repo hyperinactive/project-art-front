@@ -72,6 +72,8 @@ const Post = () => {
               user={data.getPost.user}
               likeCount={data.getPost.likeCount}
               commentCount={data.getPost.commentCount}
+              likes={data.getPost.likes}
+              comments={data.getPost.comments}
             />
           </div>
         </>

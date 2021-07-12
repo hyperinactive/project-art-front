@@ -69,7 +69,6 @@ const LoginForm = () => {
                 type="button"
                 onClick={() => setIsPassVisible(!isPassVisible)}
               >
-                {/* {isPassVisible ? 'visible' : 'hidden'} */}
                 <Icon
                   name={isPassVisible ? 'eye' : 'eye slash'}
                   style={{ margin: 0 }}

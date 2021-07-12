@@ -8,11 +8,13 @@ import { UserProvider } from './context/userContext/UserProvider';
 import { NavigationProvider } from './context/navigationContext/NavigationProvider';
 import { InboxProvider } from './context/inboxContext/InboxProvider';
 
+import UserRoute from './components/routes/UserRoute';
+import ProtectedRoute from './components/routes/ProtectedRoute';
+
 import NavBar from './components/NavBar';
 import Home from './components/routes/Home/Home';
 import Register from './components/routes/Register';
 import Login from './components/routes/Login';
-import UserRoute from './components/routes/UserRoute';
 import SinglePost from './components/routes/Post/Post';
 import NotFoundPage from './components/routes/NotFoundPage';
 import Projects from './components/routes/Projects/Projects';
@@ -22,6 +24,7 @@ import Inbox from './components/routes/Inbox/Inbox';
 import Project from './components/routes/Projects/Project/Project';
 import ProjectForm from './components/routes/Projects/ProjectForm';
 import Connect from './components/routes/Connect';
+import Help from './components/routes/Help';
 
 const App = () => (
   <UserProvider>
@@ -36,20 +39,33 @@ const App = () => (
                 <Route exact path="/" component={Home} />
                 <UserRoute exact path="/register" component={Register} />
                 <UserRoute exact path="/login" component={Login} />
-                <Route exact path="/posts/:postID" component={SinglePost} />
+                <ProtectedRoute
+                  exact
+                  path="/posts/:postID"
+                  component={SinglePost}
+                />
                 <Route exact path="/projects" component={Projects} />
-                <Route exact path="/connect" component={Connect} />
-                <Route
+                <ProtectedRoute exact path="/connect" component={Connect} />
+                <ProtectedRoute
                   exact
                   path="/projects/createProject"
                   component={ProjectForm}
                 />
                 <Route exact path="/projects/:projectID" component={Project} />
                 {/* TODO: user settings and user profile */}
-                <Route exact path="/settings/:userID" component={Settings} />
+                <ProtectedRoute
+                  exact
+                  path="/settings/:userID"
+                  component={Settings}
+                />
 
-                <Route exact path="/user/:userID" component={UserProfile} />
-                <Route exact path="/inbox" component={Inbox} />
+                <ProtectedRoute
+                  exact
+                  path="/user/:userID"
+                  component={UserProfile}
+                />
+                <ProtectedRoute exact path="/inbox" component={Inbox} />
+                <Route exact path="/help" component={Help} />
 
                 <Route exact path="/404" component={NotFoundPage} />
 

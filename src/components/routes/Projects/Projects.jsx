@@ -1,15 +1,17 @@
-import { useLazyQuery } from '@apollo/client';
 import React, { useContext, useEffect, useState } from 'react';
+import { useLazyQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
-import { Button, Input } from 'semantic-ui-react';
+import { Button, Input, Icon } from 'semantic-ui-react';
 
 import ProjectCard from './ProjectCard';
 import LoaderComponent from '../../shared/LoaderComponent';
 import { UserContext } from '../../../context/userContext/UserProvider';
 import { GET_PROJECTS } from '../../../graphql';
+import { alphabetically, membersCount } from '../../../utils/projectSort';
 
 const Projects = () => {
   const { user } = useContext(UserContext);
+  const [active, setActive] = useState(false);
 
   const [loadProjects, { loading, error, data }] = useLazyQuery(GET_PROJECTS, {
     pollInterval: 1500,
@@ -52,6 +54,18 @@ const Projects = () => {
             }}
             icon={{ name: 'search', color: 'orange' }}
           />
+          <Button
+            basic={!active ? true : null}
+            active={active}
+            color="orange"
+            onClick={() => {
+              setActive(!active);
+            }}
+          >
+            <Button.Content>
+              <Icon name="users" />
+            </Button.Content>
+          </Button>
         </div>
       </div>
 
@@ -59,13 +73,7 @@ const Projects = () => {
         {data &&
           data.getProjects &&
           [...data.getProjects]
-            .sort((a, b) => {
-              const al = a.name.toLowerCase();
-              const bl = b.name.toLowerCase();
-
-              if (al > bl) return 1;
-              return -1;
-            })
+            .sort(active ? alphabetically : membersCount)
             .filter((project) =>
               project.name.toLowerCase().includes(searchTerm.toLowerCase())
             )

@@ -137,7 +137,7 @@ const NavBar = () => {
                 <Icon name="sun" style={{ margin: 0 }} />
                 Theme
               </Dropdown.Item>
-              <Dropdown.Item name="help" onClick={() => {}}>
+              <Dropdown.Item name="help" as={Link} to="/help">
                 <Icon name="question circle outline" style={{ margin: 0 }} />
                 Help
               </Dropdown.Item>

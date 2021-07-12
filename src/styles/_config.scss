@@ -45,3 +45,7 @@
     display: none;
   }
 }
+
+.accentMe:hover {
+  color: map-get($map: $mainPallete, $key: 'accent') !important;
+}
