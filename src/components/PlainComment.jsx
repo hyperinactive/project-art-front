@@ -1,63 +1,62 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
 import { Card, Image, Dropdown } from 'semantic-ui-react';
-import DeleteButton from './shared/DeleteButton';
 import { defaultAvatar, baseURL } from '../appConfig';
+import { UserContext } from '../context/userContext/UserProvider';
 
 const PlainComment = ({
   props: {
-    id,
     createdAt,
     body,
     user: { id: postUserID, username, imageURL },
   },
-  user,
-  postID,
-}) => (
-  <div
-    className="plainComment"
-    style={{ marginTop: 15, marginBottom: 15, color: 'black' }}
-  >
-    <Card fluid>
-      <Card.Content>
-        <div style={{ float: 'right' }}>
-          <Dropdown
-            icon="ellipsis vertical"
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <Dropdown.Menu>
-              <Dropdown.Item text="Delete" />
-              <Dropdown.Item text="Edit" />
-              <Dropdown.Item text="Share" />
-              {user && user.id === postUserID && (
-                <Dropdown.Item>
-                  <DeleteButton postID={postID} commentID={id} type="comment" />
-                </Dropdown.Item>
-              )}
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-        <Image
-          avatar
-          size="massive"
-          floated="left"
-          src={imageURL ? `${baseURL}/files/${imageURL}` : defaultAvatar}
-        />
-        <Card.Header>{username}</Card.Header>
-        <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
-
+}) => {
+  const { user } = useContext(UserContext);
+  return (
+    <div
+      className="plainComment"
+      style={{ marginTop: 15, marginBottom: 15, color: 'black' }}
+    >
+      <Card fluid>
         <Card.Content>
-          <Card.Description>{body}</Card.Description>
+          <div style={{ float: 'right' }}>
+            <Dropdown
+              icon="ellipsis vertical"
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <Dropdown.Menu>
+                <Dropdown.Item text="Share" />
+                {user && user.id === postUserID && (
+                  <>
+                    <Dropdown.Item text="Edit" />
+                    <Dropdown.Item text="Delete" />
+                  </>
+                )}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+          <Image
+            avatar
+            size="massive"
+            floated="left"
+            src={imageURL ? `${baseURL}/files/${imageURL}` : defaultAvatar}
+          />
+          <Card.Header>{username}</Card.Header>
+          <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
+
+          <Card.Content>
+            <Card.Description>{body}</Card.Description>
+          </Card.Content>
         </Card.Content>
-      </Card.Content>
-    </Card>
-    {/* NOTE: Comment Groups allow for comment nesting */}
-  </div>
-);
+      </Card>
+      {/* NOTE: Comment Groups allow for comment nesting */}
+    </div>
+  );
+};
 
 PlainComment.defaultProps = {
   user: null,
@@ -79,7 +78,6 @@ PlainComment.propTypes = {
     username: PropTypes.string.isRequired,
     imageURL: PropTypes.string,
   }),
-  postID: PropTypes.string.isRequired,
 };
 
 export default PlainComment;

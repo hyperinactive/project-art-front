@@ -12,7 +12,7 @@
   &__usersGrid {
     @include hidden-scrollbar;
     height: 100%;
-    padding: 1rem;
+    padding: 1rem 10rem;
     overflow: scroll;
     display: flex;
     flex-direction: row;

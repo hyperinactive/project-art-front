@@ -13,6 +13,12 @@
     max-height: 35vh;
     object-fit: contain;
   }
+
+  &__extra {
+    display: flex;
+    flex-direction: row;
+  }
+
   .card {
     @include form;
   }

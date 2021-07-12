@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Form, Button, Transition } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import useCreateComment from '../utils/hooks/createComment';
+
+import useCreateComment from '../../../utils/hooks/createComment';
 
 const CommentForm = ({ postID }) => {
   const [comment, setComment] = useState('');

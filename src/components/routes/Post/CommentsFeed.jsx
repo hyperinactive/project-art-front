@@ -1,11 +1,11 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
-import { Loader } from 'semantic-ui-react';
-import PlainComment from '../../PlainComment';
-import CommentForm from '../../CommentForm';
-import useLoadComments from '../../../utils/hooks/loadComments';
+import PropTypes from 'prop-types';
 
-const Comments = ({ user, postID }) => {
+import useLoadComments from '../../../utils/hooks/loadComments';
+import PlainComment from '../../PlainComment';
+import LoaderComponent from '../../shared/LoaderComponent';
+
+const CommentsFeed = ({ postID }) => {
   const [loadComments, { data, loading }] = useLoadComments(postID);
 
   // TODO: cleanup
@@ -14,14 +14,10 @@ const Comments = ({ user, postID }) => {
   }, []);
 
   return (
-    <div className="comments">
-      <CommentForm fluid postID={postID} />
+    <div className="commentsFeed">
       {loading ? (
-        <Loader size="huge" active>
-          Computing, things, beep bop
-        </Loader>
+        <LoaderComponent />
       ) : (
-        user &&
         data &&
         data.getComments &&
         data.getComments.map((comment) => (
@@ -30,7 +26,6 @@ const Comments = ({ user, postID }) => {
             postID={postID}
             commentID={comment.id}
             props={comment}
-            user={user}
           />
         ))
       )}
@@ -38,4 +33,8 @@ const Comments = ({ user, postID }) => {
   );
 };
 
-export default Comments;
+CommentsFeed.propTypes = {
+  postID: PropTypes.string.isRequired,
+};
+
+export default CommentsFeed;

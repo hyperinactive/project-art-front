@@ -95,14 +95,12 @@ const PostCard = ({ post, projectID }) => {
             </Card.Content>
           )}
 
-          <Card.Content extra>
-            <div className="ui two buttons">
-              <LikeButton post={post} user={user} />
-              <Button color="red" basic>
-                <Icon name="comments" />
-                {post.commentCount}
-              </Button>
-            </div>
+          <Card.Content extra className="postCard__extra">
+            <LikeButton post={post} user={user} />
+            <Button fluid color="red" basic>
+              <Icon name="comments" />
+              {post.commentCount}
+            </Button>
           </Card.Content>
         </Card>
       </Transition.Group>
