@@ -12,6 +12,8 @@
   flex-direction: column;
   justify-items: center !important;
   color: map-get($map: $mainPallete, $key: 'regularText');
+  align-items: center;
+  justify-content: center;
 }
 
 @mixin grid-scroll-image {

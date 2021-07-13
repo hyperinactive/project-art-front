@@ -56,15 +56,6 @@ const NavBar = () => {
       >
         Home
       </Menu.Item>
-      {/* <Menu.Item
-        name="user"
-        active={activeItem === 'user'}
-        onClick={handleItemClick}
-        as={Link}
-        to={`/user/${user.id}`}
-      >
-        {user.username}
-      </Menu.Item> */}
       <Menu.Item
         className="navbar__menu__item"
         name="projects"
@@ -84,7 +75,7 @@ const NavBar = () => {
       {temporaryTab && (
         <Menu.Item
           className={`navbar__menu__item tempTab ${
-            activeItem === temporaryTab.name
+            activeItem.toLowerCase() === temporaryTab.name.toLowerCase()
               ? 'tempTab--active'
               : 'tempTab--inactive'
           }`}
@@ -155,39 +146,7 @@ const NavBar = () => {
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Item>
-
-        {/* <Menu.Item
-          className="navbar__menu__item"
-          name="logout"
-          onClick={() => {
-            setTemporaryTab(null);
-            logout();
-            history.push('/');
-            setActiveItem('home');
-          }}
-        /> */}
       </Menu.Menu>
-      {/* <Menu.Item
-        className="navbar__menu__item"
-        name="chat"
-        active={activeItem === 'chat'}
-        onClick={handleItemClick}
-        as={Link}
-        to="/chat"
-      >
-        <Icon name="inbox" style={{ margin: 0 }} />
-      </Menu.Item> */}
-
-      {/* <Menu.Item
-        className="navbar__menu__item"
-        name="settings"
-        active={activeItem === 'settings'}
-        onClick={handleItemClick}
-        as={Link}
-        to={`/settings/${user.id}`}
-      >
-        <Icon name="setting" style={{ margin: 0 }} />
-      </Menu.Item> */}
     </Menu>
   ) : (
     <Menu size="massive" color="orange" className="navbar__menu">

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import useLoadComments from '../../../utils/hooks/loadComments';
-import PlainComment from '../../PlainComment';
+import PlainComment from '../../shared/PlainComment';
 import LoaderComponent from '../../shared/LoaderComponent';
 
 const CommentsFeed = ({ postID }) => {

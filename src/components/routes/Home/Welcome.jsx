@@ -5,8 +5,8 @@ import { Image, Button } from 'semantic-ui-react';
 const Welcome = () => (
   <div className="home__welcome">
     <h2>
-      Welcome to project-
-      <i className="accentText">art</i>!
+      Welcome to Project
+      <i className="accentText">Art</i>!
     </h2>
     <Image
       size="small"

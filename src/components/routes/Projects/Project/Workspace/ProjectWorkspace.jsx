@@ -5,15 +5,15 @@ import { useApolloClient } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import { Waypoint } from 'react-waypoint';
 import PropType from 'prop-types';
-import { cloneDeep } from 'lodash';
 
 import LoaderComponent from '../../../../shared/LoaderComponent';
 import PostForm from './PostForm';
-import PostCard from '../../../../PostCard';
+import PostCard from '../../../../shared/PostCard';
 import ElementList from '../../../../shared/ElementList';
 import { NavigationContext } from '../../../../../context/navigationContext/NavigationProvider';
 import useLoadPostFeed from '../../../../../utils/hooks/loadPostFeed';
 import useSubToPosts from '../../../../../utils/hooks/subToPosts';
+import useFetchMorePosts from '../../../../../utils/hooks/fetchMorePosts';
 
 const ProjectWorkspace = ({ project, elements }) => {
   const [cursor, setCursor] = useState(null);
@@ -28,28 +28,7 @@ const ProjectWorkspace = ({ project, elements }) => {
   );
 
   const feedMe = () => {
-    fetchMore({
-      variables: {
-        projectID: project.id,
-        cursor,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult.getFeed.hasMoreItems) {
-          setCanLoadMore(false);
-        }
-
-        const prevClone = cloneDeep(prev);
-        prevClone.getFeed.posts = [
-          ...prevClone.getFeed.posts,
-          ...fetchMoreResult.getFeed.posts,
-        ];
-        prevClone.getFeed.hasMoreItems = fetchMoreResult.getFeed.hasMoreItems;
-        prevClone.getFeed.nextCursor = fetchMoreResult.getFeed.nextCursor;
-
-        setCursor(fetchMoreResult.getFeed.nextCursor);
-        return prevClone;
-      },
-    });
+    useFetchMorePosts(fetchMore, setCanLoadMore, setCursor, project.id, cursor);
   };
 
   useSubToPosts(project.id, cache);
@@ -115,57 +94,6 @@ const ProjectWorkspace = ({ project, elements }) => {
       <div className="projectWorkspace__wrapper__posts__modal">
         <PostForm project={project} />
       </div>
-
-      {/* <Grid container columns={2}>
-        <Grid.Row columns={1} centered>
-          <h2>{project.name}</h2>
-        </Grid.Row>
-        <Grid.Column width={2}>
-          <Grid.Row centered>
-            <ElementList elements={elements} type="user" />
-          </Grid.Row>
-        </Grid.Column>
-        <Grid.Column width={12}>
-          <Grid.Row textAlign="center">
-            <Grid.Column>
-              {loading && (
-                <Loader size="huge" active>
-                  Computing, things, beep bop
-                </Loader>
-              )}
-              <PostProjectForm project={project} />
-              <div>
-                <div className="projectWorkspace__feed">
-                  {data &&
-                    data.getPostsFeed.posts &&
-                    data.getPostsFeed.posts.map((post, i) => (
-                      <React.Fragment key={post.id}>
-                        <PostCard post={post} />
-                        {i === 0 && (
-                          <Waypoint
-                            onEnter={() => {
-                              if (canLoadMore) {
-                                feedMe();
-                              }
-                            }}
-                          />
-                        )}
-                      </React.Fragment>
-                    ))}
-                </div>
-
-                {loading && <Loader>Loading more posts</Loader>}
-              </div>
-
-              {loading && (
-                <Loader size="huge" active>
-                  Computing, things, beep bop
-                </Loader>
-              )}
-            </Grid.Column>
-          </Grid.Row>
-        </Grid.Column>
-      </Grid> */}
     </div>
   );
 };

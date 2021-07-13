@@ -10,5 +10,5 @@ export const membersCount = (a, b) => {
   const al = a.memberCount;
   const bl = b.memberCount;
 
-  return al - bl;
+  return bl - al;
 };

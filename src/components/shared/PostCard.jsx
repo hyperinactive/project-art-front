@@ -10,11 +10,11 @@ import {
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-import { UserContext } from '../context/userContext/UserProvider';
-import LikeButton from './shared/LikeButton';
-import { baseURL, defaultAvatar } from '../appConfig';
-import useDeletePost from '../utils/hooks/deletePost';
-import Share from './routes/Post/Share';
+import { UserContext } from '../../context/userContext/UserProvider';
+import LikeButton from './LikeButton';
+import { baseURL, defaultAvatar } from '../../appConfig';
+import useDeletePost from '../../utils/hooks/deletePost';
+import Share from '../routes/Post/Share';
 
 const PostCard = ({ post, projectID }) => {
   const { user } = useContext(UserContext);

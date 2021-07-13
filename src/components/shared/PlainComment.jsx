@@ -3,8 +3,8 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 
 import { Card, Image, Dropdown } from 'semantic-ui-react';
-import { defaultAvatar, baseURL } from '../appConfig';
-import { UserContext } from '../context/userContext/UserProvider';
+import { defaultAvatar, baseURL } from '../../appConfig';
+import { UserContext } from '../../context/userContext/UserProvider';
 
 const PlainComment = ({
   props: {

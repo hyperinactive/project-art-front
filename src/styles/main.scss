@@ -49,7 +49,7 @@ body {
     }
 
     .accentText {
-      color: map-get($map: $mainPallete, $key: 'accent');
+      color: $accentColor;
     }
   }
 

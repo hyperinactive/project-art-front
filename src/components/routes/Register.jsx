@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button, Form, Grid, Icon, Header } from 'semantic-ui-react';
 
 import useRegister from '../../utils/hooks/register';
+import LoaderComponent from '../shared/LoaderComponent';
 
 const Register = () => {
   const [state, setState] = useState({
@@ -40,6 +41,7 @@ const Register = () => {
 
   return (
     <div className="register">
+      {loading && <LoaderComponent />}
       <Grid
         textAlign="center"
         style={{ height: '70vh' }}
@@ -54,7 +56,6 @@ const Register = () => {
             onSubmit={handleSubmit}
             noValidate
             // the loading spinner class
-            className={loading ? 'loading' : ''}
           >
             {/* <Segment stacked> */}
             <Form.Input

@@ -73,7 +73,7 @@ const Projects = () => {
         {data &&
           data.getProjects &&
           [...data.getProjects]
-            .sort(active ? alphabetically : membersCount)
+            .sort(!active ? alphabetically : membersCount)
             .filter((project) =>
               project.name.toLowerCase().includes(searchTerm.toLowerCase())
             )
