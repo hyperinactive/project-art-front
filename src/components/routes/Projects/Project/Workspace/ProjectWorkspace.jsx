@@ -27,15 +27,6 @@ const ProjectWorkspace = ({ project, elements }) => {
     setCursor
   );
 
-  // wonder if name change fixes it
-  const feedMe = useFetchMorePosts(
-    fetchMore,
-    setCanLoadMore,
-    setCursor,
-    project.id,
-    cursor
-  );
-
   useSubToPosts(project.id, cache);
 
   // TODO: cleanup isn't right
@@ -84,7 +75,13 @@ const ProjectWorkspace = ({ project, elements }) => {
                         <Waypoint
                           onEnter={() => {
                             if (canLoadMore) {
-                              feedMe();
+                              useFetchMorePosts(
+                                fetchMore,
+                                setCanLoadMore,
+                                setCursor,
+                                project.id,
+                                cursor
+                              );
                             }
                           }}
                         />
