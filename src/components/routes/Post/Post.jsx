@@ -1,17 +1,18 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-nested-ternary */
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Icon, Menu } from 'semantic-ui-react';
-import { useParams, Link } from 'react-router-dom';
+import { Button, Card, Image } from 'semantic-ui-react';
+import { useParams } from 'react-router-dom';
+import moment from 'moment';
 
 import LoaderComponent from '../../shared/LoaderComponent';
-import { baseURL, defaultAvatar } from '../../../appConfig';
+import { baseURL } from '../../../appConfig';
 import { UserContext } from '../../../context/userContext/UserProvider';
-import Comments from './Comments';
 import useLoadPost from '../../../utils/hooks/loadPost';
 import useDeletePost from '../../../utils/hooks/deletePost';
-import PostCard from '../../PostCard';
 import PostProfileCard from './PostProfileCard';
+import CommentsModal from './CommentsModal';
+import LikeButton from '../../shared/LikeButton';
 
 const isMemeber = (members, fUser) =>
   members.find((member) => member.id === fUser.id) !== undefined;
@@ -43,9 +44,27 @@ const Post = () => {
         isMemeber(data.getPost.project.members, user) ? (
         <>
           <div className="post__left">
-            <PostCard post={data.getPost} projectID={projectID} />
-            <div className="post__left__comments">
-              <Comments user={user} postID={data.getPost.id} />
+            <Card fluid className="post__left__card">
+              {data.getPost.imageURL && (
+                <Card.Content>
+                  <Image
+                    className="post__left__card__image"
+                    size="big"
+                    src={`${baseURL}/files/${data.getPost.imageURL}`}
+                    alt="some alt"
+                  />
+                </Card.Content>
+              )}
+              <Card.Content style={{ textAlign: 'left', fontSize: 16 }}>
+                <p className="post__left__card__date">
+                  {moment(data.getPost.createdAt).fromNow()}
+                </p>
+                <p className="post__left__card__content">{data.getPost.body}</p>
+              </Card.Content>
+            </Card>
+            <div className="post__left__extra">
+              <LikeButton post={data.getPost} user={user} />
+              <CommentsModal postID={postID} />
             </div>
           </div>
           <div className="post__right">
@@ -53,6 +72,8 @@ const Post = () => {
               user={data.getPost.user}
               likeCount={data.getPost.likeCount}
               commentCount={data.getPost.commentCount}
+              likes={data.getPost.likes}
+              comments={data.getPost.comments}
             />
           </div>
         </>

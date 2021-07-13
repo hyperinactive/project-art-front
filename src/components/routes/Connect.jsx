@@ -59,22 +59,24 @@ const Connect = () => {
                     .includes(searchTerm.toLowerCase())
                 )
                 .map((member) => (
-                  <div key={member.id}>
-                    <div style={{ textAlign: 'center' }}>
-                      <Image
-                        rounded
-                        size="tiny"
-                        src={
-                          member.imageURL
-                            ? `${baseURL}/files/${member.imageURL}`
-                            : defaultAvatar
-                        }
-                        as={Link}
-                        to={`/user/${member.id}`}
-                      />
+                  <div
+                    key={member.id}
+                    className="connect__usersGrid__item"
+                    style={{ textAlign: 'center' }}
+                  >
+                    <Image
+                      rounded
+                      size="tiny"
+                      src={
+                        member.imageURL
+                          ? `${baseURL}/files/${member.imageURL}`
+                          : defaultAvatar
+                      }
+                      as={Link}
+                      to={`/user/${member.id}`}
+                    />
 
-                      <p>{member.username}</p>
-                    </div>
+                    <p>{member.username}</p>
                   </div>
                 ))}
           </div>

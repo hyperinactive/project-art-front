@@ -12,6 +12,8 @@
   flex-direction: column;
   justify-items: center !important;
   color: map-get($map: $mainPallete, $key: 'regularText');
+  align-items: center;
+  justify-content: center;
 }
 
 @mixin grid-scroll-image {
@@ -71,14 +73,11 @@
 
       &__project {
         @include grid-scroll-item;
+        @extend .accentMe;
 
         &__image {
           @include grid-scroll-image;
         }
-      }
-
-      &__project:hover {
-        color: map-get($map: $mainPallete, $key: 'accent');
       }
     }
 
@@ -97,13 +96,11 @@
 
       &__friend {
         @include grid-scroll-item;
+        @extend .accentMe;
 
         &__image {
           @include grid-scroll-image;
         }
-      }
-      &__friend:hover {
-        color: map-get($map: $mainPallete, $key: 'accent');
       }
     }
   }

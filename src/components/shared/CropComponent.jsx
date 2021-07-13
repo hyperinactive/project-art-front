@@ -1,10 +1,8 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { Modal, Button } from 'semantic-ui-react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import PropTypes from 'prop-types';
-import { gql, useMutation } from '@apollo/client';
 
 function getCroppedImg(image, crop) {
   const canvas = document.createElement('canvas');
@@ -54,23 +52,14 @@ const CropComponent = ({ setState }) => {
   const handleFileChange = (e) =>
     setPreviewImage(URL.createObjectURL(e.target.files[0]));
 
-  const handleCrop = async (e) => {
+  const handleCrop = async () => {
     // setCroppedImage(getCroppedImg(imageFile, crop));
     setState((state) => ({
       ...state,
       previewImage: getCroppedImg(imageFile, crop),
+      newImage: true,
     }));
   };
-
-  const [uploadCroppedImage] = useMutation(
-    gql`
-      mutation testCropUpload($image: Upload) {
-        testCropUpload(image: $image) {
-          bool
-        }
-      }
-    `
-  );
 
   return (
     <div className="cropComponent">

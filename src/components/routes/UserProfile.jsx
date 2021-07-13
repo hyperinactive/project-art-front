@@ -8,6 +8,7 @@ import {
   backgroundGradientInverted,
   baseURL,
   defaultAvatar,
+  logo,
 } from '../../appConfig';
 import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
 import { UserContext } from '../../context/userContext/UserProvider';
@@ -131,7 +132,7 @@ const UserProfile = () => {
                     <Image
                       className="userProfile__secondaryInfo__projects__project__image"
                       rounded
-                      src={backgroundGradientInverted}
+                      src={logo}
                     />
                     <p>{prettyString(project.name, 9)}</p>
                   </Link>

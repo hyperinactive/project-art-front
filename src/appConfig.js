@@ -10,6 +10,7 @@ const config = {
   example4: `${process.env.PUBLIC_URL}/defaults/example4.gif`,
   backgroundGradient: `${process.env.PUBLIC_URL}/defaults/projectArtBackground.jpg`,
   backgroundGradientInverted: `${process.env.PUBLIC_URL}/defaults/projectArtBackgroundInverted.jpg`,
+  logo: `${process.env.PUBLIC_URL}/logo.png`,
 };
 
 module.exports = config;

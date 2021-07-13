@@ -17,7 +17,7 @@
 
   .tempTab--inactive {
     :hover {
-      color: $accentColor;
+      color: $accentColor !important;
     }
   }
 }

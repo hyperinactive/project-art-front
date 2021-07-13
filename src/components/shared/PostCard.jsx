@@ -10,11 +10,11 @@ import {
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-import { UserContext } from '../context/userContext/UserProvider';
-import LikeButton from './shared/LikeButton';
-import { baseURL, defaultAvatar } from '../appConfig';
-import useDeletePost from '../utils/hooks/deletePost';
-import Share from './routes/Post/Share';
+import { UserContext } from '../../context/userContext/UserProvider';
+import LikeButton from './LikeButton';
+import { baseURL, defaultAvatar } from '../../appConfig';
+import useDeletePost from '../../utils/hooks/deletePost';
+import Share from '../routes/Post/Share';
 
 const PostCard = ({ post, projectID }) => {
   const { user } = useContext(UserContext);
@@ -95,14 +95,12 @@ const PostCard = ({ post, projectID }) => {
             </Card.Content>
           )}
 
-          <Card.Content extra>
-            <div className="ui two buttons">
-              <LikeButton post={post} user={user} />
-              <Button color="red" basic>
-                <Icon name="comments" />
-                {post.commentCount}
-              </Button>
-            </div>
+          <Card.Content extra className="postCard__extra">
+            <LikeButton post={post} user={user} />
+            <Button fluid color="red" basic>
+              <Icon name="comments" />
+              {post.commentCount}
+            </Button>
           </Card.Content>
         </Card>
       </Transition.Group>

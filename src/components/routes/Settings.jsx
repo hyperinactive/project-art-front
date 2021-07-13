@@ -1,15 +1,6 @@
-/* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
-import {
-  Grid,
-  Header,
-  Loader,
-  Form,
-  Button,
-  Message,
-  Image,
-} from 'semantic-ui-react';
+import { Loader, Form, Button, Message } from 'semantic-ui-react';
 
 import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
 import { UserContext } from '../../context/userContext/UserProvider';
@@ -32,7 +23,7 @@ const Settings = () => {
     successMessage: false,
     previewImage: null,
     imageFile: null,
-    initialImage: null,
+    newImage: false,
   });
 
   const [loadUser, { loading }] = useLoadUser(setState);
@@ -54,7 +45,7 @@ const Settings = () => {
       username: state.username,
       status: state.status,
       skills: state.skills,
-      image: typeof image === 'string' ? null : state.previewImage,
+      image: state.newImage ? state.previewImage : null,
     };
     updateUser({
       variables,
@@ -88,7 +79,6 @@ const Settings = () => {
         <>
           {state.successMessage && (
             <Message positive>
-              <Message.Header>User info updated</Message.Header>
               <p>everything went smoothly!</p>
             </Message>
           )}

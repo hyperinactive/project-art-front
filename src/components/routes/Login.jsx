@@ -4,6 +4,7 @@ import { Button, Form, Grid, Header, Icon } from 'semantic-ui-react';
 import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
 
 import useLogin from '../../utils/hooks/login';
+import LoaderComponent from '../shared/LoaderComponent';
 
 const LoginForm = () => {
   const { setActiveItem } = useContext(NavigationContext);
@@ -23,6 +24,7 @@ const LoginForm = () => {
 
   return (
     <div className="login">
+      {loading && <LoaderComponent />}
       <Grid
         textAlign="center"
         style={{ height: '70vh' }}
@@ -37,7 +39,6 @@ const LoginForm = () => {
             onSubmit={handleSubmit}
             noValidate
             // the loading spinner class
-            className={loading ? 'loading' : ''}
           >
             {/* <Segment stacked> */}
             <Form.Input
@@ -69,7 +70,6 @@ const LoginForm = () => {
                 type="button"
                 onClick={() => setIsPassVisible(!isPassVisible)}
               >
-                {/* {isPassVisible ? 'visible' : 'hidden'} */}
                 <Icon
                   name={isPassVisible ? 'eye' : 'eye slash'}
                   style={{ margin: 0 }}
