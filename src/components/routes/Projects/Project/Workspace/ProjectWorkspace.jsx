@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useApolloClient } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import { Waypoint } from 'react-waypoint';
+import { cloneDeep } from 'lodash';
 import PropType from 'prop-types';
 
 import LoaderComponent from '../../../../shared/LoaderComponent';
@@ -13,7 +14,6 @@ import ElementList from '../../../../shared/ElementList';
 import { NavigationContext } from '../../../../../context/navigationContext/NavigationProvider';
 import useLoadPostFeed from '../../../../../utils/hooks/loadPostFeed';
 import useSubToPosts from '../../../../../utils/hooks/subToPosts';
-import useFetchMorePosts from '../../../../../utils/hooks/fetchMorePosts';
 
 const ProjectWorkspace = ({ project, elements }) => {
   const [cursor, setCursor] = useState(null);
@@ -26,6 +26,31 @@ const ProjectWorkspace = ({ project, elements }) => {
     setCanLoadMore,
     setCursor
   );
+
+  const feedMe = () => {
+    fetchMore({
+      variables: {
+        projectID: project.id,
+        cursor,
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult.getFeed.hasMoreItems) {
+          setCanLoadMore(false);
+        }
+
+        const prevClone = cloneDeep(prev);
+        prevClone.getFeed.posts = [
+          ...prevClone.getFeed.posts,
+          ...fetchMoreResult.getFeed.posts,
+        ];
+        prevClone.getFeed.hasMoreItems = fetchMoreResult.getFeed.hasMoreItems;
+        prevClone.getFeed.nextCursor = fetchMoreResult.getFeed.nextCursor;
+
+        setCursor(fetchMoreResult.getFeed.nextCursor);
+        return prevClone;
+      },
+    });
+  };
 
   useSubToPosts(project.id, cache);
 
@@ -75,13 +100,7 @@ const ProjectWorkspace = ({ project, elements }) => {
                         <Waypoint
                           onEnter={() => {
                             if (canLoadMore) {
-                              useFetchMorePosts(
-                                fetchMore,
-                                setCanLoadMore,
-                                setCursor,
-                                project.id,
-                                cursor
-                              );
+                              feedMe();
                             }
                           }}
                         />
