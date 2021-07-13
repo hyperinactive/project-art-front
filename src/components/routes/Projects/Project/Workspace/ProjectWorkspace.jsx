@@ -28,9 +28,13 @@ const ProjectWorkspace = ({ project, elements }) => {
   );
 
   // wonder if name change fixes it
-  const useFeedMe = () => {
-    useFetchMorePosts(fetchMore, setCanLoadMore, setCursor, project.id, cursor);
-  };
+  const feedMe = useFetchMorePosts(
+    fetchMore,
+    setCanLoadMore,
+    setCursor,
+    project.id,
+    cursor
+  );
 
   useSubToPosts(project.id, cache);
 
@@ -80,7 +84,7 @@ const ProjectWorkspace = ({ project, elements }) => {
                         <Waypoint
                           onEnter={() => {
                             if (canLoadMore) {
-                              useFeedMe();
+                              feedMe();
                             }
                           }}
                         />
