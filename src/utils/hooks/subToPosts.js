@@ -17,12 +17,8 @@ const useSubToPosts = (projectID, cache) =>
       });
       const cacheClone = cloneDeep(cacheData);
 
-      if (
-        !cacheClone.getFeed ||
-        !cacheClone.getFeed.posts ||
-        cacheClone.getFeed.posts === []
-      ) {
-        cacheClone.getFeed.posts = [data.subscriptionData.data.newPost, ...[]];
+      if (cacheClone.getFeed.posts.length === 0) {
+        cacheClone.getFeed.posts = [data.subscriptionData.data.newPost];
       } else {
         cacheClone.getFeed.posts = [
           cloneDeep(data.subscriptionData.data.newPost),
