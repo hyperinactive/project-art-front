@@ -24,7 +24,7 @@ const LoginForm = () => {
 
   return (
     <div className="login">
-      {loading && <LoaderComponent />}
+      {loading && <LoaderComponent isDimmerActive />}
       <Grid
         textAlign="center"
         style={{ height: '70vh' }}

@@ -25,6 +25,7 @@ import Project from './components/routes/Projects/Project/Project';
 import ProjectForm from './components/routes/Projects/ProjectForm';
 import Connect from './components/routes/Connect';
 import Help from './components/routes/Help';
+import Verification from './components/routes/Verification';
 
 const App = () => (
   <UserProvider>
@@ -64,6 +65,7 @@ const App = () => (
                   path="/user/:userID"
                   component={UserProfile}
                 />
+                <Route exact path="/verify/:userID" component={Verification} />
                 <ProtectedRoute exact path="/inbox" component={Inbox} />
                 <Route exact path="/help" component={Help} />
 

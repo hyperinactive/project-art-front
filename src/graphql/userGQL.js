@@ -20,6 +20,7 @@ const REGISTER_USER = gql`
     ) {
       ...UserFields
       email
+      emailVerified
       token
     }
   }
@@ -35,6 +36,7 @@ const LOGIN_USER = gql`
     login(username: $username, password: $password) {
       ...UserFields
       email
+      emailVerified
       token
     }
   }
@@ -120,6 +122,18 @@ const GET_USERS = gql`
   }
 `;
 
+const VERIFY = gql`
+  ${USER_FIELDS}
+  mutation verifyUser {
+    verifyUser {
+      ...UserFields
+      email
+      emailVerified
+      token
+    }
+  }
+`;
+
 export {
   REGISTER_USER,
   LOGIN_USER,
@@ -129,4 +143,5 @@ export {
   ADD_FRIEND,
   GET_USERS,
   GET_USER_FRIENDS,
+  VERIFY,
 };
