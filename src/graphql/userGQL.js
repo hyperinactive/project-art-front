@@ -124,13 +124,19 @@ const GET_USERS = gql`
 
 const VERIFY = gql`
   ${USER_FIELDS}
-  mutation verifyUser {
-    verifyUser {
+  mutation verifyUser($code: String!) {
+    verifyUser(code: $code) {
       ...UserFields
       email
       emailVerified
       token
     }
+  }
+`;
+
+const RESEND = gql`
+  mutation sendVerification {
+    sendVerification
   }
 `;
 
@@ -144,4 +150,5 @@ export {
   GET_USERS,
   GET_USER_FRIENDS,
   VERIFY,
+  RESEND,
 };

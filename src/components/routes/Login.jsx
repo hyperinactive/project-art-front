@@ -34,12 +34,7 @@ const LoginForm = () => {
           <Header as="h1" textAlign="center" className="headline">
             Log me in!
           </Header>
-          <Form
-            size="large"
-            onSubmit={handleSubmit}
-            noValidate
-            // the loading spinner class
-          >
+          <Form size="large" onSubmit={handleSubmit} noValidate>
             {/* <Segment stacked> */}
             <Form.Input
               className="themeForm"

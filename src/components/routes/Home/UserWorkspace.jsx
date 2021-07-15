@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Header, Card, Button } from 'semantic-ui-react';
+import { Grid, Header, Card, Button, Message } from 'semantic-ui-react';
 
 import LoaderComponent from '../../shared/LoaderComponent';
 import ElementList from '../../shared/ElementList';
@@ -27,11 +27,41 @@ const UserWorkspace = () => {
   return (
     <div className="userWorkspace">
       <Grid centered columns={3} divided>
-        <div className="greetings headline">
-          <h2>
-            Welcome <span className="accentText">{user.username}</span>
-          </h2>
-        </div>
+        {user && !user.emailVerified ? (
+          <div
+            style={{
+              paddingTop: 30,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Message
+              warning
+              style={{ textAlign: 'center', width: 'fit-content' }}
+            >
+              <Message.Header>
+                {`${user.username}, lets verify this account!`}
+              </Message.Header>
+              <p>A mail containing your verification code has been sent</p>
+              <b>
+                <Link
+                  to="/verify"
+                  className="accentMe"
+                  style={{ color: 'peru' }}
+                >
+                  Verify me!
+                </Link>
+              </b>
+            </Message>
+          </div>
+        ) : (
+          <div className="greetings headline">
+            <h2>
+              Welcome <span className="accentText">{user.username}</span>
+            </h2>
+          </div>
+        )}
 
         <Grid.Row>
           {friendsLoading ? (

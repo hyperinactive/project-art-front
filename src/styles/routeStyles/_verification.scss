@@ -12,7 +12,15 @@
     color: $accentColor;
   }
 
-  &__btn {
-    margin-top: 2rem !important;
+  &__btnGroup {
+    padding: 1rem !important;
+  }
+
+  &__resend {
+    @extend .accentMe;
+  }
+
+  &__input input {
+    text-align: center !important;
   }
 }

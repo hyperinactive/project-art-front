@@ -9,12 +9,6 @@ import { UserContext } from '../../context/userContext/UserProvider';
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const { user } = useContext(UserContext);
 
-  if (user.emailVerified) {
-    console.log('verified');
-  } else {
-    console.log('not verified');
-  }
-
   return (
     <Route
       {...rest}

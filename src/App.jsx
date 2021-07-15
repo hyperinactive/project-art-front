@@ -65,7 +65,7 @@ const App = () => (
                   path="/user/:userID"
                   component={UserProfile}
                 />
-                <Route exact path="/verify/:userID" component={Verification} />
+                <Route exact path="/verify" component={Verification} />
                 <ProtectedRoute exact path="/inbox" component={Inbox} />
                 <Route exact path="/help" component={Help} />
 
