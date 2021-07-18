@@ -140,6 +140,23 @@ const RESEND = gql`
   }
 `;
 
+const SEND_FRIEND_REQUEST = gql`
+  mutation sendFriendRequest($userID: ID!) {
+    sendFriendRequest(userID: $userID) {
+      id
+      createdAt
+      fromUser {
+        id
+        username
+      }
+      toUser {
+        id
+        username
+      }
+    }
+  }
+`;
+
 export {
   REGISTER_USER,
   LOGIN_USER,
@@ -151,4 +168,5 @@ export {
   GET_USER_FRIENDS,
   VERIFY,
   RESEND,
+  SEND_FRIEND_REQUEST,
 };

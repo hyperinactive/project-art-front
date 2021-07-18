@@ -16,18 +16,18 @@
 
 // custom form against the midground color
 @mixin form {
-  background: map-get($map: $mainPallete, $key: 'foreground') !important;
+  background: map-get($map: $mainPalette, $key: 'foreground') !important;
   border-radius: 0.3215rem !important;
 }
 
-// cutom orange scrollbar
+// custom orange scrollbar
 @mixin scrollbar {
   &::-webkit-scrollbar {
     width: 0.6rem;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: map-get($map: $mainPallete, $key: 'accent');
+    background: map-get($map: $mainPalette, $key: 'accent');
     border-radius: 0.3125rem;
   }
 
@@ -47,5 +47,5 @@
 }
 
 .accentMe:hover {
-  color: map-get($map: $mainPallete, $key: 'accent') !important;
+  color: map-get($map: $mainPalette, $key: 'accent') !important;
 }

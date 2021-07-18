@@ -1,19 +1,17 @@
 .help {
   padding: 3rem;
-  //   doesn't work?
-  //   color: map-get($map: $mainPallete, $key: 'regularText') !important;
 
   .accent {
     @extend .accentMe;
-    color: map-get($map: $mainPallete, $key: 'headlineTextLight') !important;
+    color: map-get($map: $mainPalette, $key: 'headlineTextLight') !important;
   }
 
   .text {
-    color: map-get($map: $mainPallete, $key: 'regularText') !important;
+    color: map-get($map: $mainPalette, $key: 'regularText') !important;
   }
 
   &__additional {
     @extend .accentMe;
-    color: map-get($map: $mainPallete, $key: 'regularText') !important;
+    color: map-get($map: $mainPalette, $key: 'regularText') !important;
   }
 }

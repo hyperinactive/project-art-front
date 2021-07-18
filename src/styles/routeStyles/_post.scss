@@ -11,10 +11,10 @@
     display: flex;
     flex-direction: column;
     text-align: center;
-    color: map-get($map: $mainPallete, $key: 'regularText');
+    color: map-get($map: $mainPalette, $key: 'regularText');
 
     &__card {
-      background: map-get($map: $mainPallete, $key: 'foreground') !important;
+      background: map-get($map: $mainPalette, $key: 'foreground') !important;
       border: 2px solid red;
       border-radius: 5px;
 

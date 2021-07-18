@@ -1,72 +1,95 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/alt-text */
-import React from 'react';
-import { Feed, Icon, Image } from 'semantic-ui-react';
-import {
-  example1,
-  example2,
-  example3,
-  example4,
-  defaultAvatar,
-} from '../../../appConfig';
+import { useLazyQuery } from '@apollo/client';
+import React, { useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Feed } from 'semantic-ui-react';
+import moment from 'moment';
+
+import { baseURL, defaultAvatar } from '../../../appConfig';
+import { UserContext } from '../../../context/userContext/UserProvider';
+import { GET_USER_REQUESTS } from '../../../graphql/requestGQL';
 
 // TODO:
 // this is just a placeholder
-const Notifications = () => (
-  <Feed>
-    <Feed.Event>
-      <Feed.Label>
-        <img src={example3} />
-      </Feed.Label>
-      <Feed.Content>
-        <Feed.Summary>
-          <Feed.User>Elliot Fu</Feed.User> of <Feed.User>FeedBot</Feed.User>{' '}
-          added you as a friend
-          <Feed.Date>1 Hour Ago</Feed.Date>
-        </Feed.Summary>
-        <Feed.Meta />
-      </Feed.Content>
-    </Feed.Event>
+const Notifications = () => {
+  const { user } = useContext(UserContext);
+  const [loadRequests, { data }] = useLazyQuery(GET_USER_REQUESTS, {
+    onCompleted: (dataV) => {
+      console.log(dataV);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
-    <Feed.Event>
-      <Feed.Label image={example4} />
-      <Feed.Content>
-        <Feed.Summary>
-          <Feed.User>Helen Troy</Feed.User> of <Feed.User>Snorlax</Feed.User>{' '}
-          added <span>2 new illustrations</span>
-          <Feed.Date>8 hours ago</Feed.Date>
-        </Feed.Summary>
-        <Feed.Extra images>
-          <span>
-            {/* <img src={example1} style={{ width: '200px' }} /> */}
-            <Image src={example1} size="massive" />
-          </span>
-          <span>
-            {/* <img src={example2} style={{ width: '200px' }} /> */}
-            <Image src={example2} size="massive" />
-          </span>
-        </Feed.Extra>
-        <Feed.Meta>
-          <Feed.Like>
-            <Icon name="like" />
-            29 Likes
-          </Feed.Like>
-        </Feed.Meta>
-      </Feed.Content>
-    </Feed.Event>
+  useEffect(() => {
+    loadRequests();
+  }, []);
 
-    {/* SHORTHAND */}
-    <Feed.Event>
-      <Feed.Label image={defaultAvatar} />
-      <Feed.Content>
-        <Feed.Summary>
-          <Feed.User>Jenny Hess</Feed.User> accepted you into their project!{' '}
-          <Feed.User>Snorlax</Feed.User>
-          <Feed.Date>1 Day Ago</Feed.Date>
-        </Feed.Summary>
-        <Feed.Meta />
-      </Feed.Content>
-    </Feed.Event>
-  </Feed>
-);
+  return (
+    <Feed className="notifications">
+      {data &&
+        data.getUserRequests &&
+        data.getUserRequests.map((request) => {
+          if (user.id === request.fromUser.id) {
+            return (
+              <Feed.Event className="notifications__event" key={request.id}>
+                <Feed.Content>
+                  <Feed.Summary>
+                    <Feed.Content>
+                      Friend request sent to{' '}
+                      <Link
+                        className="notifications__event__link"
+                        to={`user/${request.toUser.id}`}
+                      >
+                        {request.toUser.username}
+                      </Link>
+                      <Feed.Date>
+                        {moment(request.createdAt).fromNow()}
+                      </Feed.Date>
+                    </Feed.Content>
+                  </Feed.Summary>
+                  <Feed.Meta />
+                </Feed.Content>
+              </Feed.Event>
+            );
+          }
+          return (
+            <Feed.Event className="notifications__event" key={request.id}>
+              <Feed.Label>
+                <Link
+                  className="notifications__event__link"
+                  to={`user/${request.fromUser.id}`}
+                >
+                  <img
+                    src={
+                      request.fromUser.imageURL
+                        ? `${baseURL}/files/${request.fromUser.imageURL}`
+                        : defaultAvatar
+                    }
+                  />
+                </Link>
+              </Feed.Label>
+              <Feed.Content>
+                <Feed.Summary>
+                  <Link
+                    className="notifications__event__link"
+                    to={`user/${request.fromUser.id}`}
+                  >
+                    {request.fromUser.username}
+                  </Link>
+                  <span> wants to be your friend!</span>
+                </Feed.Summary>
+                <Feed.Date>{moment(request.createdAt).fromNow()}</Feed.Date>
+
+                <Feed.Meta />
+              </Feed.Content>
+            </Feed.Event>
+          );
+        })}
+    </Feed>
+  );
+};
 
 export default Notifications;

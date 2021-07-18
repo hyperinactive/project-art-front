@@ -1,14 +1,14 @@
 .inboxForm {
   @include form;
-  color: map-get($map: $mainPallete, $key: 'regularText');
+  color: map-get($map: $mainPalette, $key: 'regularText');
   height: fit-content;
 
   &__input {
-    background: map-get($map: $mainPallete, $key: 'background') !important;
+    background: map-get($map: $mainPalette, $key: 'background') !important;
   }
 
   &__messageLength {
-    color: map-get($map: $mainPallete, $key: 'regularText');
+    color: map-get($map: $mainPalette, $key: 'regularText');
     opacity: 0.7;
     padding: 0.6rem 0.5rem;
     margin: 0;
@@ -16,6 +16,6 @@
 
   .error {
     opacity: 1;
-    color: map-get($map: $mainPallete, $key: 'sender') !important;
+    color: map-get($map: $mainPalette, $key: 'sender') !important;
   }
 }

@@ -20,7 +20,7 @@
     // -> top-left top-right bottom-right bottom-left
     border-radius: 0.2rem 0.7rem 0.7rem 0.2rem;
     align-self: flex-start;
-    background: map-get($map: $mainPallete, $key: 'receiver');
+    background: map-get($map: $mainPalette, $key: 'receiver');
     text-align: left;
   }
 
@@ -28,7 +28,7 @@
     // -> top-left top-right bottom-right bottom-left
     border-radius: 0.7rem 0.2rem 0.2rem 0.7rem;
     align-self: flex-end;
-    background: map-get($map: $mainPallete, $key: 'sender');
+    background: map-get($map: $mainPalette, $key: 'sender');
     text-align: right;
   }
 }

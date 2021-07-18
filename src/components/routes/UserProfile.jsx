@@ -1,4 +1,4 @@
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { Image, Button } from 'semantic-ui-react';
@@ -13,9 +13,13 @@ import {
 import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
 import { UserContext } from '../../context/userContext/UserProvider';
 
-import { GET_USER, GET_USER_FRIENDS, GET_USER_PROJECTS } from '../../graphql';
+import {
+  GET_USER,
+  GET_USER_FRIENDS,
+  GET_USER_PROJECTS,
+  SEND_FRIEND_REQUEST,
+} from '../../graphql';
 import prettyString from '../../utils/prettyString';
-import useAddFriend from '../../utils/hooks/addFriend';
 
 const isFriendsWith = (friends, userID) =>
   friends.find((friend) => friend.id.toString() === userID.toString());
@@ -40,7 +44,6 @@ const UserProfile = () => {
       } else {
         setIsFriend(false);
       }
-      // controll the temp tab info
       setTemporaryTab({
         name: data.getUser.username,
         link: `/user/${data.getUser.id}`,
@@ -57,9 +60,6 @@ const UserProfile = () => {
       variables: {
         userID: fUserID,
       },
-      // onCompleted: () => {
-      //   console.log(friendsData);
-      // },
       onError: (error) => {
         console.log(error);
       },
@@ -70,15 +70,35 @@ const UserProfile = () => {
       variables: {
         userID: fUserID,
       },
-      // onCompleted: () => {
-      //   console.log(projectsData);
-      // },
       onError: (error) => {
         console.log(error);
       },
     });
 
-  const [addFriend] = useAddFriend(setIsFriend, fUserID);
+  // const [checkFrReq] = useLazyQuery(CHECK_FRIEND_REQUESTS, {
+  //   variables: {
+  //     userID: fUserID,
+  //   },
+  //   onCompleted: (dataV) => {
+  //     console.log(dataV);
+  //   },
+  //   onError: (errorV) => {
+  //     console.log(errorV);
+  //   },
+  // });
+
+  // const [addFriend] = useAddFriend(setIsFriend, fUserID);
+  const [addFriend] = useMutation(SEND_FRIEND_REQUEST, {
+    variables: {
+      userID: fUserID,
+    },
+    onCompleted: (dataF) => {
+      console.log(dataF);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   useEffect(() => {
     if (user) {

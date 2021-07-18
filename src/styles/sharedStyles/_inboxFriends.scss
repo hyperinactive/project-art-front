@@ -10,18 +10,18 @@
   &__friendCard {
     display: flex;
     flex-direction: row;
-    color: map-get($map: $mainPallete, $key: 'regularText');
+    color: map-get($map: $mainPalette, $key: 'regularText');
     gap: 1rem;
     background: none;
     border: none;
     cursor: pointer;
 
     .senderLatest {
-      color: map-get($map: $mainPallete, $key: 'sender');
+      color: map-get($map: $mainPalette, $key: 'sender');
     }
 
     .receiverLatest {
-      color: map-get($map: $mainPallete, $key: 'receiver');
+      color: map-get($map: $mainPalette, $key: 'receiver');
     }
 
     &__info {

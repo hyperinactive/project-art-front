@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Header, Card, Button, Message } from 'semantic-ui-react';
+import { Grid, Header, Button, Message } from 'semantic-ui-react';
 
 import LoaderComponent from '../../shared/LoaderComponent';
 import ElementList from '../../shared/ElementList';
@@ -26,43 +26,38 @@ const UserWorkspace = () => {
 
   return (
     <div className="userWorkspace">
-      <Grid centered columns={3} divided>
-        {user && !user.emailVerified ? (
-          <div
-            style={{
-              paddingTop: 30,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
+      {user && !user.emailVerified ? (
+        <div
+          style={{
+            paddingTop: 30,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Message
+            warning
+            style={{ textAlign: 'center', width: 'fit-content' }}
           >
-            <Message
-              warning
-              style={{ textAlign: 'center', width: 'fit-content' }}
-            >
-              <Message.Header>
-                {`${user.username}, lets verify this account!`}
-              </Message.Header>
-              <p>A mail containing your verification code has been sent</p>
-              <b>
-                <Link
-                  to="/verify"
-                  className="accentMe"
-                  style={{ color: 'peru' }}
-                >
-                  Verify me!
-                </Link>
-              </b>
-            </Message>
-          </div>
-        ) : (
-          <div className="greetings headline">
-            <h2>
-              Welcome <span className="accentText">{user.username}</span>
-            </h2>
-          </div>
-        )}
-
+            <Message.Header>
+              {`${user.username}, lets verify this account!`}
+            </Message.Header>
+            <p>A mail containing your verification code has been sent</p>
+            <b>
+              <Link to="/verify" className="accentMe" style={{ color: 'peru' }}>
+                Verify me!
+              </Link>
+            </b>
+          </Message>
+        </div>
+      ) : (
+        <div className="greetings headline">
+          <h2 style={{ textAlign: 'center' }}>
+            Welcome <span className="accentText">{user.username}</span>
+          </h2>
+        </div>
+      )}
+      <Grid centered columns={3} divided className="masterGrid">
         <Grid.Row>
           {friendsLoading ? (
             <LoaderComponent />
@@ -85,6 +80,7 @@ const UserWorkspace = () => {
 
           <Grid.Column width={11}>
             <div
+              className="userWorkspace__userFeed"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -103,18 +99,6 @@ const UserWorkspace = () => {
                 <Button content="connect" icon="user" as={Link} to="/connect" />
               </div>
               <Notifications />
-
-              <div style={{ textAlign: 'center' }}>
-                <Card centered>
-                  <Card.Content>
-                    <Card.Header>This is the user feed demo!</Card.Header>
-                    <Card.Description>
-                      (which is under construction)
-                    </Card.Description>
-                    <Card.Meta>(which I will get to, yeah...)</Card.Meta>
-                  </Card.Content>
-                </Card>
-              </div>
             </div>
           </Grid.Column>
           <Grid.Column width={2}>
