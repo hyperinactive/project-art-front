@@ -46,6 +46,14 @@
   }
 }
 
+@function backgroundOpacity($opacity) {
+  @return linear-gradient(
+    315deg,
+    rgba(226, 203, 72, $opacity) 0%,
+    rgba(251, 123, 162, $opacity) 74%
+  );
+}
+
 .accentMe:hover {
   color: map-get($map: $mainPalette, $key: 'accent') !important;
 }

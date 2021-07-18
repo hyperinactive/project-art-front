@@ -1,3 +1,5 @@
+@import '../sharedStyles/userWorkspace';
+
 .home {
   height: 100%;
   &__welcome {
@@ -15,24 +17,5 @@
     display: block !important;
     font-size: xx-large;
     margin: 1rem auto !important;
-  }
-
-  .userWorkspace {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-
-    &__userFeed {
-      height: 100% !important;
-    }
-
-    .masterGrid {
-      height: 100% !important;
-    }
-
-    .greetings {
-      color: map-get($mainPalette, 'headlineTextLight') !important;
-      padding: 2rem 0 !important;
-    }
   }
 }

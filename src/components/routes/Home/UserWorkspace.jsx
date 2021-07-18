@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Header, Button, Message } from 'semantic-ui-react';
@@ -57,7 +58,46 @@ const UserWorkspace = () => {
           </h2>
         </div>
       )}
-      <Grid centered columns={3} divided className="masterGrid">
+      <div className="userWorkspace__wrapper">
+        <div className="userWorkspace__wrapper__friends">
+          <Header className="headline">Friends</Header>
+
+          {friendsLoading ? (
+            <LoaderComponent />
+          ) : (
+            friendsData &&
+            friendsData && (
+              <ElementList elements={friendsData.getFriends} type="user" />
+            )
+          )}
+        </div>
+        <div className="userWorkspace__wrapper__userFeed">
+          <>
+            <Header className="headline">User feed</Header>
+            <div style={{ margin: 10 }}>
+              <Button as={Link} to="/projects" icon="cube" content="projects" />
+              <Button as={Link} to="/inbox" icon="inbox" content="inbox" />
+              <Button content="connect" icon="user" as={Link} to="/connect" />
+            </div>
+            <Notifications />
+          </>
+        </div>
+        <div className="userWorkspace__wrapper__projects">
+          <Header className="headline">Projects</Header>
+          {projectLoading ? (
+            <LoaderComponent />
+          ) : (
+            projectData && (
+              <ElementList
+                elements={projectData.getUserProjects}
+                type="projects"
+              />
+            )
+          )}
+        </div>
+      </div>
+
+      {/* <Grid centered columns={3} divided className="masterGrid">
         <Grid.Row>
           {friendsLoading ? (
             <LoaderComponent />
@@ -115,7 +155,7 @@ const UserWorkspace = () => {
             )}
           </Grid.Column>
         </Grid.Row>
-      </Grid>
+      </Grid> */}
     </div>
   );
 };
