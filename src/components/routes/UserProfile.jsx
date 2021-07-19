@@ -1,7 +1,7 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { Image, Button } from 'semantic-ui-react';
+import { Image, Button, Message } from 'semantic-ui-react';
 
 import LoaderComponent from '../shared/LoaderComponent';
 import {
@@ -17,6 +17,7 @@ import {
   GET_USER,
   GET_USER_FRIENDS,
   GET_USER_PROJECTS,
+  GET_USER_REQUESTS,
   SEND_FRIEND_REQUEST,
 } from '../../graphql';
 import prettyString from '../../utils/prettyString';
@@ -31,6 +32,7 @@ const UserProfile = () => {
 
   const { userID: fUserID } = params;
   const [isFriend, setIsFriend] = useState(false);
+  const [isSent, setIsSent] = useState(false);
   const { setTemporaryTab, setActiveItem } = useContext(NavigationContext);
 
   // load user data to display
@@ -87,12 +89,32 @@ const UserProfile = () => {
   //   },
   // });
 
-  // const [addFriend] = useAddFriend(setIsFriend, fUserID);
   const [addFriend] = useMutation(SEND_FRIEND_REQUEST, {
     variables: {
       userID: fUserID,
     },
+    update: (cache, result) => {
+      const requests = cache.readQuery({ query: GET_USER_REQUESTS });
+
+      if (requests !== null) {
+        const requestsClone = {
+          getUserRequests: [],
+        };
+
+        Object.entries(requests.getUserRequests).forEach((request) => {
+          requestsClone.getUserRequests.push(request[1]);
+        });
+
+        requestsClone.getUserRequests.push(result.data.sendFriendRequest);
+
+        cache.writeQuery({
+          query: GET_USER_REQUESTS,
+          data: requestsClone,
+        });
+      }
+    },
     onCompleted: (dataF) => {
+      setIsSent(true);
       console.log(dataF);
     },
     onError: (error) => {
@@ -191,6 +213,15 @@ const UserProfile = () => {
                 >
                   Add friend
                 </Button>
+              )}
+              {data && data.getUser && isSent && (
+                <Message
+                  positive
+                  style={{ textAlign: 'center', width: 'fit-content' }}
+                >
+                  <Message.Header>Success</Message.Header>
+                  <p>{`Friend request sent to ${data.getUser.username}`}</p>
+                </Message>
               )}
             </div>
             <div className="userProfile__secondaryInfo__friends">

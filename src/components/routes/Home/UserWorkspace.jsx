@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Header, Button, Message } from 'semantic-ui-react';
+import { Header, Button, Message, Transition } from 'semantic-ui-react';
 
 import LoaderComponent from '../../shared/LoaderComponent';
 import ElementList from '../../shared/ElementList';
@@ -10,7 +9,6 @@ import { UserContext } from '../../../context/userContext/UserProvider';
 import useLoadFriends from '../../../utils/hooks/loadFriends';
 import useLoadProjects from '../../../utils/hooks/loadProjects';
 
-// TODO: UserWorkspace needs to be cleaned up after another user logs
 const UserWorkspace = () => {
   const { user } = useContext(UserContext);
 
@@ -74,12 +72,14 @@ const UserWorkspace = () => {
         <div className="userWorkspace__wrapper__userFeed">
           <>
             <Header className="headline">User feed</Header>
-            <div style={{ margin: 10 }}>
+            <div className="userWorkspace__wrapper__userFeed__buttons">
               <Button as={Link} to="/projects" icon="cube" content="projects" />
               <Button as={Link} to="/inbox" icon="inbox" content="inbox" />
               <Button content="connect" icon="user" as={Link} to="/connect" />
             </div>
-            <Notifications />
+            <Transition.Group>
+              <Notifications />
+            </Transition.Group>
           </>
         </div>
         <div className="userWorkspace__wrapper__projects">
@@ -96,66 +96,6 @@ const UserWorkspace = () => {
           )}
         </div>
       </div>
-
-      {/* <Grid centered columns={3} divided className="masterGrid">
-        <Grid.Row>
-          {friendsLoading ? (
-            <LoaderComponent />
-          ) : (
-            friendsData &&
-            friendsData && (
-              <Grid.Column width={2}>
-                <Header className="headline">Friends</Header>
-                <Grid.Row>
-                  <div
-                    style={{
-                      textAlign: 'center',
-                    }}
-                  />
-                  <ElementList elements={friendsData.getFriends} type="user" />
-                </Grid.Row>
-              </Grid.Column>
-            )
-          )}
-
-          <Grid.Column width={11}>
-            <div
-              className="userWorkspace__userFeed"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
-              <Header className="headline">User feed</Header>
-              <div style={{ margin: 10 }}>
-                <Button
-                  as={Link}
-                  to="/projects"
-                  icon="cube"
-                  content="projects"
-                />
-                <Button as={Link} to="/inbox" icon="inbox" content="inbox" />
-                <Button content="connect" icon="user" as={Link} to="/connect" />
-              </div>
-              <Notifications />
-            </div>
-          </Grid.Column>
-          <Grid.Column width={2}>
-            <Header className="headline">Projects</Header>
-            {projectLoading ? (
-              <LoaderComponent />
-            ) : (
-              projectData && (
-                <ElementList
-                  elements={projectData.getUserProjects}
-                  type="projects"
-                />
-              )
-            )}
-          </Grid.Column>
-        </Grid.Row>
-      </Grid> */}
     </div>
   );
 };

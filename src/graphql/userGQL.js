@@ -157,6 +157,27 @@ const SEND_FRIEND_REQUEST = gql`
   }
 `;
 
+const ACCEPT_REQUEST = gql`
+  mutation acceptFriendRequest($requestID: ID!) {
+    acceptFriendRequest(requestID: $requestID) {
+      sender {
+        id
+        username
+        imageURL
+      }
+      receiver {
+        id
+        username
+        imageURL
+      }
+      request {
+        id
+        createdAt
+      }
+    }
+  }
+`;
+
 export {
   REGISTER_USER,
   LOGIN_USER,
@@ -169,4 +190,5 @@ export {
   VERIFY,
   RESEND,
   SEND_FRIEND_REQUEST,
+  ACCEPT_REQUEST,
 };

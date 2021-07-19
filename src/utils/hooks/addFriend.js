@@ -6,6 +6,7 @@ const useAddFriend = (setIsFriend, userID) =>
     variables: {
       userID,
     },
+    // TODO: repetitive code
     update: (cache, result) => {
       const friends = cache.readQuery({
         query: GET_FRIENDS,
@@ -23,7 +24,7 @@ const useAddFriend = (setIsFriend, userID) =>
 
         cache.writeQuery({
           query: GET_FRIENDS,
-          data: friendsClone.geFriends,
+          data: friendsClone.getFriends,
         });
       }
 

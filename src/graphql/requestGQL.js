@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 // eslint-disable-next-line import/prefer-default-export
-export const CHECK_FRIEND_REQUESTS = gql`
+const CHECK_FRIEND_REQUESTS = gql`
   query checkFriendRequests($userID: ID!) {
     checkFriendRequests(userID: $userID) {
       request {
@@ -13,7 +13,7 @@ export const CHECK_FRIEND_REQUESTS = gql`
   }
 `;
 
-export const GET_USER_REQUESTS = gql`
+const GET_USER_REQUESTS = gql`
   query getUserRequests {
     getUserRequests {
       id
@@ -32,3 +32,13 @@ export const GET_USER_REQUESTS = gql`
     }
   }
 `;
+
+const DELETE_REQUEST = gql`
+  mutation deleteRequest($requestID: ID!) {
+    deleteRequest(requestID: $requestID) {
+      id
+    }
+  }
+`;
+
+export { CHECK_FRIEND_REQUESTS, GET_USER_REQUESTS, DELETE_REQUEST };
