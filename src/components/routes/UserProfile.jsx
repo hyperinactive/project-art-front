@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { Image, Button, Message } from 'semantic-ui-react';
@@ -13,14 +13,11 @@ import {
 import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
 import { UserContext } from '../../context/userContext/UserProvider';
 
-import {
-  GET_USER,
-  GET_USER_FRIENDS,
-  GET_USER_PROJECTS,
-  GET_USER_REQUESTS,
-  SEND_FRIEND_REQUEST,
-} from '../../graphql';
+import { GET_USER } from '../../graphql';
 import prettyString from '../../utils/prettyString';
+import useSendFriendRequest from '../../utils/hooks/sendFriendRequest';
+import useLoadFriends from '../../utils/hooks/loadFriends';
+import useLoadProjects from '../../utils/hooks/loadProjects';
 
 const isFriendsWith = (friends, userID) =>
   friends.find((friend) => friend.id.toString() === userID.toString());
@@ -33,8 +30,13 @@ const UserProfile = () => {
   const { userID: fUserID } = params;
   const [isFriend, setIsFriend] = useState(false);
   const [isSent, setIsSent] = useState(false);
+  const [errors, setErrors] = useState({});
   const { setTemporaryTab, setActiveItem } = useContext(NavigationContext);
 
+  // -------------------------------------------------------------------------------
+
+  // TODO: abstract query for both profiles and home
+  // for now, stays here in the component
   // load user data to display
   const [loadUser, { data, loading }] = useLazyQuery(GET_USER, {
     variables: {
@@ -58,80 +60,30 @@ const UserProfile = () => {
   });
 
   const [loadFriends, { data: friendsData, loading: friendsLoading }] =
-    useLazyQuery(GET_USER_FRIENDS, {
-      variables: {
-        userID: fUserID,
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    });
-
+    useLoadFriends();
   const [loadProjects, { data: projectsData, loading: projectsLoading }] =
-    useLazyQuery(GET_USER_PROJECTS, {
-      variables: {
-        userID: fUserID,
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    });
-
-  // const [checkFrReq] = useLazyQuery(CHECK_FRIEND_REQUESTS, {
-  //   variables: {
-  //     userID: fUserID,
-  //   },
-  //   onCompleted: (dataV) => {
-  //     console.log(dataV);
-  //   },
-  //   onError: (errorV) => {
-  //     console.log(errorV);
-  //   },
-  // });
-
-  const [addFriend] = useMutation(SEND_FRIEND_REQUEST, {
-    variables: {
-      userID: fUserID,
-    },
-    update: (cache, result) => {
-      const requests = cache.readQuery({ query: GET_USER_REQUESTS });
-
-      if (requests !== null) {
-        const requestsClone = {
-          getUserRequests: [],
-        };
-
-        Object.entries(requests.getUserRequests).forEach((request) => {
-          requestsClone.getUserRequests.push(request[1]);
-        });
-
-        requestsClone.getUserRequests.push(result.data.sendFriendRequest);
-
-        cache.writeQuery({
-          query: GET_USER_REQUESTS,
-          data: requestsClone,
-        });
-      }
-    },
-    onCompleted: (dataF) => {
-      setIsSent(true);
-      console.log(dataF);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
+    useLoadProjects();
+  const [sendFriendRequest] = useSendFriendRequest(setIsSent, setErrors);
+  // -------------------------------------------------------------------------------
   useEffect(() => {
     if (user) {
       loadUser();
-      loadFriends();
-      loadProjects();
+      loadFriends({
+        variables: {
+          userID: fUserID,
+        },
+      });
+      loadProjects({
+        variables: {
+          userID: fUserID,
+        },
+      });
     } else {
       history.push('/');
     }
   }, [friendsData]);
 
+  // TODO: make it modular
   if (projectsLoading || friendsLoading || loading) {
     return <LoaderComponent />;
   }
@@ -208,7 +160,11 @@ const UserProfile = () => {
                   style={{ margin: 10 }}
                   onClick={(e) => {
                     e.preventDefault();
-                    addFriend();
+                    sendFriendRequest({
+                      variables: {
+                        userID: fUserID,
+                      },
+                    });
                   }}
                 >
                   Add friend
@@ -221,6 +177,15 @@ const UserProfile = () => {
                 >
                   <Message.Header>Success</Message.Header>
                   <p>{`Friend request sent to ${data.getUser.username}`}</p>
+                </Message>
+              )}
+              {Object.prototype.hasOwnProperty.call(errors, 'alreadySent') && (
+                <Message
+                  negative
+                  style={{ textAlign: 'center', width: 'fit-content' }}
+                >
+                  <Message.Header>Whoops</Message.Header>
+                  <p>{`Friend request already sent to ${data.getUser.username}`}</p>
                 </Message>
               )}
             </div>

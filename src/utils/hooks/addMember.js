@@ -79,9 +79,6 @@ const useAddMember = (projectID) =>
         },
       });
     },
-    onCompleted: () => {
-      console.log('completed');
-    },
   });
 
 export default useAddMember;
