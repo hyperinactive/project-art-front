@@ -1,0 +1,12 @@
+.projectForm {
+  &__form {
+    &__checkbox {
+      display: flex;
+      flex-direction: row;
+
+      label {
+        color: map-get($map: $mainPalette, $key: 'regularText') !important;
+      }
+    }
+  }
+}

@@ -1,92 +1,27 @@
-/* eslint-disable react/prop-types */
-import { useMutation, useQuery } from '@apollo/client';
-import { cloneDeep } from '@apollo/client/utilities';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Grid, Form, Header } from 'semantic-ui-react';
-import {
-  CREATE_PROJECT,
-  GET_PROJECTS,
-  GET_USER_PROJECTS,
-} from '../../../graphql';
+import { Button, Grid, Form, Header, Checkbox } from 'semantic-ui-react';
+
+import useCreateProject from '../../../utils/hooks/createProject';
 
 const ProjectForm = () => {
   // TODO: needs to redirect to the project page or smth
   const [name, setName] = useState('');
+  const [isPrivate, setIsPrivate] = useState(false);
   const [errors, setErrors] = useState({});
-  const [created, setIsCrated] = useState({
+  const [created, setIsCreated] = useState({
     project: null,
     isCreated: false,
   });
 
-  // error prevention, not classy but doesn't the job
-  // in case the user projects haven't been fetched at this point
-  useQuery(GET_USER_PROJECTS, {
-    onCompleted: () => {
-      console.log('Fetched user projects');
-    },
-    onError(err) {
-      console.log(err);
-    },
-  });
-
-  const [createProject] = useMutation(CREATE_PROJECT, {
-    variables: {
-      name,
-    },
-    update: (cache, result) => {
-      const projects = cache.readQuery({
-        query: GET_PROJECTS,
-      });
-
-      const userProjects = cache.readQuery({
-        query: GET_USER_PROJECTS,
-      });
-
-      const projectsClone = cloneDeep(projects);
-      projectsClone.getProjects = [
-        ...projectsClone.getProjects,
-        result.data.createProject,
-      ];
-
-      const userProjectsClone = cloneDeep(userProjects);
-      userProjectsClone.getUserProjects = [
-        ...userProjectsClone.getUserProjects,
-        result.data.createProject,
-      ];
-
-      cache.writeQuery({
-        query: GET_PROJECTS,
-        data: {
-          getProjects: projectsClone.getProjects,
-        },
-      });
-
-      cache.writeQuery({
-        query: GET_USER_PROJECTS,
-        data: {
-          getUserProjects: userProjectsClone.getUserProjects,
-        },
-      });
-    },
-    onCompleted: (data) => {
-      setIsCrated((prevState) => ({
-        ...prevState,
-        project: data,
-        isCreated: true,
-      }));
-      // props.history.push(`/projects/${data.createProject.id}`);
-    },
-
-    onError: (err) => {
-      console.log(err);
-      // console.log(err.graphQLErrors[0].extensions.exception.errors);
-      // setErrors(err.graphQLErrors[0].extensions.exception.errors);
-    },
-  });
+  const [createProject] = useCreateProject(setIsCreated);
   const handleSubmit = (e) => {
     e.preventDefault();
-    createProject();
+    createProject({
+      variables: {
+        name,
+      },
+    });
   };
   return (
     <div className="login" style={{ textAlign: 'center' }}>
@@ -115,7 +50,12 @@ const ProjectForm = () => {
                 <Header as="h1" textAlign="center" className="headline">
                   On to a great success
                 </Header>
-                <Form size="large" noValidate onSubmit={handleSubmit}>
+                <Form
+                  size="large"
+                  noValidate
+                  onSubmit={handleSubmit}
+                  className="projectForm__form"
+                >
                   <Form.Input
                     fluid
                     placeholder="project name"
@@ -128,6 +68,14 @@ const ProjectForm = () => {
                       setErrors({});
                     }}
                   />
+                  <Form.Input>
+                    <Checkbox
+                      className="projectForm__form__checkbox"
+                      label="private"
+                      value={isPrivate}
+                      onClick={() => setIsPrivate(true)}
+                    />
+                  </Form.Input>
 
                   <Button
                     fluid

@@ -172,8 +172,12 @@ const UserProfile = () => {
               )}
               {data && data.getUser && isSent && (
                 <Message
+                  className="userProfile__secondaryInfo__personal__message"
                   positive
-                  style={{ textAlign: 'center', width: 'fit-content' }}
+                  style={{
+                    textAlign: 'center',
+                    width: 'fit-content',
+                  }}
                 >
                   <Message.Header>Success</Message.Header>
                   <p>{`Friend request sent to ${data.getUser.username}`}</p>
@@ -181,6 +185,7 @@ const UserProfile = () => {
               )}
               {Object.prototype.hasOwnProperty.call(errors, 'alreadySent') && (
                 <Message
+                  className="userProfile__secondaryInfo__personal__message"
                   negative
                   style={{ textAlign: 'center', width: 'fit-content' }}
                 >
