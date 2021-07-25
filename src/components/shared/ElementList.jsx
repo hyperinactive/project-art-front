@@ -4,7 +4,8 @@ import { Grid, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { baseURL, defaultAvatar } from '../../appConfig';
+import { baseURL, logo } from '../../appConfig';
+import prettyString from '../../utils/prettyString';
 
 const ElementList = ({ elements, type }) => (
   <div className="elementList">
@@ -21,15 +22,17 @@ const ElementList = ({ elements, type }) => (
               rounded
               size="tiny"
               src={
-                element.imageURL
-                  ? `${baseURL}/files/${element.imageURL}`
-                  : defaultAvatar
+                element.imageURL ? `${baseURL}/files/${element.imageURL}` : logo
               }
               as={Link}
               to={`/${type}/${element.id}`}
             />
             <div style={{ textAlign: 'center' }}>
-              <p>{type === 'projects' ? element.name : element.username}</p>
+              <p>
+                {type === 'projects'
+                  ? prettyString(element.name, 14)
+                  : prettyString(element.username, 14)}
+              </p>
             </div>
           </Grid.Row>
         ))}
@@ -49,7 +52,6 @@ const ElementList = ({ elements, type }) => (
 ElementList.defaultProps = {
   elements: PropTypes.shape({
     imageURL: null,
-    map: () => {},
     type: '',
   }),
 };

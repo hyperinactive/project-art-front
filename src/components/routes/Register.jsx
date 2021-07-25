@@ -41,7 +41,7 @@ const Register = () => {
 
   return (
     <div className="register">
-      {loading && <LoaderComponent />}
+      {loading && <LoaderComponent isDimmerActive />}
       <Grid
         textAlign="center"
         style={{ height: '70vh' }}

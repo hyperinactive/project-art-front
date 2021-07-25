@@ -20,6 +20,6 @@
   }
 
   &__placeholder {
-    background: map-get($map: $mainPallete, $key: 'foreground') !important;
+    background: map-get($map: $mainPalette, $key: 'foreground') !important;
   }
 }

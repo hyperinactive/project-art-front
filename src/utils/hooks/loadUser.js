@@ -21,7 +21,7 @@ const useLoadUser = (setState) =>
       }
     },
     onError: (err) => {
-      console.log(err);
+      console.error({ err });
       setState((state) => ({
         ...state,
         errors: err.graphQLErrors[0].extensions.exception.errors,

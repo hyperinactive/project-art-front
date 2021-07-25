@@ -20,6 +20,7 @@ const REGISTER_USER = gql`
     ) {
       ...UserFields
       email
+      emailVerified
       token
     }
   }
@@ -35,6 +36,7 @@ const LOGIN_USER = gql`
     login(username: $username, password: $password) {
       ...UserFields
       email
+      emailVerified
       token
     }
   }
@@ -120,6 +122,62 @@ const GET_USERS = gql`
   }
 `;
 
+const VERIFY = gql`
+  ${USER_FIELDS}
+  mutation verifyUser($code: String!) {
+    verifyUser(code: $code) {
+      ...UserFields
+      email
+      emailVerified
+      token
+    }
+  }
+`;
+
+const RESEND = gql`
+  mutation sendVerification {
+    sendVerification
+  }
+`;
+
+const SEND_FRIEND_REQUEST = gql`
+  mutation sendFriendRequest($userID: ID!) {
+    sendFriendRequest(userID: $userID) {
+      id
+      createdAt
+      fromUser {
+        id
+        username
+      }
+      toUser {
+        id
+        username
+      }
+    }
+  }
+`;
+
+const ACCEPT_REQUEST = gql`
+  mutation acceptFriendRequest($requestID: ID!) {
+    acceptFriendRequest(requestID: $requestID) {
+      sender {
+        id
+        username
+        imageURL
+      }
+      receiver {
+        id
+        username
+        imageURL
+      }
+      request {
+        id
+        createdAt
+      }
+    }
+  }
+`;
+
 export {
   REGISTER_USER,
   LOGIN_USER,
@@ -129,4 +187,8 @@ export {
   ADD_FRIEND,
   GET_USERS,
   GET_USER_FRIENDS,
+  VERIFY,
+  RESEND,
+  SEND_FRIEND_REQUEST,
+  ACCEPT_REQUEST,
 };

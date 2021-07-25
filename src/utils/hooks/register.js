@@ -1,14 +1,10 @@
 import { useMutation } from '@apollo/client';
 import { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import { NavigationContext } from '../../context/navigationContext/NavigationProvider';
 import { UserContext } from '../../context/userContext/UserProvider';
 import { REGISTER_USER } from '../../graphql';
 
 const useRegister = (username, email, password, confirmPassword, setErrors) => {
   const { login } = useContext(UserContext);
-  const { setActiveItem } = useContext(NavigationContext);
-  const history = useHistory();
 
   return useMutation(REGISTER_USER, {
     // update will trigger if everything's went smoothly
@@ -16,8 +12,6 @@ const useRegister = (username, email, password, confirmPassword, setErrors) => {
     update: (_, result) => {
       login(result.data.register);
       // take us to the home page if register succeeded
-      history.push('/');
-      setActiveItem('home');
     },
     // it expects some variables to be sent for mutations
     variables: {

@@ -47,7 +47,7 @@ const useUpdateUser = (setState) => {
       }));
     },
     onError: (err) => {
-      console.log(err);
+      console.log({ err });
       setState((state) => ({
         ...state,
         errors: err.graphQLErrors[0].extensions.exception.errors,

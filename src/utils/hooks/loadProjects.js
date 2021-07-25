@@ -7,7 +7,7 @@ const useLoadProjects = () =>
     //   console.log(data);
     // },
     onError(err) {
-      console.log(err);
+      console.error({ err });
     },
   });
 

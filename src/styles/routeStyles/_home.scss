@@ -1,4 +1,7 @@
+@import '../sharedStyles/userWorkspace';
+
 .home {
+  height: 100%;
   &__welcome {
     margin-top: 5rem;
     display: flex;

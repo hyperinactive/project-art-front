@@ -1,0 +1,26 @@
+.verification {
+  padding: 2rem;
+  text-align: center;
+  margin: auto;
+  width: fit-content;
+
+  &__extra {
+    font-size: 1.2rem;
+  }
+
+  .accent {
+    color: $accentColor;
+  }
+
+  &__btnGroup {
+    padding: 1rem !important;
+  }
+
+  &__resend {
+    @extend .accentMe;
+  }
+
+  &__input input {
+    text-align: center !important;
+  }
+}

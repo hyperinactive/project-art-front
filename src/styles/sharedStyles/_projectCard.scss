@@ -1,15 +1,15 @@
 .projectCard {
-  color: map-get($map: $mainPallete, $key: 'regularText') !important;
+  color: map-get($map: $mainPalette, $key: 'regularText') !important;
 
   &__projectForm {
-    color: map-get($map: $mainPallete, $key: 'regularText') !important;
+    color: map-get($map: $mainPalette, $key: 'regularText') !important;
   }
 
   &__card {
-    background: map-get($map: $mainPallete, $key: 'background') !important;
+    background: map-get($map: $mainPalette, $key: 'background') !important;
 
     &__cardName {
-      color: map-get($map: $mainPallete, $key: 'regularText') !important;
+      color: map-get($map: $mainPalette, $key: 'regularText') !important;
     }
   }
 }
